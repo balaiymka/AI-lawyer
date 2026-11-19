@@ -1,0 +1,164 @@
+# Реестр НПА для ингеста. adilet_id — идентификатор из URL https://adilet.zan.kz/rus/docs/<adilet_id>
+# hierarchy_level: 1 Конституция, 2 Кодекс, 3 Закон, 4 Постановление Правительства, 5 Приказ министра/правила.
+# enabled = false — акт подключается в своём спринте (идентификаторы перед включением сверить на Adilet).
+
+[[acts]]
+code = "CONST"
+act_type = "constitution"
+title_ru = "Конституция Республики Казахстан"
+title_kk = "Қазақстан Республикасының Конституциясы"
+adopted_at = "2026-03-15"  # принята на республиканском референдуме; Конституция 1995 г. (K950001000_) утратила силу с 01.07.2026
+adilet_id = "K2600000000"
+hierarchy_level = 1
+enabled = true
+
+[[acts]]
+code = "GK_GEN"
+act_type = "code"
+title_ru = "Гражданский кодекс Республики Казахстан (Общая часть)"
+title_kk = "Қазақстан Республикасының Азаматтық кодексі (Жалпы бөлім)"
+number = "268-XIII"
+adopted_at = "1994-12-27"
+adilet_id = "K940001000_"
+hierarchy_level = 2
+enabled = true
+
+[[acts]]
+code = "GK_SPEC"
+act_type = "code"
+title_ru = "Гражданский кодекс Республики Казахстан (Особенная часть)"
+title_kk = "Қазақстан Республикасының Азаматтық кодексі (Ерекше бөлім)"
+number = "409"
+adopted_at = "1999-07-01"
+adilet_id = "K990000409_"
+hierarchy_level = 2
+enabled = true
+
+[[acts]]
+code = "GPK"
+act_type = "code"
+title_ru = "Гражданский процессуальный кодекс Республики Казахстан"
+title_kk = "Қазақстан Республикасының Азаматтық процестік кодексі"
+number = "377-V"
+adopted_at = "2015-10-31"
+adilet_id = "K1500000377"
+hierarchy_level = 2
+enabled = true
+
+[[acts]]
+code = "KOAP"
+act_type = "code"
+title_ru = "Кодекс Республики Казахстан об административных правонарушениях"
+title_kk = "Әкімшілік құқық бұзушылық туралы Қазақстан Республикасының Кодексі"
+number = "235-V"
+adopted_at = "2014-07-05"
+adilet_id = "K1400000235"
+hierarchy_level = 2
+enabled = true
+
+[[acts]]
+code = "APPK"
+act_type = "code"
+title_ru = "Административный процедурно-процессуальный кодекс Республики Казахстан"
+title_kk = "Қазақстан Республикасының Әкімшілік рәсімдік-процестік кодексі"
+number = "350-VI"
+adopted_at = "2020-06-29"
+adilet_id = "K2000000350"
+hierarchy_level = 2
+enabled = true
+
+[[acts]]
+code = "UK"
+act_type = "code"
+title_ru = "Уголовный кодекс Республики Казахстан"
+title_kk = "Қазақстан Республикасының Қылмыстық кодексі"
+number = "226-V"
+adopted_at = "2014-07-03"
+adilet_id = "K1400000226"
+hierarchy_level = 2
+enabled = true
+
+[[acts]]
+code = "ZHO"
+act_type = "law"
+title_ru = "Закон Республики Казахстан «О жилищных отношениях»"
+title_kk = "«Тұрғын үй қатынастары туралы» Қазақстан Республикасының Заңы"
+number = "94"
+adopted_at = "1997-04-16"
+adilet_id = "Z970000094_"
+hierarchy_level = 3
+enabled = true
+
+[[acts]]
+code = "RULES_MGMT"
+act_type = "ministry_order"
+title_ru = "Правила по управлению объектом кондоминиума (приказ Министра национальной экономики РК от 19.02.2015 № 108)"
+number = "108"
+adopted_at = "2015-02-19"
+adilet_id = "V1500010528"
+hierarchy_level = 5
+enabled = true
+
+[[acts]]
+code = "RULES_DECISIONS"
+act_type = "ministry_order"
+title_ru = "Правила принятия решений по управлению объектом кондоминиума и типовые формы протоколов собрания"
+adilet_id = "V2000020283"
+hierarchy_level = 5
+enabled = true
+
+[[acts]]
+code = "METHOD_BUDGET"
+act_type = "ministry_order"
+title_ru = "Методика расчета годовой сметы расходов на управление объектом кондоминиума и минимального размера взносов"
+adilet_id = "V2000020284"
+hierarchy_level = 5
+enabled = true
+
+# --- Смежные акты по ЖКХ (добавлены для расширения базы) ---
+
+[[acts]]
+code = "COMM_SERVICES"
+act_type = "ministry_order"
+title_ru = "Перечень коммунальных услуг и Типовые правила предоставления коммунальных услуг (приказ и.о. Министра индустрии и инфраструктурного развития РК от 29.04.2020 № 249)"
+title_kk = "Коммуналдық көрсетілетін қызметтердің тізбесі және Коммуналдық қызметтерді көрсетудің үлгілік қағидалары"
+number = "249"
+adopted_at = "2020-04-29"
+adilet_id = "V2000020542"
+hierarchy_level = 5
+enabled = true
+
+[[acts]]
+code = "CONSUMER"
+act_type = "law"
+title_ru = "Закон Республики Казахстан «О защите прав потребителей»"
+title_kk = "«Тұтынушылардың құқықтарын қорғау туралы» Қазақстан Республикасының Заңы"
+number = "274-IV"
+adopted_at = "2010-05-04"
+adilet_id = "Z100000274_"
+hierarchy_level = 3
+enabled = true
+
+[[acts]]
+code = "MONOPOLIES"
+act_type = "law"
+title_ru = "Закон Республики Казахстан «О естественных монополиях»"
+title_kk = "«Табиғи монополиялар туралы» Қазақстан Республикасының Заңы"
+number = "204-VI"
+adopted_at = "2018-12-27"
+adilet_id = "Z1800000204"
+hierarchy_level = 3
+enabled = true
+
+# Закон «Об архитектурной, градостроительной и строительной деятельности» (Z010000242_) утратил силу
+# с 01.07.2026 — его заменил Строительный кодекс (кроме отдельных статей до 01.07.2028).
+[[acts]]
+code = "STROY"
+act_type = "code"
+title_ru = "Строительный кодекс Республики Казахстан"
+title_kk = "Қазақстан Республикасының Құрылыс кодексі"
+number = "253-VIII"
+adopted_at = "2026-01-09"
+adilet_id = "K2600000253"
+hierarchy_level = 2
+enabled = true

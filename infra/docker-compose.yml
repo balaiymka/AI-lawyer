@@ -1,0 +1,55 @@
+name: zhkh24
+
+services:
+  postgres:
+    image: postgres:16.6
+    environment:
+      POSTGRES_DB: zhkh24
+      POSTGRES_USER: zhkh24
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zhkh24_dev}
+      # UTF-8 локаль обязательна: с локалью C Postgres не приводит кириллицу к нижнему регистру
+      # и полнотекстовый поиск по-русски перестаёт находить слова с заглавной буквы.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zhkh24 -d zhkh24"]
+      interval: 5s
+      retries: 10
+
+  qdrant:
+    image: qdrant/qdrant:v1.13.4
+    ports: ["6333:6333", "6334:6334"]
+    volumes: [qdrant:/qdrant/storage]
+
+  redis:
+    image: redis:7.4-alpine
+    ports: ["6379:6379"]
+
+  minio:
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-zhkh24}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-zhkh24_dev_secret}
+    ports: ["9000:9000", "9001:9001"]
+    volumes: [minio:/data]
+
+  api:
+    build: ../apps/api
+    env_file: ../.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://zhkh24:${POSTGRES_PASSWORD:-zhkh24_dev}@postgres:5432/zhkh24
+      QDRANT_URL: http://qdrant:6333
+      REDIS_URL: redis://redis:6379/0
+      S3_ENDPOINT: http://minio:9000
+    ports: ["8000:8000"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      qdrant: { condition: service_started }
+      redis: { condition: service_started }
+
+volumes:
+  pgdata:
+  qdrant:
+  minio:

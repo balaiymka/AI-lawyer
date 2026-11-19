@@ -1,0 +1,432 @@
+<meta charset="utf-8">
+<title>Архитектура ЖКХ AI Юриста</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: одна колонка ~900px; 9 разделов = 9 вопросов руководителя; шаги — нумерованные строки с «кто / где / сколько» */
+:root {
+  --bg: #F4F6FB; --surface: #FFFFFF; --surface-2: #EAEEF7; --fg: #0B1640; --muted: #4F5B7D; --line: #D5DCEC;
+  --accent: #2F6BFF; --accent-soft: #E3EBFF; --amber: #B4690E; --amber-soft: #FFF1DD;
+  --good: #11804A; --good-soft: #E1F5EA; --bad: #B42318;
+  --display: "Unbounded", "Inter", system-ui, sans-serif; --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #070D24; --surface: #0E1736; --surface-2: #15204A; --fg: #E8EEFF; --muted: #9FB0DA; --line: #24315E;
+  --accent: #7DA2FF; --accent-soft: #17295C; --amber: #FFB86B; --amber-soft: #3A2A12;
+  --good: #6FDCA3; --good-soft: #10331F; --bad: #FF8A80; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #070D24; --surface: #0E1736; --surface-2: #15204A; --fg: #E8EEFF; --muted: #9FB0DA; --line: #24315E;
+  --accent: #7DA2FF; --accent-soft: #17295C; --amber: #FFB86B; --amber-soft: #3A2A12;
+  --good: #6FDCA3; --good-soft: #10331F; --bad: #FF8A80; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 15.5px/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 72px }
+main { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px }
+h1, h2 { font-family: var(--display); letter-spacing: -0.01em; text-wrap: balance; margin: 0 }
+h1 { font-size: clamp(26px, 5vw, 38px); line-height: 1.15 }
+h2 { font-size: clamp(19px, 3.2vw, 24px); line-height: 1.25 }
+h3 { font-size: 16px; margin: 0 }
+p { margin: 0; max-width: 75ch }
+code { font: 12.5px var(--mono); background: var(--surface-2); padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere }
+section { display: flex; flex-direction: column; gap: 14px }
+.eyebrow { font: 600 11.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent) }
+.lead { color: var(--muted) }
+.toc { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 6px 20px; padding: 0; margin: 0; list-style: none; font-size: 14px }
+.toc a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--line) } .toc a:hover, .toc a:focus-visible { color: var(--accent); border-color: var(--accent) }
+.toc span { font: 600 12px var(--mono); color: var(--accent); margin-right: 6px }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; min-width: 0 }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 14px }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line) }
+th { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--surface-2) }
+tr:last-child td { border-bottom: 0 }
+td small, .panel small { display: block; color: var(--muted); font-size: 12.5px }
+.num { font-variant-numeric: tabular-nums }
+.tag { display: inline-block; font: 600 11.5px/1.5 var(--body); padding: 1px 8px; border-radius: 99px; white-space: nowrap }
+.tag.self { background: var(--good-soft); color: var(--good) }
+.tag.api { background: var(--amber-soft); color: var(--amber) }
+.tag.code { background: var(--surface-2); color: var(--muted) }
+.tag.store { background: var(--accent-soft); color: var(--accent) }
+.steps { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden }
+.step { display: grid; grid-template-columns: 44px 1fr; gap: 0 14px; padding: 14px 16px; border-bottom: 1px solid var(--line) }
+.step:last-child { border-bottom: 0 }
+.step .n { font: 700 15px/1.3 var(--display); color: var(--accent) }
+.step .body { display: flex; flex-direction: column; gap: 6px; min-width: 0 }
+.step .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px }
+.step .head b { font-size: 15px }
+.step .facts { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums }
+.step .facts span b { color: var(--fg); font-weight: 600 }
+.step p { font-size: 14.5px }
+ul.pc { margin: 0; padding-left: 18px } ul.pc li { margin: 3px 0 }
+.plus { color: var(--good) } .minus { color: var(--bad) }
+.diagram { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px }
+.diagram svg { display: block; min-width: 780px; width: 100%; height: auto }
+.d-box { fill: var(--surface-2); stroke: var(--line) } .d-model { fill: var(--good-soft); stroke: var(--good) }
+.d-api { fill: var(--amber-soft); stroke: var(--amber) } .d-store { fill: var(--accent-soft); stroke: var(--accent) }
+.d-zone { fill: none; stroke: var(--line); stroke-dasharray: 5 5 }
+.d-t { fill: var(--fg); font: 600 12.5px var(--body) } .d-s { fill: var(--muted); font: 11px var(--body) }
+.d-z { fill: var(--accent); font: 600 10.5px var(--mono); letter-spacing: .06em }
+.d-line { stroke: var(--muted); stroke-width: 1.4; fill: none } .d-arrow { fill: var(--muted) }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--muted) }
+.callout { border-left: 3px solid var(--amber); background: var(--amber-soft); padding: 12px 14px; border-radius: 0 12px 12px 0; font-size: 14.5px }
+.verdict { border-left: 3px solid var(--good); background: var(--good-soft); padding: 12px 14px; border-radius: 0 12px 12px 0; font-size: 14.5px }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 14px; margin: 8px 0 0 }
+.kv dt { color: var(--muted) } .kv dd { margin: 0; font-variant-numeric: tabular-nums }
+.note { font-size: 13px; color: var(--muted) }
+a { color: var(--accent) }
+@media (max-width: 520px) { .step { grid-template-columns: 30px 1fr; padding: 12px } }
+</style>
+
+<main>
+  <header style="display:flex;flex-direction:column;gap:14px">
+    <span class="eyebrow">ЖКХ AI ЮРИСТ · техническая архитектура · 18.11.2026</span>
+    <h1>Как устроена система: от вопроса жителя до ответа со ссылками на закон</h1>
+    <p class="lead">Документ написан по реальному коду проекта (FastAPI + Next.js + PostgreSQL + Qdrant). У каждого шага указано, что именно происходит, чем это сделано (модель или обычный код), где работает, сколько времени, памяти и токенов тратит. Цифры времени и стоимости — замеры на нашей системе, если не сказано иначе.</p>
+    <ol class="toc">
+      <li><span>1</span><a href="#models">Какие AI-модели и за что отвечают</a></li>
+      <li><span>2</span><a href="#where">Что по API, что на нашем сервере</a></li>
+      <li><span>3</span><a href="#query">Цепочка обработки вопроса</a></li>
+      <li><span>4</span><a href="#ingest">Загрузка и обновление законов</a></li>
+      <li><span>5</span><a href="#always">Что работает постоянно, что по необходимости</a></li>
+      <li><span>6</span><a href="#storage">Что хранится в PostgreSQL и где векторы</a></li>
+      <li><span>7</span><a href="#tokens">Токены по этапам и стоимость</a></li>
+      <li><span>8</span><a href="#resources">Ресурсы сервера и стоимость в месяц</a></li>
+      <li><span>9</span><a href="#selfhost">Свои модели или API: что выгоднее</a></li>
+    </ol>
+  </header>
+
+  <!-- Общая схема -->
+  <section id="overview">
+    <span class="eyebrow">Общая схема</span>
+    <h2>Компоненты и связи</h2>
+    <div class="diagram" role="img" aria-label="Браузер обращается к сайту Next.js, сайт к API FastAPI. Внутри процесса API загружены модели BGE-M3 и реранкер. API обращается к Qdrant, PostgreSQL, диску с файлами и к языковой модели по API. Админка запускает загрузку законов: Playwright скачивает Adilet, код разбирает, BGE-M3 векторизует, результат пишется в PostgreSQL и Qdrant.">
+      <svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+        <rect class="d-box" x="16" y="30" width="130" height="60" rx="12"/><text class="d-t" x="81" y="56" text-anchor="middle">Браузер</text><text class="d-s" x="81" y="74" text-anchor="middle">житель · юрист · админ</text>
+        <rect class="d-box" x="180" y="30" width="150" height="60" rx="12"/><text class="d-t" x="255" y="56" text-anchor="middle">Сайт · Next.js</text><text class="d-s" x="255" y="74" text-anchor="middle">ru / kk, чат, админка</text>
+        <path class="d-line" d="M146 60 H178" marker-end="url(#ar)"/>
+        <path class="d-line" d="M330 60 H372" marker-end="url(#ar)"/><text class="d-s" x="334" y="52">HTTPS · SSE</text>
+
+        <rect class="d-zone" x="374" y="14" width="300" height="250" rx="16"/>
+        <text class="d-z" x="388" y="34">ПРОЦЕСС API · FastAPI (Python)</text>
+        <rect class="d-box" x="390" y="46" width="268" height="52" rx="10"/><text class="d-t" x="524" y="68" text-anchor="middle">Конвейер ответа · код</text><text class="d-s" x="524" y="86" text-anchor="middle">разбор → поиск → ответ → проверка → запись</text>
+        <rect class="d-model" x="390" y="112" width="128" height="62" rx="10"/><text class="d-t" x="454" y="136" text-anchor="middle">BGE-M3</text><text class="d-s" x="454" y="154" text-anchor="middle">эмбеддинги · ~1,2 ГБ</text>
+        <rect class="d-model" x="530" y="112" width="128" height="62" rx="10"/><text class="d-t" x="594" y="136" text-anchor="middle">Реранкер</text><text class="d-s" x="594" y="154" text-anchor="middle">bge-reranker · ~1,2 ГБ</text>
+        <rect class="d-box" x="390" y="188" width="268" height="60" rx="10"/><text class="d-t" x="524" y="212" text-anchor="middle">Задачи админки · код</text><text class="d-s" x="524" y="230" text-anchor="middle">загрузка законов, редакции, проверка качества</text>
+
+        <rect class="d-api" x="710" y="30" width="176" height="70" rx="12"/><text class="d-t" x="798" y="56" text-anchor="middle">Языковая модель</text><text class="d-s" x="798" y="74" text-anchor="middle">Claude Opus 5.5 по API</text><text class="d-s" x="798" y="89" text-anchor="middle">разбор вопроса + ответ</text>
+        <path class="d-line" d="M658 66 H708" marker-end="url(#ar)"/>
+        <rect class="d-store" x="710" y="118" width="176" height="56" rx="12"/><text class="d-t" x="798" y="141" text-anchor="middle">Qdrant</text><text class="d-s" x="798" y="159" text-anchor="middle">векторы · ~600 МБ</text>
+        <path class="d-line" d="M658 146 H708" marker-end="url(#ar)"/>
+        <rect class="d-store" x="710" y="190" width="176" height="56" rx="12"/><text class="d-t" x="798" y="213" text-anchor="middle">PostgreSQL</text><text class="d-s" x="798" y="231" text-anchor="middle">законы, люди, дела · 138 МБ</text>
+        <path class="d-line" d="M658 218 H708" marker-end="url(#ar)"/>
+        <rect class="d-store" x="710" y="262" width="176" height="50" rx="12"/><text class="d-t" x="798" y="284" text-anchor="middle">Диск</text><text class="d-s" x="798" y="300" text-anchor="middle">файлы к документам</text>
+        <path class="d-line" d="M674 248 V287 H708" marker-end="url(#ar)"/>
+
+        <rect class="d-box" x="16" y="330" width="150" height="70" rx="12"/><text class="d-t" x="91" y="356" text-anchor="middle">adilet.zan.kz</text><text class="d-s" x="91" y="374" text-anchor="middle">официальные тексты</text><text class="d-s" x="91" y="389" text-anchor="middle">и хронология редакций</text>
+        <rect class="d-box" x="200" y="330" width="160" height="70" rx="12"/><text class="d-t" x="280" y="356" text-anchor="middle">Playwright</text><text class="d-s" x="280" y="374" text-anchor="middle">headless Chromium</text><text class="d-s" x="280" y="389" text-anchor="middle">только при загрузке</text>
+        <path class="d-line" d="M200 365 H168" marker-end="url(#ar)"/><text class="d-s" x="170" y="320">скачивает</text>
+        <path class="d-line" d="M444 248 V365 H362" marker-end="url(#ar)"/><text class="d-s" x="450" y="320">запускает по кнопке</text>
+        <text class="d-s" x="16" y="420">Цвет: зелёный — своя модель на сервере · оранжевый — модель по API · синий — хранилище · серый — обычный код.</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 1 -->
+  <section id="models">
+    <span class="eyebrow">Вопрос 1</span>
+    <h2>Какие AI-модели используются и на каком этапе</h2>
+    <p>В проекте три модели. Всё остальное — обычный код на Python и TypeScript.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:22%">Модель</th><th style="width:30%">За что отвечает</th><th style="width:26%">На каких этапах подключается</th><th>Размер</th></tr></thead>
+        <tbody>
+          <tr><td><b>BGE-M3</b><small>BAAI/bge-m3, открытая модель</small></td><td>Превращает текст в векторы двух видов: по смыслу (1024 числа) и по словам (вес каждого слова). Так находим нормы, даже если житель пишет своими словами, с ошибками или на шала-қазақша.</td><td>1) при загрузке законов — каждый пункт на ru и kk;<br>2) на каждый вопрос — до 8 формулировок вопроса</td><td class="num">568 млн параметров, ~1,1 ГБ в fp16</td></tr>
+          <tr><td><b>bge-reranker-v2-m3</b><small>BAAI, открытая модель</small></td><td>Читает пару «вопрос + пункт закона» целиком и ставит оценку, насколько пункт отвечает на вопрос. Поднимает правильную норму на первое место.</td><td>На каждый вопрос — переоценивает 20 лучших кандидатов поиска</td><td class="num">568 млн параметров, ~1,1 ГБ в fp16</td></tr>
+          <tr><td><b>Языковая модель (LLM)</b><small>сейчас на сайте — Claude Opus 5.5; Gemini через Vertex AI — только вариант на будущее</small></td><td>1) Разбор вопроса: язык, юридические термины вместо сленга, дата события, какие нормы упомянуты, поисковые формулировки.<br>2) Ответ юриста строго по найденным нормам: вердикт, простой ответ, ответ для юриста, план действий, ссылки.<br>3) Автозаполнение документа из переписки.</td><td>На каждый вопрос — 2 вызова (разбор + ответ). При составлении документа — 1 вызов.</td><td>у провайдера, у нас 0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Код: <code>app/services/rag/models.py</code> (BGE-M3 и реранкер), <code>app/services/nlu/normalizer.py</code> (разбор вопроса), <code>app/services/lawyer/generator.py</code> (ответ), <code>app/services/documents/skill.py</code> (автозаполнение).</p>
+  </section>
+
+  <!-- 2 -->
+  <section id="where">
+    <span class="eyebrow">Вопрос 2</span>
+    <h2>Что работает по API, а что на нашем сервере</h2>
+    <div class="grid2">
+      <div class="panel">
+        <h3><span class="tag self">свой сервер</span></h3>
+        <ul class="pc" style="margin-top:10px">
+          <li><b>BGE-M3</b> и <b>реранкер</b> — загружены прямо в процесс API, работают на CPU, GPU не нужен.</li>
+          <li><b>Qdrant</b> — векторная база (не модель), отдельный процесс.</li>
+          <li><b>PostgreSQL</b>, сайт Next.js, Playwright для загрузки законов.</li>
+        </ul>
+        <p class="note" style="margin-top:10px">Почему так: модели небольшие, работают на обычном процессоре, за каждый вопрос не платим, тексты вопросов на поиске не уходят наружу. Качество на казахском и шала проверено на 186 контрольных вопросах.</p>
+      </div>
+      <div class="panel">
+        <h3><span class="tag api">по API</span></h3>
+        <ul class="pc" style="margin-top:10px">
+          <li><b>Языковая модель</b> — разбор вопроса и ответ юриста.</li>
+        </ul>
+        <p class="note" style="margin-top:10px">Почему так: модель уровня Claude или Gemini Pro у себя требует нескольких GPU по 80 ГБ — это дороже API при нашем объёме (подробно в вопросе 9). Код сделан так, что провайдера можно сменить настройкой <code>LLM_PROVIDER</code>.</p>
+      </div>
+    </div>
+    <div class="callout"><b>Как сейчас в демо.</b> Ответ пишет Claude через личную подписку разработчика (Claude Code) — только для разработки и демо; для публичного сайта нужен API-ключ. В этом режиме разбор вопроса делается без LLM, по словарю и правилам (запасной путь), чтобы не тратить лишние 10–20 секунд.</div>
+  </section>
+
+  <!-- 3 -->
+  <section id="query">
+    <span class="eyebrow">Вопрос 3</span>
+    <h2>Цепочка обработки вопроса: что происходит по шагам</h2>
+    <p>Пример: житель пишет «соседи сверху затопили квартиру, что делать». Всё ниже выполняет одна функция <code>run_chat</code> в <code>app/services/lawyer/pipeline.py</code>. Ответ отдаётся потоком (SSE): житель видит этапы «понимаю вопрос → ищу нормы → пишу ответ» и найденные нормы ещё до готового ответа.</p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div class="body">
+        <div class="head"><b>Вопрос уходит с сайта на сервер</b><span class="tag code">код</span></div>
+        <p>Сайт (Next.js) отправляет <code>POST /v1/chat</code> с текстом, ролью (житель / юрист) и историей дела. Сервер держит соединение открытым и раз в 15 секунд шлёт служебный «пинг», чтобы соединение не обрывалось, пока модель думает.</p>
+        <div class="facts"><span>Файлы: <b>apps/web/components/chat/ChatView.tsx</b>, <b>app/routers/chat.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">2</span><div class="body">
+        <div class="head"><b>Разбор вопроса</b><span class="tag api">LLM по API</span><span class="tag code">запасной путь — код</span></div>
+        <p>LLM по инструкции <code>prompts/normalizer.md</code> возвращает строгий JSON: язык вопроса и ответа, вопрос юридическим языком на ru и kk, категорию, стороны, факты, упомянутые нормы («ст. 42 п. 8»), дату события и 2–6 поисковых формулировок. Если API недоступен — тот же результат собирает код: определяет язык по буквам и словам, переводит латиницу в кириллицу («kvorum» → «кворум»), добавляет термины из словаря сленга ЖКХ, ищет даты регулярными выражениями.</p>
+        <div class="facts"><span>Токены: <b>~2 000 вход · ~500 выход</b></span><span>Время: <b>2–5 с</b> (LLM) или <b>&lt;10 мс</b> (код)</span><span>Файлы: <b>app/services/nlu/*</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">3</span><div class="body">
+        <div class="head"><b>Подготовка поискового запроса и выбор редакции</b><span class="tag code">код</span></div>
+        <p>Собираем до 8 формулировок для поиска. Явные ссылки на нормы («ст. 42 п. 8 ЗЖО») разбираем регулярными выражениями — их найдём точно, без модели. Если в вопросе есть дата события («затопили в марте 2022»), выбираем для каждого акта редакцию, действовавшую в тот день.</p>
+        <div class="facts"><span>Файлы: <b>normalizer.to_search_request</b>, <b>app/services/rag/refs.py</b>, <b>app/services/lawyer/editions.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">4</span><div class="body">
+        <div class="head"><b>Векторы вопроса</b><span class="tag self">BGE-M3 · свой сервер</span></div>
+        <p>Каждую формулировку BGE-M3 переводит в два вектора: смысловой (1024 числа) и словесный (веса слов). Это та же модель, которой векторизованы законы, — иначе векторы были бы несравнимы.</p>
+        <div class="facts"><span>Время: <b>0,2–0,7 с</b></span><span>Память: <b>~1,2 ГБ</b> (модель уже в памяти)</span></div>
+      </div></div>
+      <div class="step"><span class="n">5</span><div class="body">
+        <div class="head"><b>Поиск в Qdrant</b><span class="tag store">Qdrant</span><span class="tag code">код</span></div>
+        <p>Три канала параллельно: поиск по смыслу, поиск по словам и точные попадания по явным ссылкам из шага 3 (они закрепляются наверху). Фильтры: язык, действующая редакция или редакция на дату события. Списки объединяются методом RRF (Reciprocal Rank Fusion). Нормы Кодекса и Закона получают приоритет над Правилами и приказами.</p>
+        <div class="facts"><span>Время: <b>0,2–0,9 с</b></span><span>База: <b>42 780 фрагментов</b></span><span>Файлы: <b>app/services/rag/retriever.py</b>, <b>vector_store.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">6</span><div class="body">
+        <div class="head"><b>Переранжирование</b><span class="tag self">реранкер · свой сервер</span></div>
+        <p>20 лучших кандидатов реранкер читает вместе с вопросом и заново оценивает. Затем код убирает повторы (не больше 2 фрагментов одного пункта и 3 одной статьи) и оставляет 8 лучших. Если в найденной норме написано «в соответствии со статьёй 10», код подтягивает и статью 10 — до 4 таких отсылок.</p>
+        <div class="facts"><span>Время: <b>~2 с</b> на CPU (0,2–0,3 с на GPU)</span><span>Память: <b>~1,2 ГБ</b></span><span>Нужная норма первой: <b>65% без реранкера → 67% с ним</b> (с приоритетом закона)</span></div>
+      </div></div>
+      <div class="step"><span class="n">7</span><div class="body">
+        <div class="head"><b>Сборка контекста для модели</b><span class="tag code">код</span></div>
+        <p>Тексты 8–12 пунктов берутся из базы и оборачиваются в XML: у каждого — номер, акт, статья, пункт, уровень акта (Кодекс / Закон / Правила), редакция, ссылка на Adilet. Эти же нормы сразу показываются жителю в панели «Источники».</p>
+        <div class="facts"><span>Объём: <b>4–12 тыс. знаков</b> ≈ 1,5–4 тыс. токенов</span><span>Файл: <b>app/services/lawyer/context.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">8</span><div class="body">
+        <div class="head"><b>Ответ юриста</b><span class="tag api">LLM по API</span></div>
+        <p>LLM получает инструкцию юриста (<code>prompts/lawyer.md</code>: отвечать только по нормам из контекста, ссылаться на номер нормы, цитировать дословно) плюс контекст, результат разбора, вопрос и историю дела. Возвращает JSON по строгой схеме: вердикт, простой ответ для жителя, ответ для юриста, план действий, правовые основания с цитатами, уточняющие вопросы. Текст идёт потоком.</p>
+        <div class="facts"><span>Токены: <b>~8 000 вход · ~5 000 ответ + рассуждения модели</b></span><span>Время: <b>11–45 с</b></span><span>Файл: <b>app/services/lawyer/generator.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">9</span><div class="body">
+        <div class="head"><b>Проверка ссылок</b><span class="tag code">код</span></div>
+        <p>Модели не верим на слово. Ссылка на норму, которой нет в контексте, удаляется. Номер статьи и название акта берутся из базы, а не из текста модели. Цитата должна дословно совпадать с текстом пункта — иначе подставляется настоящий текст и ставится отметка «цитата не подтверждена». Статьи, упомянутые без опоры на контекст, помечают ответ «нужна проверка юристом».</p>
+        <div class="facts"><span>Время: <b>миллисекунды</b></span><span>Файл: <b>app/services/lawyer/verify.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">10</span><div class="body">
+        <div class="head"><b>Сохранение и показ</b><span class="tag store">PostgreSQL</span></div>
+        <p>В базу пишутся вопрос, результат разбора, ответ, процитированные нормы, расход токенов и время каждого этапа, а также след поиска (какие кандидаты были). Житель видит ответ, источники со ссылками на Adilet и редакцию, по которой дан ответ. Ответы с отметкой «нужна проверка» попадают юристу в админку.</p>
+        <div class="facts"><span>Файл: <b>app/services/lawyer/store.py</b></span><span>Итого вопрос: <b>~15–50 с</b>, из них поиск ~3 с</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="ingest">
+    <span class="eyebrow">Вопрос 4</span>
+    <h2>Загрузка, разбор, индексация и обновление законов</h2>
+    <p>Запускается из админки кнопкой (или командой <code>python -m ingest</code>). Задача идёт в фоне, админка показывает журнал. Из шести шагов модель работает только на одном — векторизации.</p>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><div class="body">
+        <div class="head"><b>Список актов</b><span class="tag code">человек + конфиг</span></div>
+        <p>Файл <code>ingest/sources.toml</code>: код акта (ZHO, GK_GEN…), номер на Adilet, название, уровень в иерархии. Сейчас 15 актов. Новый акт добавляется одной записью или из админки.</p>
+      </div></div>
+      <div class="step"><span class="n">2</span><div class="body">
+        <div class="head"><b>Скачивание с Adilet</b><span class="tag code">код · Playwright</span></div>
+        <p>adilet.zan.kz — одностраничное приложение: обычный HTTP-запрос возвращает пустую страницу, текст появляется после выполнения JavaScript. Поэтому страницу открывает headless-браузер Chromium (Playwright), как обычный посетитель, и сохраняет только блок с текстом акта. Отдельно на русском и казахском. Бережно к сайту: один запрос за раз, пауза между запросами, кэш на диске.</p>
+        <div class="facts"><span>Файл: <b>ingest/adilet/fetcher.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">3</span><div class="body">
+        <div class="head"><b>Хронология редакций</b><span class="tag code">код</span></div>
+        <p>Со вкладки «История» Adilet получаем список всех редакций с датами начала действия. Каждая редакция — отдельный документ на Adilet, она скачивается так же, как в шаге 2.</p>
+        <div class="facts"><span>Файл: <b>ingest/adilet/versions.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">4</span><div class="body">
+        <div class="head"><b>Разбор на структуру</b><span class="tag code">код · BeautifulSoup + регулярные выражения</span></div>
+        <p>На странице текст лежит плоским списком абзацев. Код восстанавливает дерево по тексту: раздел → глава → параграф → статья → пункт → подпункт (в русской версии статьи — заголовки, в казахской — «NN-бап»). У каждой единицы путь вида <code>art42/p3/sp1</code>, одинаковый для ru и kk, — по нему языки склеиваются в одну запись. Сноски «в редакции Закона РК от …» сохраняются отдельно.</p>
+        <div class="facts"><span>Файл: <b>ingest/adilet/parser.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">5</span><div class="body">
+        <div class="head"><b>Запись редакции в PostgreSQL</b><span class="tag store">PostgreSQL</span></div>
+        <p>Считаем хэш SHA-256 исходного текста (ru + kk). Если такой уже есть — ничего не меняется. Если текст новый — создаётся новая редакция с датой начала действия, она становится действующей, а старая остаётся в базе.</p>
+        <div class="facts"><span>Файл: <b>ingest/loader.py</b></span></div>
+      </div></div>
+      <div class="step"><span class="n">6</span><div class="body">
+        <div class="head"><b>Нарезка и векторизация</b><span class="tag code">код</span><span class="tag self">BGE-M3</span><span class="tag store">Qdrant</span></div>
+        <p>Фрагмент поиска — это юридическая единица, а не кусок в N слов: пункт со своими подпунктами, текст статьи без пунктов, а у длинных пунктов (больше 1500 знаков) ещё и каждый подпункт отдельно. В начале фрагмента «хлебные крошки» (акт › глава › статья › пункт), чтобы модель знала, откуда кусок. Утратившие силу пункты не индексируются. BGE-M3 векторизует фрагменты пачками по 8; если текст пункта не изменился между редакциями, вектор берётся готовый (по хэшу), а не считается заново. Векторы и метки (акт, статья, пункт, язык, срок действия редакции) пишутся в Qdrant.</p>
+        <div class="facts"><span>Вся база: <b>42 780 фрагментов, ≈1 ч</b> на ноутбуке</span><span>Новая редакция: <b>минуты</b> (считаются только изменённые)</span><span>Файлы: <b>app/services/rag/chunker.py</b>, <b>ingest/indexer.py</b></span></div>
+      </div></div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:32%">Действие в админке</th><th>Что делает</th><th style="width:22%">Модель</th></tr></thead>
+        <tbody>
+          <tr><td><b>Проверить обновления</b><small><code>POST /v1/admin/acts/check-updates</code></small></td><td>Скачивает текущий текст и сравнивает хэш с базой</td><td><span class="tag code">нет</span></td></tr>
+          <tr><td><b>Загрузить редакции</b><small><code>POST /v1/admin/acts/{code}/editions</code></small></td><td>Загружает историю редакций акта</td><td><span class="tag self">BGE-M3</span> для новых пунктов</td></tr>
+          <tr><td><b>Переиндексировать</b><small><code>POST /v1/admin/acts/{code}/reindex</code></small></td><td>Заново нарезает и векторизует акт</td><td><span class="tag self">BGE-M3</span></td></tr>
+          <tr><td><b>Сравнить редакции</b><small><code>GET /v1/admin/acts/{code}/compare</code></small></td><td>Показывает, какие пункты изменились между двумя редакциями</td><td><span class="tag code">нет</span></td></tr>
+          <tr><td><b>Проверить качество</b><small><code>POST /v1/admin/eval/retrieval</code></small></td><td>Прогоняет 186 контрольных вопросов, считает, на каком месте нужная норма</td><td><span class="tag self">BGE-M3 + реранкер</span>, без LLM</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="always">
+    <span class="eyebrow">Вопрос 5</span>
+    <h2>Что работает постоянно, а что по необходимости</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:24%">Компонент</th><th style="width:18%">Режим</th><th>Пояснение</th></tr></thead>
+        <tbody>
+          <tr><td><b>BGE-M3</b></td><td><span class="tag self">постоянно</span></td><td>Тяжёлая работа — разовая, при векторизации законов. Но выключить модель после этого нельзя: каждый вопрос тоже нужно перевести в вектор той же моделью. На один вопрос это 0,2–0,7 с.</td></tr>
+          <tr><td><b>Реранкер</b></td><td><span class="tag self">постоянно</span></td><td>Работает на каждом вопросе. Его можно отключить настройкой <code>RERANK_ENABLED=false</code>: экономит ~1,2 ГБ памяти и ~2 с, но правильная норма на первом месте реже (67% → 65%).</td></tr>
+          <tr><td><b>Qdrant, PostgreSQL, API, сайт</b></td><td><span class="tag self">постоянно</span></td><td>Обычные серверные процессы.</td></tr>
+          <tr><td><b>LLM по API</b></td><td><span class="tag api">по вызову</span></td><td>У нас ничего не запущено и не занимает память. Платим только за каждый вызов: 2 на вопрос, 1 при автозаполнении документа.</td></tr>
+          <tr><td><b>Playwright (Chromium)</b></td><td><span class="tag code">по необходимости</span></td><td>Запускается только на время загрузки законов, потом закрывается.</td></tr>
+          <tr><td><b>Векторизация всей базы</b></td><td><span class="tag code">разово</span></td><td>Один раз при первой загрузке или смене модели эмбеддингов. Дальше — только новые и изменённые пункты.</td></tr>
+          <tr><td><b>Проверка качества</b></td><td><span class="tag code">по кнопке</span></td><td>После изменений в поиске или загрузки новых актов.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="storage">
+    <span class="eyebrow">Вопрос 6</span>
+    <h2>Что хранится в PostgreSQL, а что в других местах</h2>
+    <p>PostgreSQL — главная база, не только законы. Векторов в ней нет: они в Qdrant. Размер базы сейчас 138 МБ, из них 129 МБ — тексты законов.</p>
+    <div class="grid3">
+      <div class="panel"><h3>Законодательство</h3><small style="margin-top:6px">legal_acts · act_versions · legal_units · legal_chunks · legal_glossary</small>
+        <ul class="pc" style="margin-top:8px"><li>акты и их уровень (Конституция, кодекс, закон, приказ)</li><li>редакции с датами начала и конца действия, хэш текста</li><li>статьи, пункты, подпункты на ru и kk, сноски</li><li>фрагменты для поиска (тексты, без векторов)</li><li>словарь терминов и сленга ЖКХ</li></ul></div>
+      <div class="panel"><h3>Пользователи и объекты</h3><small style="margin-top:6px">users · buildings · premises</small>
+        <ul class="pc" style="margin-top:8px"><li>аккаунты и роли: житель, юрист, админ</li><li>дома и помещения</li></ul></div>
+      <div class="panel"><h3>Дела и история запросов</h3><small style="margin-top:6px">cases · messages · message_citations · retrieval_traces</small>
+        <ul class="pc" style="margin-top:8px"><li>дела (переписка по одной ситуации)</li><li>вопросы, результат разбора, ответы</li><li>какие нормы процитированы</li><li>расход токенов, время этапов, след поиска</li></ul></div>
+      <div class="panel"><h3>Документы</h3><small style="margin-top:6px">doc_templates · document_drafts · generated_documents · uploaded_files</small>
+        <ul class="pc" style="margin-top:8px"><li>шаблоны заявлений и исков</li><li>черновики, которые житель заполняет в чате</li><li>сведения о загруженных файлах (сами файлы — на диске)</li></ul></div>
+      <div class="panel"><h3>Проверка юристом и служебное</h3><small style="margin-top:6px">reviews · review_findings · reference_rates · calculations · audit_log</small>
+        <ul class="pc" style="margin-top:8px"><li>замечания юриста к ответам</li><li>МРП, ставки для калькуляторов пени</li><li>расчёты</li><li>журнал действий</li></ul></div>
+      <div class="panel"><h3>Вне PostgreSQL</h3>
+        <ul class="pc" style="margin-top:8px"><li><b>Qdrant</b> — векторы фрагментов (смысловой + словесный) и метки для фильтров. ~600 МБ на диске.</li><li><b>Диск</b> — файлы к документам: сканы, фото. В модели не отправляются.</li><li><b>Веса моделей</b> — BGE-M3 и реранкер, ~6 ГБ файлов, в памяти ~2,3 ГБ.</li></ul></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="tokens">
+    <span class="eyebrow">Вопрос 7</span>
+    <h2>Токены по этапам и стоимость</h2>
+    <p>Токены тратит только языковая модель (шаги 2 и 8). BGE-M3 и реранкер работают у нас и за токены не платим.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:34%">Что уходит в модель / приходит из неё</th><th style="width:20%">Токенов</th><th>Откуда цифра</th></tr></thead>
+        <tbody>
+          <tr><td colspan="3"><b>Шаг 2 · разбор вопроса</b></td></tr>
+          <tr><td>Инструкция + вопрос</td><td class="num">~2 000</td><td>инструкция 4,9 тыс. знаков</td></tr>
+          <tr><td>Ответ (JSON)</td><td class="num">~500</td><td>формулировки, факты, дата</td></tr>
+          <tr><td colspan="3"><b>Шаг 8 · ответ юриста</b></td></tr>
+          <tr><td>Инструкция юриста</td><td class="num">~3 500</td><td>11,4 тыс. знаков, одинакова для всех вопросов</td></tr>
+          <tr><td>8–12 норм закона</td><td class="num">~1 500–4 000</td><td>замер: 4,3–12 тыс. знаков на вопрос</td></tr>
+          <tr><td>Разбор, вопрос, история дела</td><td class="num">~1 000–1 500</td><td>растёт с длиной переписки</td></tr>
+          <tr><td><b>Итого вход</b></td><td class="num"><b>~6 000–9 000</b></td><td></td></tr>
+          <tr><td>Ответ (JSON)</td><td class="num">~4 000–5 000</td><td>замер по 31 ответу: в среднем 15,8 тыс. знаков</td></tr>
+          <tr><td>Рассуждения модели</td><td class="num">~2 000–4 000</td><td>оплачиваются как выход</td></tr>
+          <tr><td><b>Итого выход</b></td><td class="num"><b>~6 000–9 000</b></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Стоимость одного вопроса</h3>
+        <div class="tablewrap" style="margin-top:10px">
+          <table style="min-width:0">
+            <thead><tr><th>Модель (вход / выход за 1 млн токенов)</th><th>1 вопрос</th></tr></thead>
+            <tbody>
+              <tr><td>Claude Opus 5.5 ($4 / $20) — сейчас</td><td class="num"><b>$0,15–0,25</b><small>замер по 8 ответам</small></td></tr>
+              <tr><td>Claude Sonnet 5.5 ($2 / $10)</td><td class="num">~$0,08–0,12</td></tr>
+              <tr><td>Claude Haiku 5.5 ($0,10 / $0,50)</td><td class="num">~$0,005</td></tr>
+              <tr><td>Gemini (вариант, если перейдём на Vertex AI)</td><td class="num">по прайсу Google<small>сейчас не используется</small></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>В месяц</h3>
+        <div class="tablewrap" style="margin-top:10px">
+          <table style="min-width:0">
+            <thead><tr><th>Вопросов в месяц</th><th>Opus 5.5</th><th>Sonnet 5.5</th><th>Haiku 5.5</th></tr></thead>
+            <tbody class="num">
+              <tr><td>300 (10 в день)</td><td>~$60</td><td>~$30</td><td>~$2</td></tr>
+              <tr><td>1 000</td><td>~$200</td><td>~$100</td><td>~$5</td></tr>
+              <tr><td>3 000 (100 в день)</td><td>~$600</td><td>~$300</td><td>~$15</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="callout"><b>$20–30 в месяц хватит</b> примерно на 120–150 вопросов на Opus или 250 на Sonnet — для тестов и демо. Как снизить цену в 2–4 раза без новой инфраструктуры: разбор вопроса отдать самой дешёвой модели (Haiku или Flash); ответ — на Sonnet вместо Opus; уменьшить «глубину рассуждений» (effort high → medium); генерировать один вариант ответа вместо двух (для жителя и для юриста); кэшировать инструкцию юриста. Качество после каждого изменения проверяем на контрольных вопросах.</div>
+  </section>
+
+  <!-- 8 -->
+  <section id="resources">
+    <span class="eyebrow">Вопрос 8</span>
+    <h2>Ресурсы сервера и стоимость содержания</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:34%">Что работает на сервере</th><th style="width:20%">Память</th><th>Комментарий</th></tr></thead>
+        <tbody class="num">
+          <tr><td>BGE-M3 + реранкер (fp16)</td><td>~2,5 ГБ</td><td>CPU; на GPU реранкер быстрее в ~10 раз, но не обязателен</td></tr>
+          <tr><td>Qdrant (42 780 векторов)</td><td>~1–1,5 ГБ</td><td>растёт с историей редакций</td></tr>
+          <tr><td>PostgreSQL + API</td><td>~1 ГБ</td><td>база 138 МБ</td></tr>
+          <tr><td>Сайт Next.js</td><td>~0,5 ГБ</td><td>можно вынести на Vercel</td></tr>
+          <tr><td><b>Итого</b></td><td><b>~5–6 ГБ</b></td><td>LLM у провайдера, нам память не нужна</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Вариант А · модели поиска у себя</h3>
+        <dl class="kv"><dt>Сервер</dt><dd>4 vCPU, 8 ГБ RAM, 50 ГБ SSD, без GPU</dd><dt>Сервер в месяц</dt><dd>VPS: ориентир 30–50 тыс. ₸ (по оценке руководителя) или из кредитов GCP</dd><dt>API в месяц</dt><dd>по таблице выше, например ~$30 при 300 вопросах на Sonnet</dd></dl>
+      </div>
+      <div class="panel">
+        <h3>Вариант Б · эмбеддинги тоже по API</h3>
+        <dl class="kv"><dt>Сервер</dt><dd>2 vCPU, 2–4 ГБ RAM</dd><dt>Разово</dt><dd>заново векторизовать базу ≈ 6,5 млн токенов</dd><dt>Минусы</dt><dd>каждый поиск — внешний запрос; реранкер отключить или тоже по API; качество на казахском перепроверить</dd></dl>
+      </div>
+    </div>
+    <p class="note">Цены VPS зависят от провайдера; точную стоимость в Google Cloud покажет калькулятор GCP под выбранную конфигурацию. Цены API Claude — по официальному прайсу Anthropic на 18.11.2026.</p>
+  </section>
+
+  <!-- 9 -->
+  <section id="selfhost">
+    <span class="eyebrow">Вопрос 9</span>
+    <h2>Свои модели или готовые API: что выгоднее нам</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th style="width:20%">Модель</th><th style="width:22%">Решение</th><th>Почему</th></tr></thead>
+        <tbody>
+          <tr><td><b>BGE-M3</b></td><td><span class="tag self">у себя</span></td><td><span class="plus">+</span> маленькая, работает на CPU, бесплатна на любом объёме, база уже проиндексирована, проверена на kk и шала. <span class="minus">−</span> держит ~1,2 ГБ памяти.</td></tr>
+          <tr><td><b>Реранкер</b></td><td><span class="tag self">у себя</span></td><td><span class="plus">+</span> поднимает точность первого места с 65% до 67%, а вместе с приоритетом закона — с 58% до 67%; бесплатен. <span class="minus">−</span> ~2 с на CPU. Можно отключить на самом дешёвом сервере.</td></tr>
+          <tr><td><b>LLM для ответа</b></td><td><span class="tag api">API</span></td><td>Своя модель уровня Claude / Gemini Pro (70B+) требует 2 GPU по 80 ГБ — сервер с такими GPU стоит в десятки раз дороже нашего счёта за API при объёме до нескольких тысяч вопросов в месяц. Маленькие открытые модели (7–8B, KazLLM, Sherkala) помещаются на одну GPU, но заметно слабее в юридических рассуждениях и строгом JSON; у KazLLM ещё и лицензия только для некоммерческого использования.</td></tr>
+          <tr><td><b>LLM для разбора вопроса</b></td><td><span class="tag api">API, дешёвая модель</span></td><td>Задача простая: Haiku / Flash стоит доли цента за вопрос. Запасной разбор без LLM уже есть в коде.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="verdict"><b>Вывод.</b> Маленькие модели поиска держим у себя на обычном сервере без GPU (4 vCPU, 8 ГБ). Языковую модель берём по API и платим за вопросы: при нашем объёме это в разы дешевле своего GPU-сервера. Свою LLM имеет смысл пересматривать только при десятках тысяч вопросов в месяц или если по закону о персональных данных тексты вопросов нельзя будет отправлять во внешний сервис.</div>
+  </section>
+</main>

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*", "ingest*"]
+
+[tool.setuptools.package-data]
+ingest = ["sources.toml"]
+
+[project]
+name = "zhkh24-api"
+version = "0.1.0"
+description = "Портал ЖКХ 24 — API и пайплайн AI-юриста"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "sqlalchemy[asyncio]>=2.0.36",
+  "asyncpg>=0.30",
+  "alembic>=1.14",
+  "pydantic-settings>=2.6",
+  "beautifulsoup4>=4.12",
+  "lxml>=5.3",
+  "httpx>=0.28",
+  "qdrant-client>=1.12",
+  "anthropic>=2.8",
+  "python-docx>=1.2",
+  "PyJWT>=2.10",
+  "python-multipart>=0.0.20",
+]
+
+[project.optional-dependencies]
+# Рендер страниц Adilet (сайт — SPA, текст закона появляется только после выполнения JS).
+# После установки: playwright install chromium
+ingest = ["playwright>=1.49"]
+# Локальные модели BGE-M3 (эмбеддинги) и bge-reranker-v2-m3. Веса (~4,5 ГБ) скачиваются с Hugging Face при первом запуске.
+ml = ["torch>=2.5", "transformers>=4.46", "huggingface_hub>=0.26"]
+dev = ["pytest>=8.3", "pytest-asyncio>=0.24"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

@@ -1,0 +1,4677 @@
+{
+  "summary": {
+    "mode": "heuristic",
+    "n": 186,
+    "recall@1": 0.6720430107526881,
+    "recall@5": 0.8548387096774194,
+    "recall@10": 0.9086021505376344,
+    "mrr": 0.7530060590544461,
+    "sec_per_query": 2.1705244764785303,
+    "by_style": {
+      "kk": {
+        "n": 22,
+        "recall@10": 1.0,
+        "recall@1": 0.9545454545454546
+      },
+      "latin": {
+        "n": 8,
+        "recall@10": 0.75,
+        "recall@1": 0.625
+      },
+      "mixed": {
+        "n": 47,
+        "recall@10": 0.8085106382978723,
+        "recall@1": 0.3191489361702128
+      },
+      "ref": {
+        "n": 4,
+        "recall@10": 1.0,
+        "recall@1": 1.0
+      },
+      "ru": {
+        "n": 87,
+        "recall@10": 0.9540229885057471,
+        "recall@1": 0.7931034482758621
+      },
+      "typo": {
+        "n": 18,
+        "recall@10": 0.8888888888888888,
+        "recall@1": 0.6111111111111112
+      }
+    },
+    "by_act": {
+      "COMM_SERVICES": {
+        "n": 6,
+        "recall@10": 1.0
+      },
+      "CONSUMER": {
+        "n": 2,
+        "recall@10": 1.0
+      },
+      "MONOPOLIES": {
+        "n": 2,
+        "recall@10": 1.0
+      },
+      "STROY": {
+        "n": 2,
+        "recall@10": 0.0
+      },
+      "ZHO": {
+        "n": 175,
+        "recall@10": 0.9085714285714286
+      }
+    }
+  },
+  "rows": [
+    {
+      "id": "q001",
+      "style": "ru",
+      "q": "Сколько собственников должно участвовать, чтобы собрание считалось правомочным?",
+      "gold": [
+        "art42/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p8",
+        "RULES_DECISIONS:p11",
+        "RULES_DECISIONS:p8",
+        "ZHO:art42/p3",
+        "ZHO:art42/p15"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 6141.874250010005,
+        "search": 646.3194590032799,
+        "rerank": 10560.664499993436,
+        "xrefs": 0.8105419983621687
+      }
+    },
+    {
+      "id": "q002",
+      "style": "mixed",
+      "q": "собраниеге канша адам катысу керек кворум болу ушин",
+      "gold": [
+        "art42/p8"
+      ],
+      "rank": 8,
+      "top": [
+        "RULES_DECISIONS:p10",
+        "RULES_DECISIONS:p11/sp4",
+        "RULES_DECISIONS:p11/sp2",
+        "RULES_DECISIONS:p8",
+        "ZHO:art2/sp16-8"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 642.9156669910299,
+        "search": 348.2132500066655,
+        "rerank": 2061.3857919961447,
+        "xrefs": 0.6306669965852052
+      }
+    },
+    {
+      "id": "q003",
+      "style": "kk",
+      "q": "Жиналыс шешім қабылдауға құқылы болу үшін қанша меншік иесі қатысуы керек?",
+      "gold": [
+        "art42/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p8",
+        "RULES_DECISIONS:p11",
+        "RULES_DECISIONS:p11/sp4",
+        "ZHO:art42/p3",
+        "ZHO:art42/p11"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 509.3232090002857,
+        "search": 498.00616600259673,
+        "rerank": 1786.3542499981122,
+        "xrefs": 2.269457996590063
+      }
+    },
+    {
+      "id": "q004",
+      "style": "typo",
+      "q": "кворум собрания оси скока процентов надо",
+      "gold": [
+        "art42/p8"
+      ],
+      "rank": 4,
+      "top": [
+        "ZHO:art42/p3",
+        "ZHO:art42/p15",
+        "RULES_DECISIONS:p4",
+        "ZHO:art42/p8",
+        "RULES_DECISIONS:p11"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 454.5145419979235,
+        "search": 385.0107080070302,
+        "rerank": 1987.3229170043487,
+        "xrefs": 0.34337499528191984
+      }
+    },
+    {
+      "id": "q005",
+      "style": "ru",
+      "q": "У меня две квартиры в доме, сколько у меня голосов на собрании?",
+      "gold": [
+        "art42/p7"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p7",
+        "ZHO:art42/p8",
+        "ZHO:art42/p14",
+        "ZHO:art51/p1",
+        "ZHO:art43/p7"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 338.69408299506176,
+        "search": 206.00583399937022,
+        "rerank": 1958.5399170027813,
+        "xrefs": 0.24524999025743455
+      }
+    },
+    {
+      "id": "q006",
+      "style": "mixed",
+      "q": "менин 2 патерим бар голосование кезинде канша голос беред",
+      "gold": [
+        "art42/p7"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p7",
+        "ZHO:art44/p1",
+        "KOAP:art108",
+        "ZHO:art2/sp3",
+        "CONST:art43/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 276.9177500013029,
+        "search": 180.2618329966208,
+        "rerank": 1972.5923340010922,
+        "xrefs": 0.4057500045746565
+      }
+    },
+    {
+      "id": "q007",
+      "style": "ru",
+      "q": "Голос на собрании считается по площади квартиры или одна квартира один голос?",
+      "gold": [
+        "art42/p7"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p7",
+        "RULES_DECISIONS:p22",
+        "RULES_DECISIONS:p2",
+        "ZHO:art42/p2",
+        "RULES_DECISIONS:p8"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 354.81441699084826,
+        "search": 91.45291699678637,
+        "rerank": 1514.8696670075879,
+        "xrefs": 0.46204098907765
+      }
+    },
+    {
+      "id": "q008",
+      "style": "kk",
+      "q": "Пәтер ерлі-зайыптылардың бірлескен меншігінде, дауыс беру кезінде қанша дауыс болады?",
+      "gold": [
+        "art42/p7"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p7",
+        "ZHO:art2/sp3",
+        "RULES_DECISIONS:p22",
+        "ZHO:art42/p8",
+        "ZHO:art44/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 101.35449998779222,
+        "search": 67.25637501222081,
+        "rerank": 1893.7184579990571,
+        "xrefs": 0.09820899867918342
+      }
+    },
+    {
+      "id": "q009",
+      "style": "ru",
+      "q": "За сколько дней нужно уведомить жильцов о проведении собрания?",
+      "gold": [
+        "art42/p6"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p6",
+        "RULES_DECISIONS:p5",
+        "ZHO:art42/p17",
+        "RULES_DECISIONS:p17",
+        "RULES_DECISIONS:p6"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 137.88908399874344,
+        "search": 148.96966698870528,
+        "rerank": 1726.4122500055237,
+        "xrefs": 0.108584004919976
+      }
+    },
+    {
+      "id": "q010",
+      "style": "mixed",
+      "q": "собрание туралы объявление канша кун бурын илу керек",
+      "gold": [
+        "art42/p6"
+      ],
+      "rank": 2,
+      "top": [
+        "RULES_DECISIONS:p5",
+        "ZHO:art42/p6",
+        "RULES_DECISIONS:p6",
+        "ZHO:art2/sp16-8",
+        "ZHO:art42/p13"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 251.43141599255614,
+        "search": 98.2428749994142,
+        "rerank": 1794.2632909980603,
+        "xrefs": 0.20049999875482172
+      }
+    },
+    {
+      "id": "q011",
+      "style": "typo",
+      "q": "председатель повесил обьявление о собрании за 2 дня это законно?",
+      "gold": [
+        "art42/p6"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p6",
+        "RULES_DECISIONS:p5",
+        "APPK:art42/p2",
+        "ZHO:art42/p15",
+        "UK:art400"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 208.91862499411218,
+        "search": 72.75529199978337,
+        "rerank": 1851.206708990503,
+        "xrefs": 0.13029099500272423
+      }
+    },
+    {
+      "id": "q012",
+      "style": "ru",
+      "q": "Кто имеет право инициировать собрание собственников квартир?",
+      "gold": [
+        "art42/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p3",
+        "ZHO:art42/p15",
+        "ZHO:art42/p6",
+        "ZHO:art43/p7",
+        "RULES_DECISIONS:p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 181.81475000164937,
+        "search": 32.87379200628493,
+        "rerank": 1826.6982909990475,
+        "xrefs": 0.08349999552592635
+      }
+    },
+    {
+      "id": "q013",
+      "style": "mixed",
+      "q": "собранияны кім шақыра алады жилинспекция тоже может?",
+      "gold": [
+        "art42/p3"
+      ],
+      "rank": 2,
+      "top": [
+        "RULES_DECISIONS:p4",
+        "ZHO:art42/p3",
+        "ZHO:art42/p5/sp3",
+        "ZHO:art2/sp16-8",
+        "ZHO:art42/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 233.36454200034495,
+        "search": 52.81070899218321,
+        "rerank": 1834.0627500001574,
+        "xrefs": 0.21625000226777047
+      }
+    },
+    {
+      "id": "q014",
+      "style": "kk",
+      "q": "Жиналысқа бастама жасау үшін меншік иелерінің қанша пайызы қажет?",
+      "gold": [
+        "art42/p3"
+      ],
+      "rank": 2,
+      "top": [
+        "ZHO:art42/p15",
+        "ZHO:art42/p3",
+        "RULES_DECISIONS:p6",
+        "RULES_DECISIONS:p4",
+        "ZHO:art42/p8"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 171.1921250098385,
+        "search": 46.97399999713525,
+        "rerank": 1855.1600840000901,
+        "xrefs": 0.09750000026542693
+      }
+    },
+    {
+      "id": "q015",
+      "style": "ru",
+      "q": "Председатель ОСИ отказывается дать копию протокола собрания, в какой срок он обязан ее выдать?",
+      "gold": [
+        "art42/p17"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p17",
+        "KOAP:art803/p9",
+        "ZHO:art51-1/p5/sp12",
+        "ZHO:art51-1/p4",
+        "ZHO:art42/p16"
+      ],
+      "xrefs": [
+        "KOAP:art802/p3-1"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 242.0540409948444,
+        "search": 110.12904200470075,
+        "rerank": 1935.746332994313,
+        "xrefs": 42.492833992582746
+      }
+    },
+    {
+      "id": "q016",
+      "style": "mixed",
+      "q": "оси протокол копиясын бермей жатыр канша кунде беру керек",
+      "gold": [
+        "art42/p17"
+      ],
+      "rank": 9,
+      "top": [
+        "KOAP:art794/p10",
+        "KOAP:art803/p8",
+        "KOAP:art796/p5",
+        "KOAP:art788/p1",
+        "KOAP:art803/p9"
+      ],
+      "xrefs": [
+        "KOAP:art802/p4/sp1"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 225.79466699971817,
+        "search": 83.12691599712707,
+        "rerank": 1922.5082079938147,
+        "xrefs": 20.335458990302868
+      }
+    },
+    {
+      "id": "q017",
+      "style": "kk",
+      "q": "Жиналыс хаттамасының көшірмесін алу үшін не істеу керек?",
+      "gold": [
+        "art42/p17"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p17",
+        "ZHO:art42/p16",
+        "ZHO:art43/p6",
+        "ZHO:art42/p15",
+        "KOAP:art803/p8"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 250.70633299765177,
+        "search": 93.32229199935682,
+        "rerank": 1878.580124990549,
+        "xrefs": 0.11595898831728846
+      }
+    },
+    {
+      "id": "q018",
+      "style": "latin",
+      "q": "osi protokol bermei zhatyr ne isteu kerek",
+      "gold": [
+        "art42/p17"
+      ],
+      "rank": null,
+      "top": [
+        "KOAP:art807/p1",
+        "KOAP:art796/p5",
+        "KOAP:art807/p1/sp3",
+        "KOAP:art808",
+        "KOAP:art806/p8"
+      ],
+      "xrefs": [
+        "KOAP:art31/p3",
+        "KOAP:art897/p1",
+        "KOAP:art684/p1",
+        "KOAP:art811/p3"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 319.4899579975754,
+        "search": 182.7207080059452,
+        "rerank": 1676.6764589992817,
+        "xrefs": 36.57062500133179
+      }
+    },
+    {
+      "id": "q019",
+      "style": "ru",
+      "q": "Кто должен подписывать протокол собрания собственников?",
+      "gold": [
+        "art42/p15"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p15",
+        "ZHO:art42/p16",
+        "ZHO:art42/p17",
+        "RULES_DECISIONS:p4",
+        "RULES_DECISIONS:p7"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 188.25554200157057,
+        "search": 27.25845799432136,
+        "rerank": 1869.1291249997448,
+        "xrefs": 0.0890829978743568
+      }
+    },
+    {
+      "id": "q020",
+      "style": "mixed",
+      "q": "хаттамаға кім кол коюы керек председатель секретарь?",
+      "gold": [
+        "art42/p15"
+      ],
+      "rank": 2,
+      "top": [
+        "GPK:art283/p5",
+        "ZHO:art42/p15",
+        "KOAP:art803/p4",
+        "RULES_DECISIONS:p24",
+        "GPK:art283/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 208.06658400397282,
+        "search": 46.48104100488126,
+        "rerank": 1805.6517079967307,
+        "xrefs": 7.307290987228043
+      }
+    },
+    {
+      "id": "q021",
+      "style": "ru",
+      "q": "Какие сведения обязательно указываются в протоколе собрания?",
+      "gold": [
+        "art42/p14"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p14",
+        "GPK:art282/p2/sp16",
+        "GPK:art282/p2/sp6",
+        "RULES_DECISIONS:p6",
+        "ZHO:art42/p12"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 155.11912500369363,
+        "search": 37.96270801103674,
+        "rerank": 1927.3642499902053,
+        "xrefs": 0.109500004327856
+      }
+    },
+    {
+      "id": "q022",
+      "style": "typo",
+      "q": "протокол собраня без списка проголосовавших действительный?",
+      "gold": [
+        "art42/p12",
+        "art42/p14"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p12",
+        "RULES_DECISIONS:p15",
+        "ZHO:art42/p14",
+        "ZHO:art43/p8",
+        "ZHO:art42/p15"
+      ],
+      "xrefs": [
+        "ZHO:art42/p7"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 120.71037500572857,
+        "search": 46.96891699859407,
+        "rerank": 1921.234250010457,
+        "xrefs": 10.599750006804243
+      }
+    },
+    {
+      "id": "q023",
+      "style": "ru",
+      "q": "Какие вопросы относятся к компетенции собрания собственников?",
+      "gold": [
+        "art42/p5"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p5",
+        "ZHO:art42/p5/sp3",
+        "ZHO:art42/p5/sp4",
+        "ZHO:art42/p5/sp11",
+        "ZHO:art42/p5/sp9"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 205.17504199233372,
+        "search": 35.58162499393802,
+        "rerank": 1187.4961659923429,
+        "xrefs": 0.43412500235717744
+      }
+    },
+    {
+      "id": "q024",
+      "style": "mixed",
+      "q": "смета расходов на год кто утверждает собрание или председатель?",
+      "gold": [
+        "art42/p5",
+        "art42/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p5/sp6",
+        "RULES_MGMT:p13",
+        "ZHO:art42/p5",
+        "RULES_DECISIONS:p12",
+        "RULES_DECISIONS:p12/sp1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 69.19062499946449,
+        "search": 88.53712500422262,
+        "rerank": 1832.6516669912962,
+        "xrefs": 0.2348749985685572
+      }
+    },
+    {
+      "id": "q025",
+      "style": "kk",
+      "q": "Подъездтің тұрғындары тек өз подъезі үшін мақсатты жарна жинауға шешім қабылдай ала ма?",
+      "gold": [
+        "art42/p11"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p11",
+        "RULES_MGMT:p16",
+        "RULES_DECISIONS:p12/sp4",
+        "ZHO:art34-1/p4",
+        "RULES_DECISIONS:p12"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 311.1747499933699,
+        "search": 59.26333299430553,
+        "rerank": 1926.3944999984233,
+        "xrefs": 0.11341700155753642
+      }
+    },
+    {
+      "id": "q026",
+      "style": "mixed",
+      "q": "подъезд бойынша домофонга акша жинау ушин канша адам келису керек",
+      "gold": [
+        "art42/p11"
+      ],
+      "rank": null,
+      "top": [
+        "RULES_MGMT:p22/sp12",
+        "ZHO:art2/sp14",
+        "RULES_MGMT:p22/sp9",
+        "KOAP:art756/p1",
+        "METHOD_BUDGET:p6/sp12"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 141.19837500038557,
+        "search": 98.4383750037523,
+        "rerank": 1916.7454580019694,
+        "xrefs": 1.04674999602139
+      }
+    },
+    {
+      "id": "q027",
+      "style": "ru",
+      "q": "Имею ли я право знать, как голосовали соседи на собрании?",
+      "gold": [
+        "art42/p10"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p10",
+        "ZHO:art42/p12",
+        "ZHO:art42/p2",
+        "RULES_DECISIONS:p3",
+        "ZHO:art36/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 240.36004098888952,
+        "search": 55.154375004349276,
+        "rerank": 1836.1767919996055,
+        "xrefs": 0.3353329957462847
+      }
+    },
+    {
+      "id": "q028",
+      "style": "ru",
+      "q": "Какие решения собрания принимаются большинством от общего числа собственников, а не от участвовавших?",
+      "gold": [
+        "art42/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p8",
+        "RULES_DECISIONS:p11",
+        "RULES_DECISIONS:p13",
+        "RULES_DECISIONS:p12",
+        "RULES_DECISIONS:p12/sp5"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 140.57016599690542,
+        "search": 35.105374990962446,
+        "rerank": 1897.902750002686,
+        "xrefs": 0.16866599617060274
+      }
+    },
+    {
+      "id": "q029",
+      "style": "ru",
+      "q": "Сколько времени может длиться письменный опрос собственников?",
+      "gold": [
+        "art43/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art43/p2",
+        "RULES_DECISIONS:p18",
+        "ZHO:art43/p4",
+        "RULES_DECISIONS:p17",
+        "ZHO:art43/p7"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 152.80108399747405,
+        "search": 61.455709001165815,
+        "rerank": 1370.1553749997402,
+        "xrefs": 0.08199999865610152
+      }
+    },
+    {
+      "id": "q030",
+      "style": "mixed",
+      "q": "заочное собрание опрос листтерин канша ай жинауга болады",
+      "gold": [
+        "art43/p2"
+      ],
+      "rank": 2,
+      "top": [
+        "RULES_DECISIONS:p18",
+        "ZHO:art43/p2",
+        "RULES_DECISIONS:p23",
+        "RULES_DECISIONS:p17",
+        "ZHO:art43/p6"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 97.1709579898743,
+        "search": 61.38204199669417,
+        "rerank": 1628.3857910020743,
+        "xrefs": 0.11695799184963107
+      }
+    },
+    {
+      "id": "q031",
+      "style": "ru",
+      "q": "Что должно быть указано в листе письменного опроса?",
+      "gold": [
+        "art43/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art43/p3",
+        "ZHO:art43/p5",
+        "RULES_DECISIONS:p18",
+        "ZHO:art43/p4",
+        "RULES_DECISIONS:p17"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 99.39379199931864,
+        "search": 69.5273330056807,
+        "rerank": 1852.895667005214,
+        "xrefs": 0.10374998964834958
+      }
+    },
+    {
+      "id": "q032",
+      "style": "kk",
+      "q": "Жазбаша сауалнама парағында меншік иесі не көрсетеді?",
+      "gold": [
+        "art43/p5",
+        "art43/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art43/p5",
+        "ZHO:art43/p3",
+        "ZHO:art43/p4",
+        "RULES_DECISIONS:p18",
+        "RULES_DECISIONS:p17"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 201.11204200657085,
+        "search": 58.19424999936018,
+        "rerank": 1651.6434590012068,
+        "xrefs": 1.0231659980490804
+      }
+    },
+    {
+      "id": "q033",
+      "style": "ru",
+      "q": "Кто подводит итоги голосования путем письменного опроса?",
+      "gold": [
+        "art43/p7",
+        "art43/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art43/p7",
+        "ZHO:art43/p8",
+        "RULES_DECISIONS:p21",
+        "RULES_DECISIONS:p23",
+        "ZHO:art42/p2"
+      ],
+      "xrefs": [
+        "ZHO:art42/p7"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 113.73691601329483,
+        "search": 37.20033400168177,
+        "rerank": 1546.287958000903,
+        "xrefs": 8.976458993856795
+      }
+    },
+    {
+      "id": "q034",
+      "style": "mixed",
+      "q": "голосование через приложение сколько дней проводится цифрлық объект арқылы",
+      "gold": [
+        "art44/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art44/p2",
+        "ZHO:art44/p4",
+        "ZHO:art44/p3",
+        "RULES_DECISIONS:p22",
+        "ZHO:art43/p4"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 198.35549998970237,
+        "search": 32.316750002792105,
+        "rerank": 1823.7518749956507,
+        "xrefs": 17.987792001804337
+      }
+    },
+    {
+      "id": "q035",
+      "style": "ru",
+      "q": "Можно ли голосовать на собрании дома через мобильное приложение?",
+      "gold": [
+        "art44/p1",
+        "art42/p2"
+      ],
+      "rank": 2,
+      "top": [
+        "RULES_DECISIONS:p22",
+        "ZHO:art42/p2",
+        "RULES_DECISIONS:p3",
+        "ZHO:art44/p1",
+        "ZHO:art43/p7"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 183.9731249929173,
+        "search": 31.33087500464171,
+        "rerank": 1537.228375003906,
+        "xrefs": 1.1167499906150624
+      }
+    },
+    {
+      "id": "q036",
+      "style": "ru",
+      "q": "Кто может быть в ревизионной комиссии дома и сколько членов?",
+      "gold": [
+        "art45/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art45/p1",
+        "ZHO:art51/p1",
+        "ZHO:art42/p5",
+        "ZHO:art42/p5/sp3",
+        "ZHO:art42/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 91.30987500248011,
+        "search": 41.95441699994262,
+        "rerank": 1944.3272080097813,
+        "xrefs": 0.5654999986290932
+      }
+    },
+    {
+      "id": "q037",
+      "style": "mixed",
+      "q": "ревизор канша рет тексеру жургизеди жылына",
+      "gold": [
+        "art45/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art45/p2",
+        "CONSUMER:art6-2/p10",
+        "CONST:art56/sp15",
+        "ZHO:art45/p1",
+        "COMM_SERVICES:p31-8"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 216.35454200441018,
+        "search": 82.13108300697058,
+        "rerank": 1766.1882499960484,
+        "xrefs": 0.09491700620856136
+      }
+    },
+    {
+      "id": "q038",
+      "style": "kk",
+      "q": "Ревизиялық комиссия қаржылық құжаттарды қаншалықты жиі тексереді?",
+      "gold": [
+        "art45/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art45/p2",
+        "ZHO:art45/p4",
+        "ZHO:art45/p1",
+        "KOAP:art722-1/p1",
+        "APPK:art61/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 183.76662500668317,
+        "search": 46.60662500828039,
+        "rerank": 1783.9925000007497,
+        "xrefs": 0.18187500245403498
+      }
+    },
+    {
+      "id": "q039",
+      "style": "ru",
+      "q": "Можно ли по решению собрания провести аудит финансовой документации ОСИ?",
+      "gold": [
+        "art45/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art45/p4",
+        "ZHO:art45/p2",
+        "GK_GEN:art60/p4",
+        "ZHO:art51-1/p5/sp12",
+        "ZHO:art51-5/p2/sp10"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 160.8295000041835,
+        "search": 118.57358399720397,
+        "rerank": 1894.8974999948405,
+        "xrefs": 0.10341699817217886
+      }
+    },
+    {
+      "id": "q040",
+      "style": "ru",
+      "q": "До какого числа председатель ОСИ обязан предоставлять ежемесячный отчет?",
+      "gold": [
+        "art46/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art46/p1",
+        "MONOPOLIES:art26/p2/sp17",
+        "RULES_MGMT:p17",
+        "MONOPOLIES:art26/p2/sp25",
+        "ZHO:art51-1/p5/sp12"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 143.46341700002085,
+        "search": 91.80799999739975,
+        "rerank": 1738.7255420035217,
+        "xrefs": 0.9626660030335188
+      }
+    },
+    {
+      "id": "q041",
+      "style": "mixed",
+      "q": "оси есеп бермейди отчет канша уакытта беру керек",
+      "gold": [
+        "art46/p1"
+      ],
+      "rank": 5,
+      "top": [
+        "KOAP:art249",
+        "KOAP:art539",
+        "KOAP:art272/p1",
+        "KOAP:art247/p8",
+        "ZHO:art46/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 209.12174999830313,
+        "search": 50.949124997714534,
+        "rerank": 1479.6613749931566,
+        "xrefs": 0.09454099927097559
+      }
+    },
+    {
+      "id": "q042",
+      "style": "typo",
+      "q": "кск отчет не дает куда деньги уходят непонятно",
+      "gold": [
+        "art46/p1",
+        "art34/p10"
+      ],
+      "rank": null,
+      "top": [
+        "KOAP:art218/p7",
+        "KOAP:art218/p3",
+        "KOAP:art244/p7",
+        "KOAP:art243/p3",
+        "KOAP:art256/p1-1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 214.01445798983332,
+        "search": 46.5863330027787,
+        "rerank": 1660.1956660015276,
+        "xrefs": 0.0939579913392663
+      }
+    },
+    {
+      "id": "q043",
+      "style": "kk",
+      "q": "Кондоминиум объектісін басқару бойынша жылдық есеп қашанға дейін ұсынылады?",
+      "gold": [
+        "art46/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art46/p1",
+        "ZHO:art45/p2",
+        "ZHO:art51-1/p5/sp8",
+        "ZHO:art51-5/p2/sp6",
+        "ZHO:art51-5/p2/sp7"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 207.1278329967754,
+        "search": 30.595667005400173,
+        "rerank": 1802.9929170006653,
+        "xrefs": 0.1880000054370612
+      }
+    },
+    {
+      "id": "q044",
+      "style": "ru",
+      "q": "Какие формы управления многоквартирным домом можно выбрать?",
+      "gold": [
+        "art47/p1"
+      ],
+      "rank": 4,
+      "top": [
+        "ZHO:art47/p2",
+        "ZHO:art51-5/p3",
+        "ZHO:art42/p5",
+        "ZHO:art47/p1",
+        "RULES_DECISIONS:p11"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 241.30895800772123,
+        "search": 27.40041598735843,
+        "rerank": 1935.6183749914635,
+        "xrefs": 0.43200000072829425
+      }
+    },
+    {
+      "id": "q045",
+      "style": "mixed",
+      "q": "уйди баскару формасы кандай болады оси или простое товарищество",
+      "gold": [
+        "art47/p1"
+      ],
+      "rank": 8,
+      "top": [
+        "GK_GEN:art232/p1",
+        "GK_GEN:art228/p3",
+        "GK_GEN:art232/p2",
+        "GK_GEN:art72/p1",
+        "GK_GEN:art76/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 245.536375005031,
+        "search": 89.02904199203476,
+        "rerank": 1937.8041250020033,
+        "xrefs": 0.12562499614432454
+      }
+    },
+    {
+      "id": "q046",
+      "style": "ru",
+      "q": "Может ли управляющая компания заключать отдельные договоры с каждым собственником квартиры?",
+      "gold": [
+        "art47/p3"
+      ],
+      "rank": 2,
+      "top": [
+        "RULES_MGMT:p6",
+        "ZHO:art47/p3",
+        "ZHO:art51-5/p2",
+        "ZHO:art2/sp1-4",
+        "ZHO:art51-5/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 145.05337498849258,
+        "search": 50.20729199168272,
+        "rerank": 1916.787458001636,
+        "xrefs": 0.18604200158733875
+      }
+    },
+    {
+      "id": "q047",
+      "style": "ru",
+      "q": "В каких домах можно выбрать непосредственное совместное управление?",
+      "gold": [
+        "art48/p2"
+      ],
+      "rank": 2,
+      "top": [
+        "ZHO:art47/p2",
+        "ZHO:art48/p2",
+        "ZHO:art47/p1",
+        "RULES_MGMT:p10",
+        "RULES_MGMT:p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 167.12949999782722,
+        "search": 29.378791005001403,
+        "rerank": 1653.5149999981513,
+        "xrefs": 0.08466700091958046
+      }
+    },
+    {
+      "id": "q048",
+      "style": "typo",
+      "q": "нсу можно в доме на 20 квартир?",
+      "gold": [
+        "art48/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art48/p2",
+        "RULES_MGMT:p10",
+        "RULES_DECISIONS:p20",
+        "ZHO:art40/p3",
+        "ZHO:art47/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 173.50029200315475,
+        "search": 49.82879200542811,
+        "rerank": 1913.0998329928843,
+        "xrefs": 0.20579200645443052
+      }
+    },
+    {
+      "id": "q049",
+      "style": "ru",
+      "q": "Как создать объединение собственников имущества в доме?",
+      "gold": [
+        "art49/p1",
+        "art50/p1"
+      ],
+      "rank": 2,
+      "top": [
+        "ZHO:art49/p2",
+        "ZHO:art49/p1",
+        "ZHO:art2/sp16-6",
+        "RULES_MGMT:p4",
+        "ZHO:art51-1/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 208.64008300122805,
+        "search": 28.204207992530428,
+        "rerank": 1339.9936670030002,
+        "xrefs": 0.08095799421425909
+      }
+    },
+    {
+      "id": "q050",
+      "style": "mixed",
+      "q": "оси курып алу ушин кандай документтер керек юстицияга",
+      "gold": [
+        "art50/p3"
+      ],
+      "rank": 9,
+      "top": [
+        "GPK:art313/p4",
+        "GPK:art312/sp5",
+        "APPK:art131/p8",
+        "GPK:art458/p4",
+        "GPK:art149/p1"
+      ],
+      "xrefs": [
+        "APPK:art102/p3"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 73.5922090098029,
+        "search": 186.79987500945572,
+        "rerank": 1898.0498330056434,
+        "xrefs": 11.228207993553951
+      }
+    },
+    {
+      "id": "q051",
+      "style": "kk",
+      "q": "Мүлік иелерінің бірлестігі заңды тұлға құқықтарын қашан алады?",
+      "gold": [
+        "art50/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art50/p1",
+        "GK_GEN:art240/p1",
+        "GK_GEN:art240/p2",
+        "GK_GEN:art40/p2",
+        "GK_GEN:art51/p5"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 118.29779199615587,
+        "search": 59.248542005661875,
+        "rerank": 980.872250001994,
+        "xrefs": 0.10683300206437707
+      }
+    },
+    {
+      "id": "q052",
+      "style": "ru",
+      "q": "Можно ли создать одно ОСИ на несколько домов с общим фундаментом?",
+      "gold": [
+        "art49/p2"
+      ],
+      "rank": 2,
+      "top": [
+        "RULES_MGMT:p4",
+        "ZHO:art49/p2",
+        "RULES_MGMT:p2/sp9",
+        "STROY:art1/sp37",
+        "ZHO:art52/p6"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 38.74291699321475,
+        "search": 63.30408299982082,
+        "rerank": 1320.2070409897715,
+        "xrefs": 0.07183299749158323
+      }
+    },
+    {
+      "id": "q053",
+      "style": "ru",
+      "q": "Сколько человек должно быть в совете дома?",
+      "gold": [
+        "art51/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51/p1",
+        "ZHO:art45/p1",
+        "ZHO:art2/sp16-4",
+        "ZHO:art51/p4",
+        "RULES_MGMT:p2/sp10"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 115.7923330029007,
+        "search": 28.33295799791813,
+        "rerank": 1746.5265829960117,
+        "xrefs": 0.10124999971594661
+      }
+    },
+    {
+      "id": "q054",
+      "style": "mixed",
+      "q": "уй кенеси канша жылга сайланады",
+      "gold": [
+        "art51/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51/p4",
+        "ZHO:art51-1/p1",
+        "ZHO:art51/p1",
+        "ZHO:art51-1/p6",
+        "CONST:art88/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 189.85108300694264,
+        "search": 48.353749996749684,
+        "rerank": 1786.5116670000134,
+        "xrefs": 0.10637499508447945
+      }
+    },
+    {
+      "id": "q055",
+      "style": "ru",
+      "q": "Какие функции выполняет совет дома?",
+      "gold": [
+        "art51/p3",
+        "art51/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51/p3",
+        "ZHO:art2/sp16-4",
+        "ZHO:art51/p2",
+        "ZHO:art51/p5",
+        "ZHO:art51-1/p6"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 219.19041698856745,
+        "search": 34.82787500252016,
+        "rerank": 1910.4923749982845,
+        "xrefs": 12.699333994532935
+      }
+    },
+    {
+      "id": "q056",
+      "style": "kk",
+      "q": "Үй кеңесінің шешімі қалай қабылданады?",
+      "gold": [
+        "art51/p5"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51/p5",
+        "RULES_DECISIONS:p11",
+        "ZHO:art51/p1",
+        "ZHO:art51/p3",
+        "ZHO:art2/sp16-4"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 228.21004199795425,
+        "search": 52.610500002629124,
+        "rerank": 1924.2379170027561,
+        "xrefs": 5.704417009837925
+      }
+    },
+    {
+      "id": "q057",
+      "style": "ru",
+      "q": "На какой срок избирается председатель ОСИ?",
+      "gold": [
+        "art51-1/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-1/p1",
+        "ZHO:art51-1/p6",
+        "CONST:art83/p1",
+        "CONST:art95/p4",
+        "CONST:art46/sp8"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 181.88079199171625,
+        "search": 58.99929099541623,
+        "rerank": 1627.9674580000574,
+        "xrefs": 0.09108299855142832
+      }
+    },
+    {
+      "id": "q058",
+      "style": "mixed",
+      "q": "председатель оси кеткенде документтерди тапсырмай жатыр",
+      "gold": [
+        "art51-1/p4"
+      ],
+      "rank": 10,
+      "top": [
+        "ZHO:art51-1/p5",
+        "ZHO:art51-1/p7",
+        "ZHO:art51-1/p5/sp14",
+        "COMM_SERVICES:p2",
+        "ZHO:art50/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 183.20241699984763,
+        "search": 65.01304100675043,
+        "rerank": 1768.3941249997588,
+        "xrefs": 0.34416699782013893
+      }
+    },
+    {
+      "id": "q059",
+      "style": "ru",
+      "q": "Старый председатель не передает документацию дома новому председателю, какой срок установлен законом?",
+      "gold": [
+        "art51-1/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-1/p4",
+        "ZHO:art51-4/p8",
+        "ZHO:art51-1/p6",
+        "KOAP:art320/p8",
+        "RULES_MGMT:p30"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 130.50766701053362,
+        "search": 54.605041994364,
+        "rerank": 1784.3356660014251,
+        "xrefs": 0.1777500001480803
+      }
+    },
+    {
+      "id": "q060",
+      "style": "ru",
+      "q": "Может ли председатель ОСИ представлять объединение в суде без доверенности?",
+      "gold": [
+        "art51-1/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-1/p2",
+        "GPK:art57/p2",
+        "GPK:art61/p1",
+        "APPK:art162",
+        "ZHO:art51-1/p6"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 175.87674999958836,
+        "search": 45.54824999650009,
+        "rerank": 1606.1974999902304,
+        "xrefs": 0.22812500537838787
+      }
+    },
+    {
+      "id": "q061",
+      "style": "kk",
+      "q": "Төраға уақытша еңбекке жарамсыз болса, оның функцияларын кім атқарады?",
+      "gold": [
+        "art51-1/p6"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-1/p6",
+        "CONST:art51/p1",
+        "GPK:art185/p1",
+        "UK:art3/sp27",
+        "CONST:art57/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 136.21908299683128,
+        "search": 46.54887499054894,
+        "rerank": 1924.9925420008367,
+        "xrefs": 0.1450420095352456
+      }
+    },
+    {
+      "id": "q062",
+      "style": "ru",
+      "q": "Может ли председатель ОСИ нанять управляющего многоквартирным домом?",
+      "gold": [
+        "art51-1/p7",
+        "art42/p5"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-1/p7",
+        "ZHO:art42/p5",
+        "RULES_MGMT:p11",
+        "RULES_MGMT:p25",
+        "ZHO:art51-5/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 231.93816699495073,
+        "search": 20.344624994322658,
+        "rerank": 1895.3421249898383,
+        "xrefs": 0.21487499179784209
+      }
+    },
+    {
+      "id": "q063",
+      "style": "ru",
+      "q": "Как ликвидировать объединение собственников имущества?",
+      "gold": [
+        "art51-3/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-3/p1",
+        "ZHO:art51-3/p2",
+        "ZHO:art51-3/p3",
+        "ZHO:art51-6/p3",
+        "ZHO:art2/sp16-6"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 165.3740000037942,
+        "search": 25.69249999942258,
+        "rerank": 1426.785290997941,
+        "xrefs": 0.14883399126119912
+      }
+    },
+    {
+      "id": "q064",
+      "style": "mixed",
+      "q": "оси соседтин карызы ушин жауап береме",
+      "gold": [
+        "art51-2/p2"
+      ],
+      "rank": 2,
+      "top": [
+        "GK_GEN:art357/p2",
+        "ZHO:art51-2/p2",
+        "GK_GEN:art20/p1",
+        "ZHO:art34-1/p10",
+        "GK_GEN:art44/p1"
+      ],
+      "xrefs": [
+        "GK_GEN:art370/p3",
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 246.00787500094157,
+        "search": 61.91295800090302,
+        "rerank": 1596.5327919984702,
+        "xrefs": 18.45379199949093
+      }
+    },
+    {
+      "id": "q065",
+      "style": "ru",
+      "q": "Кто может быть субъектом управления объектом кондоминиума?",
+      "gold": [
+        "art51-4/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-4/p1",
+        "ZHO:art51-4/p4",
+        "ZHO:art51-4/p3",
+        "ZHO:art51-5/p5",
+        "ZHO:art46/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 73.86487499752548,
+        "search": 15.553917008219287,
+        "rerank": 1879.8647090006853,
+        "xrefs": 0.09137499728240073
+      }
+    },
+    {
+      "id": "q066",
+      "style": "typo",
+      "q": "ук хочет поднять тариф за обслуживание за сколько должна предупредить",
+      "gold": [
+        "art51-4/p5"
+      ],
+      "rank": 2,
+      "top": [
+        "KOAP:art166/p5",
+        "ZHO:art51-4/p5",
+        "MONOPOLIES:art22/p8",
+        "MONOPOLIES:art15/p21",
+        "MONOPOLIES:art22/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 199.9887080019107,
+        "search": 70.59466700593475,
+        "rerank": 1816.7364169930806,
+        "xrefs": 0.12487500498536974
+      }
+    },
+    {
+      "id": "q067",
+      "style": "mixed",
+      "q": "управляющая компания баганы котеремиз дейди алдын ала ескерту керекпе",
+      "gold": [
+        "art51-4/p5"
+      ],
+      "rank": 7,
+      "top": [
+        "GK_SPEC:art490/p1",
+        "ZHO:art51-5/p1",
+        "ZHO:art51-5/p2/sp10",
+        "ZHO:art51-5/p2/sp12",
+        "ZHO:art2/sp1-4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 244.3933750037104,
+        "search": 48.36829200212378,
+        "rerank": 1491.4342919946648,
+        "xrefs": 0.075459000072442
+      }
+    },
+    {
+      "id": "q068",
+      "style": "ru",
+      "q": "На каком основании управляющая компания управляет домом?",
+      "gold": [
+        "art51-4/p4"
+      ],
+      "rank": null,
+      "top": [
+        "ZHO:art2/sp1-4",
+        "RULES_MGMT:p2/sp2",
+        "ZHO:art51-5/p7",
+        "ZHO:art51-5/p2/sp7",
+        "ZHO:art51-5/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 80.75779199134558,
+        "search": 24.654875000123866,
+        "rerank": 1927.9205419879872,
+        "xrefs": 0.13158300134819
+      }
+    },
+    {
+      "id": "q069",
+      "style": "ru",
+      "q": "Управляющая компания прекращает работу и не передает документы, какой срок?",
+      "gold": [
+        "art51-4/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-4/p8",
+        "ZHO:art51-5/p2/sp10",
+        "ZHO:art51-1/p4",
+        "ZHO:art51-5/p1",
+        "ZHO:art51-5/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 181.42175000684801,
+        "search": 37.900666997302324,
+        "rerank": 1793.0185419972986,
+        "xrefs": 0.1557500072522089
+      }
+    },
+    {
+      "id": "q070",
+      "style": "ru",
+      "q": "Жильцы не могут выбрать форму управления домом, кто назначает временную управляющую компанию?",
+      "gold": [
+        "art51-5/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-5/p4",
+        "ZHO:art51-5/p5",
+        "ZHO:art51-5/p7",
+        "ZHO:art10-2/sp10-28",
+        "ZHO:art47/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 206.7712910065893,
+        "search": 27.693042007740587,
+        "rerank": 1926.8465420027496,
+        "xrefs": 0.08358299965038896
+      }
+    },
+    {
+      "id": "q071",
+      "style": "mixed",
+      "q": "временная ук назначили жилинспекция сколько она берет денег",
+      "gold": [
+        "art51-5/p8",
+        "art51-5/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-5/p4",
+        "ZHO:art51-5/p7",
+        "ZHO:art51-5/p8",
+        "ZHO:art10-9/p3/sp2~2",
+        "ZHO:art10-9/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 94.43675000511575,
+        "search": 41.52583300310653,
+        "rerank": 1416.185541995219,
+        "xrefs": 0.1461670035496354
+      }
+    },
+    {
+      "id": "q072",
+      "style": "kk",
+      "q": "Басқарушы компания өз қызметін бастағаны туралы кімге хабарлайды?",
+      "gold": [
+        "art51-5/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-5/p1",
+        "ZHO:art51-5/p2/sp10",
+        "ZHO:art2/sp1-4",
+        "ZHO:art51-5/p2",
+        "ZHO:art51-4/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 181.83425000461284,
+        "search": 34.79895800410304,
+        "rerank": 1482.6759999996284,
+        "xrefs": 0.1417500025127083
+      }
+    },
+    {
+      "id": "q073",
+      "style": "ru",
+      "q": "Какие функции выполняет кооператив собственников квартир?",
+      "gold": [
+        "art51-6/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-6/p4",
+        "ZHO:art51-6/p4/sp2",
+        "ZHO:art2/sp24-1",
+        "ZHO:art51-6/p1",
+        "ZHO:art51-6/p4/sp13"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 39.15554100240115,
+        "search": 14.932166988728568,
+        "rerank": 1420.3665829991223,
+        "xrefs": 0.12783300189767033
+      }
+    },
+    {
+      "id": "q074",
+      "style": "typo",
+      "q": "кск может делить доходы между членами кооператива?",
+      "gold": [
+        "art51-6/p5"
+      ],
+      "rank": 3,
+      "top": [
+        "GK_GEN:art108/p4",
+        "GK_GEN:art98/p2",
+        "ZHO:art51-6/p5",
+        "GK_GEN:art98/p1",
+        "ZHO:art2/sp44"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 122.02262500068173,
+        "search": 45.5051249882672,
+        "rerank": 1359.7627909912262,
+        "xrefs": 0.05341599171515554
+      }
+    },
+    {
+      "id": "q075",
+      "style": "mixed",
+      "q": "кск акша жинап жатыр но крыша тесилып тур не истейм по закону",
+      "gold": [
+        "art51-6/p4",
+        "art34/p3",
+        "art46/p1",
+        "art34-2/p1",
+        "art2/sp14"
+      ],
+      "rank": null,
+      "top": [
+        "ZHO:art42/p5",
+        "ZHO:art2/sp24-1",
+        "ZHO:art51-4/p1",
+        "ZHO:art48/p2",
+        "GPK:art98/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 217.92049999930896,
+        "search": 66.66766700800508,
+        "rerank": 1927.5718749995576,
+        "xrefs": 0.24112500250339508
+      }
+    },
+    {
+      "id": "q076",
+      "style": "ru",
+      "q": "Обязаны ли собственники платить взносы на управление домом?",
+      "gold": [
+        "art34-1/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p1",
+        "ZHO:art34-1/p7",
+        "ZHO:art42/p11",
+        "ZHO:art34-1/p8",
+        "RULES_MGMT:p34"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 217.5779590033926,
+        "search": 38.86441599752288,
+        "rerank": 1961.381999994046,
+        "xrefs": 0.39687499520368874
+      }
+    },
+    {
+      "id": "q077",
+      "style": "kk",
+      "q": "Пәтер иелері қандай жарналар төлеуге міндетті?",
+      "gold": [
+        "art34-1/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p1",
+        "ZHO:art34/p5",
+        "ZHO:art34/p4",
+        "ZHO:art34-1/p8",
+        "ZHO:art34-1/p7"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 349.8543749883538,
+        "search": 104.0718750009546,
+        "rerank": 1550.515707989689,
+        "xrefs": 0.1000829943222925
+      }
+    },
+    {
+      "id": "q078",
+      "style": "ru",
+      "q": "Может ли собрание установить текущие взносы ниже минимального размера?",
+      "gold": [
+        "art34-1/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p2",
+        "ZHO:art42/p5/sp7",
+        "ZHO:art42/p5/sp9",
+        "METHOD_BUDGET:p12",
+        "RULES_DECISIONS:p12/sp2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 137.42695801192895,
+        "search": 68.53966700145975,
+        "rerank": 1414.6059159975266,
+        "xrefs": 0.08058299135882407
+      }
+    },
+    {
+      "id": "q079",
+      "style": "mixed",
+      "q": "накопительный взнос капремонт ушин канша толеу керек",
+      "gold": [
+        "art34-1/p3",
+        "art2/sp9-1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp9-1",
+        "ZHO:art34-1/p1",
+        "RULES_DECISIONS:p12",
+        "ZHO:art34-1/p2",
+        "ZHO:art34-2/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 132.735249993857,
+        "search": 86.76054098759778,
+        "rerank": 1909.9429999914719,
+        "xrefs": 0.12024999887216836
+      }
+    },
+    {
+      "id": "q080",
+      "style": "ru",
+      "q": "Председатель требует деньги на установку шлагбаума без собрания, законно ли это?",
+      "gold": [
+        "art34-1/p5",
+        "art34-1/p4"
+      ],
+      "rank": null,
+      "top": [
+        "ZHO:art51-1/p2",
+        "ZHO:art51-1/p5",
+        "ZHO:art51-1/p5/sp12",
+        "RULES_MGMT:p13",
+        "ZHO:art42/p11"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 180.26912500499748,
+        "search": 110.97391600196715,
+        "rerank": 1707.402625004761,
+        "xrefs": 0.17454198678024113
+      }
+    },
+    {
+      "id": "q081",
+      "style": "mixed",
+      "q": "оси собраниесиз косымша акша жинап жатыр шлагбаумга",
+      "gold": [
+        "art34-1/p5",
+        "art34-1/p4"
+      ],
+      "rank": null,
+      "top": [
+        "KOAP:art607/p1",
+        "ZHO:art2/sp16-8",
+        "ZHO:art42/p8",
+        "ZHO:art42/p4",
+        "ZHO:art42/p13"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 123.15041699912399,
+        "search": 63.065417009056546,
+        "rerank": 1917.5540410069516,
+        "xrefs": 0.09216699982061982
+      }
+    },
+    {
+      "id": "q082",
+      "style": "ru",
+      "q": "Начисляется ли пеня за просрочку оплаты взносов на содержание дома?",
+      "gold": [
+        "art34-1/p9"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p9",
+        "ZHO:art34/p4",
+        "RULES_MGMT:p34",
+        "GK_SPEC:art826-2/p1",
+        "ZHO:art34-1/p8"
+      ],
+      "xrefs": [
+        "GK_GEN:art353/p2"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 365.752750003594,
+        "search": 141.51529100490734,
+        "rerank": 1849.4087500002934,
+        "xrefs": 93.46083299897145
+      }
+    },
+    {
+      "id": "q083",
+      "style": "typo",
+      "q": "пеня за неоплату взносов оси имеет право начислять?",
+      "gold": [
+        "art34-1/p9"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p9",
+        "ZHO:art34/p4",
+        "KOAP:art92-1/p3",
+        "GK_SPEC:art826-2/p1",
+        "RULES_MGMT:p34"
+      ],
+      "xrefs": [
+        "GK_GEN:art353/p2"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 360.39508300018497,
+        "search": 318.4191660111537,
+        "rerank": 1784.3127499945695,
+        "xrefs": 28.88449998863507
+      }
+    },
+    {
+      "id": "q084",
+      "style": "kk",
+      "q": "Жарнаны уақытында төлемесе өсімпұл есептеле ме?",
+      "gold": [
+        "art34-1/p9"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p9",
+        "ZHO:art34/p4",
+        "RULES_MGMT:p34",
+        "KOAP:art228/p5",
+        "KOAP:art87/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 282.4585830094293,
+        "search": 355.14949999924283,
+        "rerank": 1974.3120419880142,
+        "xrefs": 14.686041991808452
+      }
+    },
+    {
+      "id": "q085",
+      "style": "ru",
+      "q": "Через сколько времени ОСИ может обратиться в суд о взыскании долга по взносам?",
+      "gold": [
+        "art34-1/p10"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p10",
+        "ZHO:art34-1/p9",
+        "ZHO:art34-1/p8",
+        "RULES_MGMT:p5",
+        "RULES_MGMT:p2"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 619.3230410135584,
+        "search": 595.8290419948753,
+        "rerank": 1855.6683330098167,
+        "xrefs": 30.7195000059437
+      }
+    },
+    {
+      "id": "q086",
+      "style": "mixed",
+      "q": "сосед 3 ай толемей жур оси сотка бере алама",
+      "gold": [
+        "art34-1/p10"
+      ],
+      "rank": null,
+      "top": [
+        "UK:art430/p3",
+        "GK_SPEC:art1046/p3",
+        "KOAP:art97/p3",
+        "UK:art399/p2",
+        "ZHO:art22/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 302.5034579914063,
+        "search": 228.081832989119,
+        "rerank": 1171.74041600083,
+        "xrefs": 0.24854201183188707
+      }
+    },
+    {
+      "id": "q087",
+      "style": "ru",
+      "q": "Можно ли взыскать долг по взносам через нотариуса?",
+      "gold": [
+        "art34-1/p10"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p10",
+        "KOAP:art91/p6/sp1",
+        "KOAP:art91/p6",
+        "GK_GEN:art291/p1",
+        "GK_GEN:art291/p2"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 215.3344999969704,
+        "search": 134.98091700603254,
+        "rerank": 1782.004541993956,
+        "xrefs": 6.36370899155736
+      }
+    },
+    {
+      "id": "q088",
+      "style": "ru",
+      "q": "До какого числа нужно оплачивать текущие взносы?",
+      "gold": [
+        "art34-1/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p8",
+        "ZHO:art34/p5",
+        "ZHO:art2/sp1-1",
+        "ZHO:art34-1/p2",
+        "RULES_MGMT:p2/sp1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 113.77537500811741,
+        "search": 38.75091701047495,
+        "rerank": 1759.7548749909038,
+        "xrefs": 0.1810000103432685
+      }
+    },
+    {
+      "id": "q089",
+      "style": "ru",
+      "q": "Кто оплачивает коммунальные услуги, потребленные на содержание общего имущества?",
+      "gold": [
+        "art34-1/p6"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p6",
+        "ZHO:art51-5/p2/sp4",
+        "COMM_SERVICES:p3",
+        "COMM_SERVICES:p30",
+        "ZHO:art51-1/p5/sp5"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 273.6397080007009,
+        "search": 82.48870899842586,
+        "rerank": 1800.4460410011234,
+        "xrefs": 0.08912499470170587
+      }
+    },
+    {
+      "id": "q090",
+      "style": "ru",
+      "q": "Где хранятся деньги, накопленные на капитальный ремонт дома?",
+      "gold": [
+        "art34-2/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-2/p1",
+        "ZHO:art10-9/p3/sp2~2",
+        "ZHO:art34-1/p3",
+        "ZHO:art34-2/p2",
+        "KOAP:art320/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 168.5661249939585,
+        "search": 49.5329590048641,
+        "rerank": 1467.8980419994332,
+        "xrefs": 0.09216699982061982
+      }
+    },
+    {
+      "id": "q091",
+      "style": "mixed",
+      "q": "капремонтка подрядчикти кім тандайды совет дома ма",
+      "gold": [
+        "art34-2/p4",
+        "art42/p5"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p5/sp21",
+        "ZHO:art34-2/p4",
+        "RULES_DECISIONS:p12/sp10",
+        "STROY:art119/p1",
+        "ZHO:art2/sp16-4"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 159.70499999821186,
+        "search": 82.67220899870154,
+        "rerank": 1515.1045829989016,
+        "xrefs": 0.06016700353939086
+      }
+    },
+    {
+      "id": "q092",
+      "style": "ru",
+      "q": "Может ли акимат сделать капитальный ремонт дома за счет бюджета?",
+      "gold": [
+        "art34-2/p5"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-2/p5",
+        "ZHO:art34-2/p3",
+        "STROY:art29/p1/sp11",
+        "STROY:art28/p1/sp25",
+        "STROY:art29/p2/sp9"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 106.61091699148528,
+        "search": 48.119832994416356,
+        "rerank": 1410.4774169973098,
+        "xrefs": 0.10316701082047075
+      }
+    },
+    {
+      "id": "q093",
+      "style": "typo",
+      "q": "лифт сломан кто должен менять лифт в подъезде",
+      "gold": [
+        "art34-2/p6",
+        "art42/p5"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-2/p6",
+        "ZHO:art10-3/p2/sp9",
+        "RULES_DECISIONS:p12",
+        "ZHO:art42/p5/sp14",
+        "RULES_DECISIONS:p12/sp7"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 187.10804199508857,
+        "search": 48.653542005922645,
+        "rerank": 1763.8403750024736,
+        "xrefs": 0.3399580018594861
+      }
+    },
+    {
+      "id": "q094",
+      "style": "ru",
+      "q": "Кто несет бремя содержания общего имущества многоквартирного дома?",
+      "gold": [
+        "art34/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34/p3",
+        "GK_GEN:art189/p1",
+        "ZHO:art2/sp16-6",
+        "ZHO:art49/p1",
+        "ZHO:art51-1/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 173.08670798956882,
+        "search": 20.610583000234328,
+        "rerank": 1774.3732079979964,
+        "xrefs": 10.235875000944361
+      }
+    },
+    {
+      "id": "q095",
+      "style": "mixed",
+      "q": "крыша агып жатыр жондеуге кім жауапты",
+      "gold": [
+        "art34/p3",
+        "art2/sp14",
+        "art39/p4"
+      ],
+      "rank": 3,
+      "top": [
+        "STROY:art54/p6",
+        "ZHO:art39/p2",
+        "ZHO:art39/p4",
+        "GK_SPEC:art931/p2",
+        "GK_SPEC:art873/p1"
+      ],
+      "xrefs": [
+        "STROY:art98/p4/sp12"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 203.21237501048017,
+        "search": 53.972333000274375,
+        "rerank": 1795.177332998719,
+        "xrefs": 14.634958002716303
+      }
+    },
+    {
+      "id": "q096",
+      "style": "ru",
+      "q": "Должен ли я сообщать ОСИ, что сдаю квартиру в аренду?",
+      "gold": [
+        "art34/p6"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34/p6",
+        "ZHO:art23/p3-1",
+        "ZHO:art24/p3-1",
+        "ZHO:art80/p1",
+        "GK_SPEC:art597"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 189.23000000359025,
+        "search": 49.80529099702835,
+        "rerank": 1403.3476670010714,
+        "xrefs": 0.07558301149401814
+      }
+    },
+    {
+      "id": "q097",
+      "style": "mixed",
+      "q": "патерди арендага бердим оси ге хабарлау керек пе",
+      "gold": [
+        "art34/p6"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34/p6",
+        "RULES_MGMT:p37",
+        "ZHO:art24/p6",
+        "GK_SPEC:art568",
+        "GPK:art133/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 136.7877500015311,
+        "search": 45.32554099569097,
+        "rerank": 1632.4296670063632,
+        "xrefs": 0.11862500105053186
+      }
+    },
+    {
+      "id": "q098",
+      "style": "ru",
+      "q": "Имею ли я право получить выписку о состоянии сберегательного счета дома?",
+      "gold": [
+        "art34/p10"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34/p10",
+        "ZHO:art10-9/p3/sp2~2",
+        "ZHO:art51-5/p6",
+        "GK_SPEC:art747/p1",
+        "UK:art216/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 181.8887909903424,
+        "search": 43.85254099906888,
+        "rerank": 1689.5639160065912,
+        "xrefs": 0.09829200280364603
+      }
+    },
+    {
+      "id": "q099",
+      "style": "ru",
+      "q": "С кем собственник заключает договоры на коммунальные услуги в квартире?",
+      "gold": [
+        "art34/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34/p8",
+        "ZHO:art51-6/p4/sp4",
+        "COMM_SERVICES:p4",
+        "ZHO:art51-6/p4",
+        "COMM_SERVICES:p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 75.48087499162648,
+        "search": 32.469291996676475,
+        "rerank": 1366.448999993736,
+        "xrefs": 0.15049999637994915
+      }
+    },
+    {
+      "id": "q100",
+      "style": "ru",
+      "q": "Обязан ли застройщик платить взносы за непроданные квартиры?",
+      "gold": [
+        "art34/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34/p4",
+        "RULES_MGMT:p34",
+        "ZHO:art34-1/p1",
+        "ZHO:art34/p5",
+        "ZHO:art34-1/p7"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 91.72854200005531,
+        "search": 33.414208999602124,
+        "rerank": 1610.8396659983555,
+        "xrefs": 0.07866699888836592
+      }
+    },
+    {
+      "id": "q101",
+      "style": "ru",
+      "q": "Сосед не пускает сантехника к стояку, который проходит в его квартире, что делать?",
+      "gold": [
+        "art38"
+      ],
+      "rank": 3,
+      "top": [
+        "ZHO:art40/p4",
+        "ZHO:art36/p2",
+        "ZHO:art38",
+        "ZHO:art41/p2",
+        "ZHO:art2/sp14"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 133.9301669941051,
+        "search": 40.81991700513754,
+        "rerank": 1912.7778340043733,
+        "xrefs": 0.9190830023726448
+      }
+    },
+    {
+      "id": "q102",
+      "style": "mixed",
+      "q": "корши стоякка киргизбей жатыр слесарь кире алмайды",
+      "gold": [
+        "art38"
+      ],
+      "rank": 5,
+      "top": [
+        "UK:art349/p1",
+        "STROY:art118/p1/sp9",
+        "UK:art348/p1",
+        "KOAP:art614",
+        "ZHO:art38"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 294.4311250030296,
+        "search": 47.38562500278931,
+        "rerank": 1658.9290420088219,
+        "xrefs": 0.13529200805351138
+      }
+    },
+    {
+      "id": "q103",
+      "style": "ru",
+      "q": "Сосед сверху затопил мою квартиру, обязан ли он возместить ущерб?",
+      "gold": [
+        "art39/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art39/p1",
+        "ZHO:art39/p2",
+        "ZHO:art39/p4",
+        "GK_SPEC:art920",
+        "GK_SPEC:art931/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 211.44341699255165,
+        "search": 49.61387498769909,
+        "rerank": 1409.1669579938753,
+        "xrefs": 0.0925839995034039
+      }
+    },
+    {
+      "id": "q104",
+      "style": "mixed",
+      "q": "сосед сверху затопил акт жасамай жатыр ОСИ калай подать в суд",
+      "gold": [
+        "art39/p4",
+        "art39/p1",
+        "art8/p1"
+      ],
+      "rank": 5,
+      "top": [
+        "APPK:art136/p5",
+        "APPK:art91/p6",
+        "APPK:art4/p1",
+        "KOAP:art869",
+        "ZHO:art39/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 87.58104201115202,
+        "search": 56.98699998902157,
+        "rerank": 1823.053791988059,
+        "xrefs": 0.32737498986534774
+      }
+    },
+    {
+      "id": "q105",
+      "style": "kk",
+      "q": "Жоғарғы қабаттағы көрші пәтерімді су басты, залалды кім өтейді?",
+      "gold": [
+        "art39/p1",
+        "art39/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art39/p1",
+        "GK_SPEC:art924",
+        "ZHO:art39/p2",
+        "ZHO:art39/p4",
+        "CONSUMER:art31/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 150.60020799865015,
+        "search": 28.490500000771135,
+        "rerank": 1850.4796249908395,
+        "xrefs": 0.09791699994821101
+      }
+    },
+    {
+      "id": "q106",
+      "style": "latin",
+      "q": "korshi su basty zalal kim oteidi",
+      "gold": [
+        "art39/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art39/p1",
+        "GK_SPEC:art840/p1",
+        "GK_SPEC:art787/p3",
+        "KOAP:art141/p1",
+        "GK_GEN:art9/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 220.0298749958165,
+        "search": 47.01691700029187,
+        "rerank": 2108.3588330075145,
+        "xrefs": 0.1557500072522089
+      }
+    },
+    {
+      "id": "q107",
+      "style": "typo",
+      "q": "затопили квартирант сверху а хозяин говорит не я отвечаю",
+      "gold": [
+        "art39/p2"
+      ],
+      "rank": 2,
+      "top": [
+        "GK_SPEC:art930/p1",
+        "ZHO:art39/p2",
+        "ZHO:art39/p4",
+        "GK_SPEC:art925/p1",
+        "ZHO:art51-2/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 214.70029100601096,
+        "search": 35.09104200929869,
+        "rerank": 1650.9585000021616,
+        "xrefs": 0.0687080028001219
+      }
+    },
+    {
+      "id": "q108",
+      "style": "ru",
+      "q": "Кто обязан составить акт о затоплении квартиры?",
+      "gold": [
+        "art39/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art39/p4",
+        "ZHO:art39/p2",
+        "KOAP:art804/p1/sp7",
+        "ZHO:art34/p6",
+        "GK_SPEC:art793/p5"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 54.7126669989666,
+        "search": 39.485332992626354,
+        "rerank": 1995.4065839992836,
+        "xrefs": 0.22266700398176908
+      }
+    },
+    {
+      "id": "q109",
+      "style": "mixed",
+      "q": "су басу туралы акт кім жасайды председатель ма",
+      "gold": [
+        "art39/p4"
+      ],
+      "rank": 3,
+      "top": [
+        "KOAP:art801/p5",
+        "KOAP:art804/p1/sp7",
+        "ZHO:art39/p4",
+        "KOAP:art708/p2",
+        "KOAP:art708/p2/sp1"
+      ],
+      "xrefs": [
+        "KOAP:art164/p1"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 99.67154200421646,
+        "search": 45.30458299268503,
+        "rerank": 1637.1080829994753,
+        "xrefs": 14.291582992882468
+      }
+    },
+    {
+      "id": "q110",
+      "style": "ru",
+      "q": "Управляющая компания при ремонте повредила мою квартиру, кто возмещает убытки?",
+      "gold": [
+        "art39/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art39/p3",
+        "ZHO:art39/p2",
+        "ZHO:art39/p4",
+        "GK_SPEC:art890/p2",
+        "RULES_MGMT:p25"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 229.5489579992136,
+        "search": 31.64887499588076,
+        "rerank": 1754.5137089909986,
+        "xrefs": 0.09800000407267362
+      }
+    },
+    {
+      "id": "q111",
+      "style": "ru",
+      "q": "Нужно ли согласие соседей, чтобы снести несущую стену в квартире?",
+      "gold": [
+        "art40/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art40/p3",
+        "ZHO:art41/p2",
+        "RULES_MGMT:p37",
+        "ZHO:art116-1/p7",
+        "STROY:art145/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 179.717332997825,
+        "search": 24.5264999975916,
+        "rerank": 1984.6094160020584,
+        "xrefs": 0.16495799354743212
+      }
+    },
+    {
+      "id": "q112",
+      "style": "mixed",
+      "q": "перепланировка жасау ушин корши согласиесы керек пе",
+      "gold": [
+        "art40/p3",
+        "art40/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art40/p3",
+        "STROY:art125/sp3",
+        "RULES_MGMT:p37",
+        "STROY:art100/p3",
+        "ZHO:art41/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 239.12875000678468,
+        "search": 48.564707991317846,
+        "rerank": 1507.1714590012562,
+        "xrefs": 0.13225000293459743
+      }
+    },
+    {
+      "id": "q113",
+      "style": "typo",
+      "q": "хочу обьединить кухню с залом стена несущая чье разрешение нужно",
+      "gold": [
+        "art40/p3",
+        "art40/p2",
+        "art40/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art40/p3",
+        "GK_GEN:art252/p2",
+        "GPK:art87/p2",
+        "STROY:art145/p2",
+        "STROY:art79/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 201.6570420091739,
+        "search": 21.17983299831394,
+        "rerank": 2274.585624996689,
+        "xrefs": 0.12154100113548338
+      }
+    },
+    {
+      "id": "q114",
+      "style": "kk",
+      "q": "Пәтерді қайта жоспарлау кімнің шешімімен жүзеге асырылады?",
+      "gold": [
+        "art40/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art40/p2",
+        "ZHO:art40/p3",
+        "ZHO:art40/p1",
+        "RULES_MGMT:p37",
+        "RULES_MGMT:p38"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 229.57329200289678,
+        "search": 50.34141699434258,
+        "rerank": 2344.6601659961743,
+        "xrefs": 0.19033299759030342
+      }
+    },
+    {
+      "id": "q115",
+      "style": "ru",
+      "q": "Что относится к общедомовым инженерным системам?",
+      "gold": [
+        "art40/p4",
+        "art2/sp47"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art40/p4",
+        "ZHO:art2/sp47",
+        "COMM_SERVICES:p2/sp22",
+        "ZHO:art2/sp14",
+        "RULES_MGMT:p22/sp2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 237.08900000201538,
+        "search": 98.26020800392143,
+        "rerank": 2396.332667005481,
+        "xrefs": 0.8658750011818483
+      }
+    },
+    {
+      "id": "q116",
+      "style": "ru",
+      "q": "Можно ли объединить две соседние квартиры, изменив границу между ними?",
+      "gold": [
+        "art41/p2",
+        "art41/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art41/p2",
+        "ZHO:art41/p1",
+        "ZHO:art40/p4",
+        "ZHO:art40/p3",
+        "ZHO:art40/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 201.2334579922026,
+        "search": 42.91212500538677,
+        "rerank": 2129.6840839931974,
+        "xrefs": 10.706833010772243
+      }
+    },
+    {
+      "id": "q117",
+      "style": "ru",
+      "q": "Можно ли продать квартиру отдельно от доли в общем имуществе дома?",
+      "gold": [
+        "art33/p1",
+        "art33/p3"
+      ],
+      "rank": 2,
+      "top": [
+        "ZHO:art31/p8",
+        "ZHO:art33/p1",
+        "ZHO:art28/p2",
+        "ZHO:art33/p3",
+        "GK_GEN:art216/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 229.41062500467524,
+        "search": 71.11933299165685,
+        "rerank": 1623.7249590049032,
+        "xrefs": 0.09179099288303405
+      }
+    },
+    {
+      "id": "q118",
+      "style": "mixed",
+      "q": "подвалды ОСИ арендага берип жатыр собраниесиз болама",
+      "gold": [
+        "art42/p5",
+        "art31/p8"
+      ],
+      "rank": null,
+      "top": [
+        "ZHO:art2/sp14",
+        "RULES_MGMT:p2",
+        "RULES_DECISIONS:p11/sp6",
+        "GK_SPEC:art600/p2",
+        "ZHO:art90/p1"
+      ],
+      "xrefs": [
+        "ZHO:art86/p1-1"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 155.77133400074672,
+        "search": 58.01179200352635,
+        "rerank": 2309.252375009237,
+        "xrefs": 16.45995800208766
+      }
+    },
+    {
+      "id": "q119",
+      "style": "ru",
+      "q": "Кто регистрирует объект кондоминиума в новом доме?",
+      "gold": [
+        "art31/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art31/p3",
+        "ZHO:art31/p5",
+        "STROY:art117/p2/sp10",
+        "ZHO:art31/p6-1",
+        "RULES_MGMT:p11"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 182.01045799651183,
+        "search": 26.418875000672415,
+        "rerank": 2348.571875001653,
+        "xrefs": 0.17074999050237238
+      }
+    },
+    {
+      "id": "q120",
+      "style": "ru",
+      "q": "Как зарегистрировать кондоминиум в старом доме?",
+      "gold": [
+        "art31/p5",
+        "art31/p4"
+      ],
+      "rank": 2,
+      "top": [
+        "ZHO:art31/p3",
+        "ZHO:art31/p5",
+        "ZHO:art31/p6-1",
+        "RULES_MGMT:p12",
+        "ZHO:art51-4/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 138.76758299011271,
+        "search": 19.40962500520982,
+        "rerank": 2012.8513749950798,
+        "xrefs": 0.10695798846427351
+      }
+    },
+    {
+      "id": "q121",
+      "style": "ru",
+      "q": "Куда обращаться, если возник жилищный спор?",
+      "gold": [
+        "art8/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art8/p1",
+        "ZHO:art94",
+        "ZHO:art106/p6",
+        "CONSUMER:art42-8/p1",
+        "GPK:art179/p1"
+      ],
+      "xrefs": [
+        "ZHO:art105/p1",
+        "ZHO:art108/p2",
+        "CONSUMER:art33-2/p2"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 143.995124992216,
+        "search": 80.94475000689272,
+        "rerank": 1876.1258330050623,
+        "xrefs": 33.40345800097566
+      }
+    },
+    {
+      "id": "q122",
+      "style": "mixed",
+      "q": "менi пәтерден сотсыз шыгарып жибере ала ма",
+      "gold": [
+        "art8/p2"
+      ],
+      "rank": null,
+      "top": [
+        "ZHO:art107",
+        "UK:art149/p2",
+        "ZHO:art107/sp5",
+        "UK:art143/p2",
+        "UK:art427/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 109.71741699904669,
+        "search": 89.68108298722655,
+        "rerank": 2304.8433329968248,
+        "xrefs": 0.14274999557528645
+      }
+    },
+    {
+      "id": "q123",
+      "style": "ru",
+      "q": "Какие обязанности у арендатора квартиры перед другими жильцами?",
+      "gold": [
+        "art36/p2",
+        "art36/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art36/p2",
+        "ZHO:art36/p1",
+        "ZHO:art34/p6",
+        "ZHO:art90/p1",
+        "ZHO:art83/p2"
+      ],
+      "xrefs": [
+        "ZHO:art86/p1-1"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 173.55337500339374,
+        "search": 53.74458400183357,
+        "rerank": 2243.161874997895,
+        "xrefs": 6.642416003160179
+      }
+    },
+    {
+      "id": "q124",
+      "style": "ru",
+      "q": "Что такое объединение собственников имущества по закону?",
+      "gold": [
+        "art2/sp16-6"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp16-6",
+        "ZHO:art50/p1",
+        "ZHO:art51-2/p1",
+        "ZHO:art49/p1",
+        "ZHO:art49/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 99.5210419932846,
+        "search": 46.661333995871246,
+        "rerank": 2150.8723339939024,
+        "xrefs": 0.21083399769850075
+      }
+    },
+    {
+      "id": "q125",
+      "style": "kk",
+      "q": "Ағымдағы жарналар дегеніміз не?",
+      "gold": [
+        "art2/sp1-1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp1-1",
+        "ZHO:art34-1/p2",
+        "ZHO:art2/sp23-2",
+        "RULES_MGMT:p2",
+        "RULES_MGMT:p2/sp1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 135.54820799618028,
+        "search": 55.22674998792354,
+        "rerank": 1906.0300000128336,
+        "xrefs": 0.19287499890197068
+      }
+    },
+    {
+      "id": "q126",
+      "style": "ru",
+      "q": "Чем накопительные взносы отличаются от целевых?",
+      "gold": [
+        "art2/sp9-1",
+        "art2/sp22-1",
+        "art34-1/p3",
+        "art34-1/p4"
+      ],
+      "rank": 4,
+      "top": [
+        "ZHO:art34-1/p1",
+        "METHOD_BUDGET:p17/sp6",
+        "ZHO:art34-1/p9",
+        "ZHO:art2/sp22-1",
+        "ZHO:art2/sp9-1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 200.79516699479427,
+        "search": 47.09491699759383,
+        "rerank": 1897.3369169980288,
+        "xrefs": 0.11470800382085145
+      }
+    },
+    {
+      "id": "q127",
+      "style": "ru",
+      "q": "Что входит в общее имущество объекта кондоминиума?",
+      "gold": [
+        "art2/sp14"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp14",
+        "ZHO:art34/p1",
+        "ZHO:art2/sp15-4",
+        "ZHO:art31/p3",
+        "ZHO:art31/p8"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 230.12500000186265,
+        "search": 13.81841700640507,
+        "rerank": 1880.4884170094738,
+        "xrefs": 0.11554099910426885
+      }
+    },
+    {
+      "id": "q128",
+      "style": "mixed",
+      "q": "ортақ мүлікке подвал чердак кіреме",
+      "gold": [
+        "art2/sp14"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp14",
+        "RULES_MGMT:p2/sp3",
+        "COMM_SERVICES:p2/sp9",
+        "RULES_MGMT:p22/sp4",
+        "RULES_MGMT:p22"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 201.2931669887621,
+        "search": 29.12783299689181,
+        "rerank": 1978.9811249938793,
+        "xrefs": 0.17120799748227
+      }
+    },
+    {
+      "id": "q129",
+      "style": "ru",
+      "q": "Чем текущий ремонт общего имущества отличается от капитального?",
+      "gold": [
+        "art2/sp15",
+        "art2/sp15-1"
+      ],
+      "rank": 2,
+      "top": [
+        "RULES_MGMT:p2",
+        "ZHO:art2/sp15",
+        "RULES_MGMT:p2/sp4",
+        "ZHO:art2/sp15-1",
+        "RULES_MGMT:p22/sp10"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 117.66679200809449,
+        "search": 31.192916998406872,
+        "rerank": 1767.579207997187,
+        "xrefs": 0.21033300436101854
+      }
+    },
+    {
+      "id": "q130",
+      "style": "ru",
+      "q": "Что такое управляющая компания согласно закону?",
+      "gold": [
+        "art2/sp1-4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp1-4",
+        "ZHO:art51-5/p2",
+        "ZHO:art51-5/p2/sp14",
+        "RULES_MGMT:p2/sp2",
+        "ZHO:art51-5/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 117.03612501150928,
+        "search": 49.70266600139439,
+        "rerank": 1558.1347499974072,
+        "xrefs": 0.12495799455791712
+      }
+    },
+    {
+      "id": "q131",
+      "style": "kk",
+      "q": "Үй кеңесі дегеніміз не?",
+      "gold": [
+        "art2/sp16-4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp16-4",
+        "ZHO:art51/p2",
+        "ZHO:art51/p1",
+        "ZHO:art51/p5",
+        "RULES_MGMT:p2/sp10"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 176.04054199182428,
+        "search": 57.19074999797158,
+        "rerank": 1757.6832079939777,
+        "xrefs": 0.07412499689962715
+      }
+    },
+    {
+      "id": "q132",
+      "style": "ru",
+      "q": "Чем перепланировка отличается от переоборудования?",
+      "gold": [
+        "art2/sp17",
+        "art2/sp18"
+      ],
+      "rank": 2,
+      "top": [
+        "ZHO:art40/p2",
+        "ZHO:art2/sp17",
+        "STROY:art98/p4/sp18",
+        "ZHO:art40/p1",
+        "ZHO:art40/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 201.88616699306294,
+        "search": 40.45487500843592,
+        "rerank": 1805.425833008485,
+        "xrefs": 0.09229200077243149
+      }
+    },
+    {
+      "id": "q133",
+      "style": "ru",
+      "q": "Что считается кладовкой в многоквартирном доме?",
+      "gold": [
+        "art2/sp18-1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp18-1",
+        "RULES_MGMT:p2/sp14",
+        "ZHO:art40/p4",
+        "ZHO:art31/p1",
+        "ZHO:art33/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 192.97504100541119,
+        "search": 26.813249991391785,
+        "rerank": 2176.752084007603,
+        "xrefs": 0.17895801283884794
+      }
+    },
+    {
+      "id": "q134",
+      "style": "ru",
+      "q": "Что такое кооператив собственников квартир?",
+      "gold": [
+        "art2/sp24-1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp24-1",
+        "ZHO:art51-6/p4",
+        "ZHO:art51-6/p4/sp2",
+        "ZHO:art2/sp16-6",
+        "ZHO:art51-6/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 189.13437500305008,
+        "search": 17.120417003752664,
+        "rerank": 1466.2939170084428,
+        "xrefs": 0.13658299576491117
+      }
+    },
+    {
+      "id": "q135",
+      "style": "typo",
+      "q": "можно ли сделать хостел в квартире жилого дома",
+      "gold": [
+        "art4",
+        "art2/sp48"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp48",
+        "STROY:art81/p4",
+        "ZHO:art38",
+        "ZHO:art40/p4",
+        "ZHO:art2/sp16-1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 46.29754199413583,
+        "search": 22.089749996666797,
+        "rerank": 2245.2657079993514,
+        "xrefs": 0.3590830019675195
+      }
+    },
+    {
+      "id": "q136",
+      "style": "ru",
+      "q": "Какой дом признается аварийным?",
+      "gold": [
+        "art2/sp1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art2/sp1",
+        "STROY:art139/p2",
+        "STROY:art139/p1",
+        "ZHO:art69/p4",
+        "STROY:art139/p3"
+      ],
+      "xrefs": [
+        "ZHO:art74/p8"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 247.21508299990091,
+        "search": 54.16629200044554,
+        "rerank": 2179.941875001532,
+        "xrefs": 17.83666599658318
+      }
+    },
+    {
+      "id": "q137",
+      "style": "ru",
+      "q": "Может ли собственник сдать свою квартиру в наем другим лицам?",
+      "gold": [
+        "art23"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art23/p1",
+        "ZHO:art23/p3-1",
+        "ZHO:art23/p3",
+        "ZHO:art25/p2",
+        "GK_SPEC:art543"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 266.0265000013169,
+        "search": 26.677542002289556,
+        "rerank": 1511.8632500089006,
+        "xrefs": 0.041332998080179095
+      }
+    },
+    {
+      "id": "q138",
+      "style": "mixed",
+      "q": "квартиранттар уйден шыкпай жатыр договор найма бітті",
+      "gold": [
+        "art24",
+        "art26",
+        "art27",
+        "art8/p2"
+      ],
+      "rank": 8,
+      "top": [
+        "ZHO:art2/sp30",
+        "ZHO:art80/p1",
+        "GK_SPEC:art601/p1",
+        "ZHO:art108/p2",
+        "ZHO:art25/p5"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 185.57787498866674,
+        "search": 46.51012500107754,
+        "rerank": 1486.6203749988927,
+        "xrefs": 0.0593330041738227
+      }
+    },
+    {
+      "id": "q139",
+      "style": "ru",
+      "q": "Как встать в очередь на жилье из государственного жилищного фонда?",
+      "gold": [
+        "art67",
+        "art69"
+      ],
+      "rank": 4,
+      "top": [
+        "ZHO:art118/p1/sp12",
+        "ZHO:art118/p1/sp8",
+        "ZHO:art118/p2",
+        "ZHO:art67/p1",
+        "ZHO:art67/p7"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 165.6643750029616,
+        "search": 32.15179100516252,
+        "rerank": 1567.3612079990562,
+        "xrefs": 0.3919580049114302
+      }
+    },
+    {
+      "id": "q140",
+      "style": "mixed",
+      "q": "кезекке туру ушин кім муктаж деп танылады",
+      "gold": [
+        "art69",
+        "art67"
+      ],
+      "rank": 10,
+      "top": [
+        "ZHO:art118/p1/sp3",
+        "ZHO:art118/p1/sp8",
+        "ZHO:art118/p2",
+        "ZHO:art117/p1",
+        "ZHO:art10-2/sp10-34"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 255.42591699922923,
+        "search": 85.31016600318253,
+        "rerank": 2220.285290997708,
+        "xrefs": 0.1955410116352141
+      }
+    },
+    {
+      "id": "q141",
+      "style": "ru",
+      "q": "По каким основаниям могут снять с учета нуждающихся в жилище?",
+      "gold": [
+        "art73"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art73/p1",
+        "ZHO:art73/p1/sp1",
+        "ZHO:art73/p4",
+        "ZHO:art72",
+        "ZHO:art73/p1/sp2~2"
+      ],
+      "xrefs": [
+        "ZHO:art69/p3"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 269.876167003531,
+        "search": 33.134875004179776,
+        "rerank": 1596.6189169994323,
+        "xrefs": 16.11187501111999
+      }
+    },
+    {
+      "id": "q142",
+      "style": "ru",
+      "q": "По каким основаниям могут отказать в постановке на учет нуждающихся в жилище?",
+      "gold": [
+        "art72"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art72",
+        "ZHO:art72/sp1",
+        "ZHO:art73/p4",
+        "ZHO:art71/p1",
+        "ZHO:art73/p1/sp1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 240.41374999796972,
+        "search": 36.98183299275115,
+        "rerank": 1590.8939999935683,
+        "xrefs": 0.12937501014675945
+      }
+    },
+    {
+      "id": "q143",
+      "style": "ru",
+      "q": "Может ли наниматель приватизировать квартиру из государственного жилищного фонда?",
+      "gold": [
+        "art13"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art13/p1",
+        "ZHO:art13/p6",
+        "ZHO:art13/p9",
+        "ZHO:art98/p1",
+        "ZHO:art98-2/p2"
+      ],
+      "xrefs": [
+        "ZHO:art21/p3",
+        "ZHO:art101-10"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 191.07400000211783,
+        "search": 54.76758400618564,
+        "rerank": 2196.361624999554,
+        "xrefs": 38.805250005680136
+      }
+    },
+    {
+      "id": "q144",
+      "style": "ru",
+      "q": "Какие права у членов семьи собственника жилища?",
+      "gold": [
+        "art22",
+        "art21"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art22/p1",
+        "ZHO:art21/p1",
+        "ZHO:art22/p2",
+        "ZHO:art21/p2",
+        "ZHO:art22/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 274.14762500848155,
+        "search": 35.299583003506996,
+        "rerank": 1287.4873749969993,
+        "xrefs": 0.069500005338341
+      }
+    },
+    {
+      "id": "q145",
+      "style": "ru",
+      "q": "В каких случаях право собственности на жилище может быть прекращено принудительно?",
+      "gold": [
+        "art29"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art29/p1",
+        "ZHO:art29/p3-1",
+        "ZHO:art29/p2",
+        "GK_GEN:art188/p5",
+        "ZHO:art28/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 180.75295799644664,
+        "search": 38.063250001869164,
+        "rerank": 1713.458875005017,
+        "xrefs": 0.2431659959256649
+      }
+    },
+    {
+      "id": "q146",
+      "style": "ru",
+      "q": "Что такое реновация жилища и какие права у жильцов сносимого дома?",
+      "gold": [
+        "art116-1",
+        "art2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art116-1/p1",
+        "ZHO:art116-1/p2",
+        "ZHO:art116-1/p9",
+        "STROY:art140/p1",
+        "ZHO:art106/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 181.14095900091343,
+        "search": 33.43150000728201,
+        "rerank": 1607.9658329981612,
+        "xrefs": 0.0772500061430037
+      }
+    },
+    {
+      "id": "q147",
+      "style": "ref",
+      "q": "что говорит ст 42 п 8 закона о жилищных отношениях",
+      "gold": [
+        "art42/p8"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p8",
+        "ZHO:art2/sp42",
+        "ZHO:art43/p8",
+        "ZHO:art42/p5/sp18",
+        "ZHO:art2/sp8"
+      ],
+      "xrefs": [
+        "ZHO:art42/p7"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 99.44116699625738,
+        "search": 28.329458000371233,
+        "rerank": 1793.9483750087675,
+        "xrefs": 2.7447499887784943
+      }
+    },
+    {
+      "id": "q148",
+      "style": "ref",
+      "q": "34-1 баптың 10-тармағы бойынша қарызды қалай өндіреді",
+      "gold": [
+        "art34-1/p10"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p10",
+        "ZHO:art34-1/p8",
+        "GK_GEN:art321/p1",
+        "ZHO:art34-1/p3",
+        "GK_SPEC:art725-1/p1"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9",
+        "GK_GEN:art314/p2",
+        "GK_GEN:art313/p2"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 60.96358399372548,
+        "search": 141.78475001244806,
+        "rerank": 2188.690499999211,
+        "xrefs": 18.76095900661312
+      }
+    },
+    {
+      "id": "q149",
+      "style": "ref",
+      "q": "статья 40 перепланировка",
+      "gold": [
+        "art40"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art40/p2",
+        "ZHO:art40/p1",
+        "ZHO:art40/p3",
+        "ZHO:art2/sp18",
+        "KOAP:art322/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 184.9128330068197,
+        "search": 65.76299999142066,
+        "rerank": 2130.021292003221,
+        "xrefs": 0.08095899829640985
+      }
+    },
+    {
+      "id": "q150",
+      "style": "ref",
+      "q": "51-1 бап председатель",
+      "gold": [
+        "art51-1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-1/p1",
+        "ZHO:art51-1/p5/sp1",
+        "ZHO:art51-1/p2",
+        "ZHO:art51-1/p5/sp17",
+        "ZHO:art51-1/p5/sp11"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 91.00533300079405,
+        "search": 60.087624995503575,
+        "rerank": 1790.492334010196,
+        "xrefs": 0.06062499596737325
+      }
+    },
+    {
+      "id": "q151",
+      "style": "latin",
+      "q": "sosed sverhu zatopil kvartiru chto delat po zakonu",
+      "gold": [
+        "art39/p1",
+        "art39/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art39/p1",
+        "ZHO:art39/p4",
+        "ZHO:art39/p2",
+        "ZHO:art42/p2",
+        "GK_GEN:art235/p5"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 212.1674170048209,
+        "search": 69.06695799261797,
+        "rerank": 1720.4699579888256,
+        "xrefs": 0.12937499559484422
+      }
+    },
+    {
+      "id": "q152",
+      "style": "latin",
+      "q": "kvorum sobraniya OSI skolko nado",
+      "gold": [
+        "art42/p8"
+      ],
+      "rank": 2,
+      "top": [
+        "ZHO:art42/p14",
+        "ZHO:art42/p8",
+        "RULES_DECISIONS:p8",
+        "ZHO:art42/p3",
+        "RULES_DECISIONS:p12/sp6"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 151.8333340063691,
+        "search": 44.197916009579785,
+        "rerank": 2161.977499999921,
+        "xrefs": 0.09941699681803584
+      }
+    },
+    {
+      "id": "q153",
+      "style": "mixed",
+      "q": "уй кенесинин мушелерине акша толеуге болама вознаграждение",
+      "gold": [
+        "art42/p5"
+      ],
+      "rank": null,
+      "top": [
+        "UK:art81/p4",
+        "UK:art248/p2",
+        "UK:art42/p2",
+        "GK_GEN:art245/p6",
+        "UK:art247/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 189.42845800484065,
+        "search": 30.216416998882778,
+        "rerank": 1384.741000001668,
+        "xrefs": 0.08166699262801558
+      }
+    },
+    {
+      "id": "q154",
+      "style": "typo",
+      "q": "председателю оси зарплату кто устанавливает",
+      "gold": [
+        "art42/p5"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art42/p5/sp20",
+        "ZHO:art51-1/p5/sp6",
+        "ZHO:art51-1/p1",
+        "ZHO:art51-1/p6",
+        "CONST:art95/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 50.55920800077729,
+        "search": 20.96479201281909,
+        "rerank": 1570.9752090042457,
+        "xrefs": 0.0703330006217584
+      }
+    },
+    {
+      "id": "q155",
+      "style": "kk",
+      "q": "Тұрғын үй инспекциясы қандай жағдайда уақытша басқарушы компания тағайындайды?",
+      "gold": [
+        "art51-5/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-5/p4",
+        "ZHO:art51-5/p7",
+        "ZHO:art10-2/sp10-28",
+        "ZHO:art10-9/p3/sp4",
+        "ZHO:art10-9/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 203.49816601083148,
+        "search": 24.370915998588316,
+        "rerank": 2136.7061249911785,
+        "xrefs": 0.14754100993741304
+      }
+    },
+    {
+      "id": "q156",
+      "style": "mixed",
+      "q": "оси счеттары туралы акпарат алуга кукым бар ма",
+      "gold": [
+        "art34/p10"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34/p10",
+        "KOAP:art244/p7",
+        "GK_SPEC:art800/p1",
+        "GK_SPEC:art740/p1",
+        "KOAP:art284/p19"
+      ],
+      "xrefs": [
+        "GK_SPEC:art742/p2/sp3"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 180.33550000109244,
+        "search": 29.184375001932494,
+        "rerank": 2145.9394169942243,
+        "xrefs": 7.973750005476177
+      }
+    },
+    {
+      "id": "q157",
+      "style": "mixed",
+      "q": "председатель оси 10 жыл болды ауыстырмаймыз дейди канша жылга сайланады",
+      "gold": [
+        "art51-1/p1"
+      ],
+      "rank": 7,
+      "top": [
+        "CONST:art88/p2",
+        "CONST:art72/p2",
+        "CONST:art43/p1",
+        "ZHO:art51/p4",
+        "APPK:art90-2/p3/sp3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 160.31329199904576,
+        "search": 20.830166002269834,
+        "rerank": 1531.7057499923976,
+        "xrefs": 0.06558399763889611
+      }
+    },
+    {
+      "id": "q158",
+      "style": "latin",
+      "q": "uy kenesi kansha adamnan turady",
+      "gold": [
+        "art51/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51/p1",
+        "ZHO:art51/p3",
+        "ZHO:art2/sp16-4",
+        "UK:art129/p1",
+        "ZHO:art16/p1"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 179.66783400333952,
+        "search": 36.23079200042412,
+        "rerank": 1767.078582997783,
+        "xrefs": 4.448792009497993
+      }
+    },
+    {
+      "id": "q159",
+      "style": "typo",
+      "q": "капремонт деньги где лежат на каком счету оси",
+      "gold": [
+        "art34-2/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-2/p1",
+        "GK_SPEC:art741/sp2-2",
+        "ZHO:art10-9/p3/sp2~2",
+        "ZHO:art34-1/p3",
+        "GK_SPEC:art740/p1/sp2-2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 196.37937500374392,
+        "search": 20.938833011314273,
+        "rerank": 2164.0724160097307,
+        "xrefs": 0.09566600783728063
+      }
+    },
+    {
+      "id": "q160",
+      "style": "mixed",
+      "q": "соседтер собрание откизбей шешим кабылдапты протоколда менин колым жок",
+      "gold": [
+        "art42/p8",
+        "art42/p12",
+        "art42/p15"
+      ],
+      "rank": null,
+      "top": [
+        "RULES_DECISIONS:p11",
+        "ZHO:art42/p14",
+        "ZHO:art42/p13",
+        "RULES_DECISIONS:p12/sp10",
+        "ZHO:art42/p16"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 138.75854200159665,
+        "search": 21.22925000730902,
+        "rerank": 1950.2570830081822,
+        "xrefs": 0.11891599569935352
+      }
+    },
+    {
+      "id": "q161",
+      "style": "latin",
+      "q": "perplanirovka nesushaya stena soglasie sosedei",
+      "gold": [
+        "art40/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art40/p3",
+        "STROY:art98/p4/sp18",
+        "RULES_MGMT:p37",
+        "ZHO:art41/p2",
+        "ZHO:art2/sp18"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 179.97033399296924,
+        "search": 24.23850000195671,
+        "rerank": 1829.4689169997582,
+        "xrefs": 0.12037499982398003
+      }
+    },
+    {
+      "id": "q162",
+      "style": "typo",
+      "q": "упраляющая компания ушла и забрала документы на дом",
+      "gold": [
+        "art51-4/p8",
+        "art51-1/p4"
+      ],
+      "rank": null,
+      "top": [
+        "ZHO:art51-5/p2/sp10",
+        "ZHO:art51-5/p2/sp12",
+        "KOAP:art795/p1",
+        "ZHO:art2/sp1-4",
+        "KOAP:art799"
+      ],
+      "xrefs": [
+        "KOAP:art785/p2",
+        "KOAP:art804/p1/sp27-1"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 184.23345900373533,
+        "search": 21.061290986835957,
+        "rerank": 1766.249833002803,
+        "xrefs": 28.091708009014837
+      }
+    },
+    {
+      "id": "q163",
+      "style": "mixed",
+      "q": "жарна толемегеним ушин пеня косып жатыр законно ма",
+      "gold": [
+        "art34-1/p9"
+      ],
+      "rank": 2,
+      "top": [
+        "KOAP:art91/p2",
+        "ZHO:art34-1/p9",
+        "RULES_MGMT:p34",
+        "ZHO:art34/p5",
+        "ZHO:art34-1/p7"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 251.92829199659172,
+        "search": 26.81887500511948,
+        "rerank": 2188.8280419952935,
+        "xrefs": 0.10391599789727479
+      }
+    },
+    {
+      "id": "q164",
+      "style": "mixed",
+      "q": "акт составлять не хочет председатель, су басты кеше",
+      "gold": [
+        "art39/p4"
+      ],
+      "rank": 7,
+      "top": [
+        "APPK:art25/p2",
+        "GPK:art36/p2",
+        "APPK:art125",
+        "APPK:art24/p6",
+        "GPK:art35/p6"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 252.0111670019105,
+        "search": 33.57108398631681,
+        "rerank": 2186.112082999898,
+        "xrefs": 0.8117919933283702
+      }
+    },
+    {
+      "id": "q165",
+      "style": "latin",
+      "q": "zhinalys kvorum kansha paiyz",
+      "gold": [
+        "art42/p8"
+      ],
+      "rank": null,
+      "top": [
+        "RULES_DECISIONS:p10",
+        "UK:art249/p1",
+        "ZHO:art42/p5",
+        "ZHO:art42/p14",
+        "ZHO:art42/p15"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 195.89687501138542,
+        "search": 39.90466598770581,
+        "rerank": 2230.372416001046,
+        "xrefs": 0.43037500290665776
+      }
+    },
+    {
+      "id": "q166",
+      "style": "typo",
+      "q": "сосед сделал перепланировку без разрешения куда жаловатся",
+      "gold": [
+        "art40/p3",
+        "art40/p2",
+        "art40/p1"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art40/p3",
+        "KOAP:art322/p1",
+        "STROY:art20/p5",
+        "KOAP:art322/p1~2",
+        "RULES_MGMT:p37"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 165.4435829987051,
+        "search": 30.41583400045056,
+        "rerank": 1789.4779159978498,
+        "xrefs": 0.18287499551661313
+      }
+    },
+    {
+      "id": "q167",
+      "style": "mixed",
+      "q": "оси отчет жариялау керек пе подъезге илу",
+      "gold": [
+        "art46/p1"
+      ],
+      "rank": null,
+      "top": [
+        "MONOPOLIES:art25/p11",
+        "MONOPOLIES:art25/p9",
+        "MONOPOLIES:art26/p2/sp24",
+        "MONOPOLIES:art26/p2/sp25",
+        "MONOPOLIES:art25/p10"
+      ],
+      "xrefs": [
+        "MONOPOLIES:art25/p6"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 251.71374999627005,
+        "search": 40.77470800257288,
+        "rerank": 1887.0271249907091,
+        "xrefs": 5.519792000995949
+      }
+    },
+    {
+      "id": "q168",
+      "style": "mixed",
+      "q": "квартираны продать еттим долг по взносам кім толейди",
+      "gold": [
+        "art33/p3",
+        "art34-1/p1",
+        "art34-1/p10"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34-1/p10",
+        "ZHO:art34-1/p7",
+        "RULES_MGMT:p34",
+        "ZHO:art39/p2",
+        "ZHO:art34/p5"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 143.41837499523535,
+        "search": 28.814458011765964,
+        "rerank": 2150.228917002096,
+        "xrefs": 8.794624998699874
+      }
+    },
+    {
+      "id": "q169",
+      "style": "typo",
+      "q": "ревизионая комисия проверка финансов оси как часто",
+      "gold": [
+        "art45/p2"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art45/p2",
+        "ZHO:art45/p1",
+        "APPK:art61/p3",
+        "ZHO:art45/p3",
+        "MONOPOLIES:art30-1/p11"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 245.4337920062244,
+        "search": 32.79787499923259,
+        "rerank": 2216.6257499920903,
+        "xrefs": 0.13933300215285271
+      }
+    },
+    {
+      "id": "q170",
+      "style": "mixed",
+      "q": "жаңа үй застройщик управляйканы озі тандап койды болама",
+      "gold": [
+        "art51-5/p3"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-5/p3",
+        "ZHO:art51-4/p6",
+        "ZHO:art51-5/p4",
+        "ZHO:art51-5/p5",
+        "ZHO:art47/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 131.72437500907108,
+        "search": 32.048666005721316,
+        "rerank": 1842.0380000025034,
+        "xrefs": 0.08625000191386789
+      }
+    },
+    {
+      "id": "q171",
+      "style": "latin",
+      "q": "osi predsedatel dokumenty ne peredaet novomu",
+      "gold": [
+        "art51-1/p4"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-1/p4",
+        "GK_SPEC:art417/p1",
+        "ZHO:art51-4/p8",
+        "APPK:art44/p3",
+        "APPK:art44/p1"
+      ],
+      "xrefs": [
+        "GK_SPEC:art408/p2"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 193.48975000320934,
+        "search": 96.36329099885188,
+        "rerank": 1777.991958995699,
+        "xrefs": 4.312875011237338
+      }
+    },
+    {
+      "id": "q172",
+      "style": "mixed",
+      "q": "голосование через eGov приложение арқылы өтті жарамды ма",
+      "gold": [
+        "art44/p1",
+        "art42/p2"
+      ],
+      "rank": 5,
+      "top": [
+        "ZHO:art44/p4",
+        "UK:art151/p2",
+        "GK_SPEC:art888/p5",
+        "ZHO:art44/p2",
+        "ZHO:art44/p1"
+      ],
+      "xrefs": [
+        "ZHO:art42/p5/sp9"
+      ],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 173.15045799477957,
+        "search": 39.75258300488349,
+        "rerank": 2110.87641598715,
+        "xrefs": 32.93524999753572
+      }
+    },
+    {
+      "id": "q173",
+      "style": "kk",
+      "q": "Меншік иесі пәтерін жалға бергенде кімге хабарлауға міндетті?",
+      "gold": [
+        "art34/p6"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art34/p6",
+        "ZHO:art23/p3-1",
+        "ZHO:art25/p4",
+        "ZHO:art24/p6",
+        "ZHO:art25/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 389.85145899641793,
+        "search": 98.46783299872186,
+        "rerank": 2080.2155420096824,
+        "xrefs": 0.1600840041646734
+      }
+    },
+    {
+      "id": "q174",
+      "style": "kk",
+      "q": "Басқарушы компания қызмет құнын өзгертсе, меншік иелерін қанша уақыт бұрын ескертуі тиіс?",
+      "gold": [
+        "art51-4/p5"
+      ],
+      "rank": 1,
+      "top": [
+        "ZHO:art51-4/p5",
+        "ZHO:art51-5/p2/sp10",
+        "ZHO:art51-5/p3",
+        "ZHO:art51-5/p2/sp8",
+        "RULES_MGMT:p27"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 273.6132910067681,
+        "search": 144.18499999737833,
+        "rerank": 2590.7369170017773,
+        "xrefs": 0.1435839949408546
+      }
+    },
+    {
+      "id": "q175",
+      "style": "ru",
+      "q": "Горячей воды нет уже неделю, могу ли я требовать перерасчёт за коммуналку?",
+      "gold": [
+        "COMM_SERVICES:p20/sp4",
+        "COMM_SERVICES:p21/sp7",
+        "COMM_SERVICES:p33"
+      ],
+      "rank": 1,
+      "top": [
+        "COMM_SERVICES:p20/sp4",
+        "COMM_SERVICES:p20",
+        "COMM_SERVICES:p33",
+        "COMM_SERVICES:p21/sp7",
+        "COMM_SERVICES:p36"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 206.746750001912,
+        "search": 98.08733301179018,
+        "rerank": 2322.8234999987762,
+        "xrefs": 1.0312079975847155
+      }
+    },
+    {
+      "id": "q176",
+      "style": "mixed",
+      "q": "ыстык су жок бир апта болды перерасчет жасатуга бола ма",
+      "gold": [
+        "COMM_SERVICES:p20/sp4",
+        "COMM_SERVICES:p21/sp7",
+        "COMM_SERVICES:p33"
+      ],
+      "rank": 1,
+      "top": [
+        "COMM_SERVICES:p20/sp4",
+        "MONOPOLIES:art26/p2/sp11",
+        "COMM_SERVICES:p33",
+        "CONSUMER:art30/p7",
+        "COMM_SERVICES:p21/sp7"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 194.71391699335072,
+        "search": 81.66129200253636,
+        "rerank": 2335.5463330080966,
+        "xrefs": 0.19299999985378236
+      }
+    },
+    {
+      "id": "q177",
+      "style": "ru",
+      "q": "Поставщик отказывается подписать акт, что отопления не было. Что делать?",
+      "gold": [
+        "COMM_SERVICES:p34"
+      ],
+      "rank": 1,
+      "top": [
+        "COMM_SERVICES:p34",
+        "COMM_SERVICES:p35",
+        "COMM_SERVICES:p36",
+        "GK_SPEC:art663/p4",
+        "GPK:art131/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 258.0838329886319,
+        "search": 71.81358299567364,
+        "rerank": 2107.0617079967633,
+        "xrefs": 0.10575000487733632
+      }
+    },
+    {
+      "id": "q178",
+      "style": "typo",
+      "q": "в кв холодно батареи еле теплые куда жаловатся на тепло",
+      "gold": [
+        "COMM_SERVICES:p33",
+        "COMM_SERVICES:p6",
+        "COMM_SERVICES:p15"
+      ],
+      "rank": 2,
+      "top": [
+        "COMM_SERVICES:p20",
+        "COMM_SERVICES:p6",
+        "COMM_SERVICES:p21",
+        "COMM_SERVICES:p20/sp4",
+        "KOAP:art301-3/p3"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 130.40516700129956,
+        "search": 38.77325000939891,
+        "rerank": 2271.4195839944296,
+        "xrefs": 0.19583399989642203
+      }
+    },
+    {
+      "id": "q179",
+      "style": "ru",
+      "q": "За сколько дней поставщик должен восстановить качество услуги после моего заявления?",
+      "gold": [
+        "COMM_SERVICES:p21/sp7"
+      ],
+      "rank": 1,
+      "top": [
+        "COMM_SERVICES:p21/sp7",
+        "CONSUMER:art19",
+        "CONSUMER:art35/p4",
+        "CONSUMER:art30/p2-1",
+        "CONSUMER:art30/p2"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 48.868291996768676,
+        "search": 26.747916999738663,
+        "rerank": 1857.816667004954,
+        "xrefs": 0.13099999341648072
+      }
+    },
+    {
+      "id": "q180",
+      "style": "kk",
+      "q": "Коммуналдық қызмет сапасыз көрсетілсе, тұтынушы кімге хабарлауы керек?",
+      "gold": [
+        "COMM_SERVICES:p33",
+        "COMM_SERVICES:p15"
+      ],
+      "rank": 1,
+      "top": [
+        "COMM_SERVICES:p15",
+        "COMM_SERVICES:p34",
+        "COMM_SERVICES:p21",
+        "COMM_SERVICES:p33",
+        "COMM_SERVICES:p20"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 211.00524999201298,
+        "search": 31.20387499802746,
+        "rerank": 2076.243500006967,
+        "xrefs": 0.22124999668449163
+      }
+    },
+    {
+      "id": "q181",
+      "style": "ru",
+      "q": "Должны ли проводить публичные слушания перед повышением тарифа на тепло?",
+      "gold": [
+        "MONOPOLIES:art15/p13",
+        "MONOPOLIES:art25",
+        "MONOPOLIES:art20/p8",
+        "MONOPOLIES:art22/p7"
+      ],
+      "rank": 1,
+      "top": [
+        "MONOPOLIES:art25/p5",
+        "MONOPOLIES:art15/p13",
+        "MONOPOLIES:art22/p7",
+        "MONOPOLIES:art20/p8",
+        "MONOPOLIES:art25/p4"
+      ],
+      "xrefs": [
+        "MONOPOLIES:art22/p1/sp3"
+      ],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 100.0221669964958,
+        "search": 40.00225001072977,
+        "rerank": 2257.125084011932,
+        "xrefs": 15.764208001201041
+      }
+    },
+    {
+      "id": "q182",
+      "style": "mixed",
+      "q": "тарифти котерерде публичные слушания откизу керек пе",
+      "gold": [
+        "MONOPOLIES:art15/p13",
+        "MONOPOLIES:art25",
+        "MONOPOLIES:art20/p8",
+        "MONOPOLIES:art22/p7"
+      ],
+      "rank": 2,
+      "top": [
+        "MONOPOLIES:art4/sp6",
+        "MONOPOLIES:art25/p4",
+        "MONOPOLIES:art20/p8",
+        "MONOPOLIES:art22/p7",
+        "MONOPOLIES:art27/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "kk",
+      "timings": {
+        "embed": 180.78745898674242,
+        "search": 29.911499994341284,
+        "rerank": 2166.748457995709,
+        "xrefs": 0.07583299884572625
+      }
+    },
+    {
+      "id": "q183",
+      "style": "ru",
+      "q": "Подрядчик плохо сделал ремонт в квартире, в какой срок он обязан устранить недостатки?",
+      "gold": [
+        "CONSUMER:art35/p4"
+      ],
+      "rank": 5,
+      "top": [
+        "GK_SPEC:art648/p2",
+        "GK_SPEC:art665/p2",
+        "STROY:art118/p2/sp4",
+        "GK_SPEC:art679/p1",
+        "CONSUMER:art35/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 91.45320899551734,
+        "search": 22.91700000932906,
+        "rerank": 2177.100500004599,
+        "xrefs": 0.08779100608080626
+      }
+    },
+    {
+      "id": "q184",
+      "style": "ru",
+      "q": "Можно ли как потребителю требовать компенсацию морального вреда?",
+      "gold": [
+        "CONSUMER:art21",
+        "CONSUMER:art7/sp12"
+      ],
+      "rank": 1,
+      "top": [
+        "CONSUMER:art21",
+        "GK_GEN:art9/p1",
+        "CONSUMER:art7/sp12",
+        "GK_GEN:art143/p6",
+        "APPK:art107/p4"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 130.0949999858858,
+        "search": 38.2229999959236,
+        "rerank": 1701.3331250054762,
+        "xrefs": 0.13020799087826163
+      }
+    },
+    {
+      "id": "q185",
+      "style": "ru",
+      "q": "Хочу снести стену между кухней и залом, нужно ли разрешение на перепланировку?",
+      "gold": [
+        "STROY:art124",
+        "ZHO:art22",
+        "STROY:art28/p1/sp13"
+      ],
+      "rank": null,
+      "top": [
+        "ZHO:art40/p3",
+        "RULES_MGMT:p37",
+        "STROY:art98/p4/sp18",
+        "ZHO:art40/p2",
+        "STROY:art120/p9"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 179.76199999975506,
+        "search": 36.52066600625403,
+        "rerank": 1746.379166987026,
+        "xrefs": 0.1514999894425273
+      }
+    },
+    {
+      "id": "q186",
+      "style": "ru",
+      "q": "Квартиросъёмщик сделал перепланировку без согласия хозяина и разрешения, это законно?",
+      "gold": [
+        "STROY:art125",
+        "STROY:art124"
+      ],
+      "rank": null,
+      "top": [
+        "ZHO:art40/p3",
+        "RULES_MGMT:p37",
+        "ZHO:art40/p2",
+        "KOAP:art322/p1",
+        "ZHO:art40/p1"
+      ],
+      "xrefs": [],
+      "reply_lang": "ru",
+      "timings": {
+        "embed": 130.50429099530447,
+        "search": 31.914666993543506,
+        "rerank": 1645.4840000078548,
+        "xrefs": 0.10025000665336847
+      }
+    }
+  ]
+}
