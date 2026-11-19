@@ -1,0 +1,24 @@
+# HTTPS-сертификат Let's Encrypt Caddy получает сам. Без домена адрес вида 94-131-95-171.sslip.io
+# (sslip.io бесплатно отвечает этим IP); когда купим домен — поменять SITE_ADDRESS в .env.
+{$SITE_ADDRESS} {
+	# Сжимаем только статику и JSON: поток ответа AI (text/event-stream) должен идти без буфера
+	encode zstd gzip {
+		match {
+			header Content-Type text/html*
+			header Content-Type text/css*
+			header Content-Type text/plain*
+			header Content-Type application/javascript*
+			header Content-Type application/json*
+			header Content-Type image/svg+xml*
+		}
+	}
+	reverse_proxy web:3000 {
+		flush_interval -1
+	}
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+}
