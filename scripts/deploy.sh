@@ -3,7 +3,7 @@
 # Копирует проект в ~/zhkh на сервере (без .env, data/, node_modules), пересобирает и перезапускает контейнеры.
 # Секреты живут только на сервере в ~/zhkh/.env и этим скриптом не трогаются.
 set -eu
-HOST="${DEPLOY_HOST:-zhkh_ai_lawyer@94.131.95.171}"
+HOST="${DEPLOY_HOST:-zhkh_ai_lawyer@94.131.82.106}"
 KEY="${DEPLOY_KEY:-$HOME/.ssh/yc_zhkh}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 

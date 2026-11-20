@@ -1,4 +1,4 @@
-# Продакшен на одном сервере (4 vCPU / 12 ГБ): scripts/deploy.sh копирует проект в ~/zhkh и запускает этот файл.
+# Продакшен на одном сервере (сейчас 2 vCPU / 8 ГБ + 4 ГБ swap): scripts/deploy.sh копирует проект в ~/zhkh и запускает этот файл.
 # Снаружи открыты только 80/443 (Caddy, HTTPS). Postgres, Qdrant и API доступны только внутри docker-сети.
 name: zhkh
 
@@ -40,13 +40,13 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       qdrant: { condition: service_started }
-    mem_limit: 9g
+    mem_limit: 6g
 
   web:
     build: ../../apps/web
     restart: unless-stopped
     depends_on: [api]
-    mem_limit: 1g
+    mem_limit: 768m
 
   caddy:
     image: caddy:2.10

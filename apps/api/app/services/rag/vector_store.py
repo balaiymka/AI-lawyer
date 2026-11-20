@@ -32,7 +32,8 @@ def get_client() -> QdrantClient:
     if s.qdrant_path:
         s.qdrant_path.mkdir(parents=True, exist_ok=True)
         return QdrantClient(path=str(s.qdrant_path))
-    return QdrantClient(url=s.qdrant_url)
+    # 30 с вместо 5 по умолчанию: на слабом сервере (2 vCPU) запрос во время перестройки индекса идёт дольше 5 с.
+    return QdrantClient(url=s.qdrant_url, timeout=30)
 
 
 def ensure_collection(client: QdrantClient, dim: int = 1024) -> None:

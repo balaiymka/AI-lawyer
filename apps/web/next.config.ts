@@ -5,7 +5,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   distDir: process.env.NEXT_DIST_DIR || ".next",
-  compress: process.env.NEXT_DIST_DIR === ".next-demo" ? false : true, // без сжатия SSE-поток ответа AI не копится в буфере прокси
+  // Без сжатия SSE-поток ответа AI не копится в буфере прокси. На сервере сжимает Caddy (NEXT_NO_COMPRESS=1).
+  compress: process.env.NEXT_DIST_DIR === ".next-demo" || process.env.NEXT_NO_COMPRESS === "1" ? false : true,
+  experimental: {
+    // Поиск на сервере без видеокарты идёт 15–60 с; по умолчанию прокси обрывает запрос через 30 с.
+    proxyTimeout: 180_000,
+  },
   async rewrites() {
     const api = process.env.API_ORIGIN || "http://127.0.0.1:8000";
     return [{ source: "/backend/:path*", destination: `${api}/:path*` }];
