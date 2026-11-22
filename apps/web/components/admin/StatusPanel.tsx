@@ -28,6 +28,13 @@ const STATUS: Record<Health["status"], { label: string; lvl: Level }> = {
   down: { label: "Поиск не работает", lvl: "bad" },
 };
 
+const PROVIDERS: Record<string, string> = {
+  claude_code: "Claude Code (локально)",
+  anthropic: "Claude API",
+  gemini: "Gemini (Vertex AI)",
+  none: "нет (демо-режим)",
+};
+
 const REFRESH_MS = 15000;
 // Если законы не сверялись с Adilet дольше этого срока — подсвечиваем.
 const STALE_DAYS = 7;
@@ -134,8 +141,8 @@ export function StatusPanel() {
             {Object.values(health.models).map((m) => <p key={m.name}>{m.name}: {m.loaded ? "в памяти" : "не загружена"}</p>)}
           </Card>
           <Card icon={<Bot className="size-4" aria-hidden />} title="Языковая модель" lvl={health.llm.ready ? "ok" : "bad"}
-            state={health.llm.ready ? "Готова" : health.llm.provider === "claude_code" ? "Claude Code не найден" : "Не задан API-ключ"}>
-            <p>Провайдер: {health.llm.provider === "claude_code" ? "Claude Code (локально)" : "Claude API"}</p>
+            state={health.llm.ready ? "Готова" : health.llm.provider === "claude_code" ? "Claude Code не найден" : health.llm.provider === "none" ? "Не подключена (демо-режим)" : "Не задан ключ или модель"}>
+            <p>Провайдер: {PROVIDERS[health.llm.provider] ?? health.llm.provider}</p>
             <p>Модель: {health.llm.model === "default" ? "по умолчанию" : health.llm.model}</p>
           </Card>
         </div>

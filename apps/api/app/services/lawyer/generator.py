@@ -2,7 +2,8 @@
 
 * Claude (`settings.llm_model`) — адаптивное мышление, effort high, structured output по LAWYER_SCHEMA,
   стриминг, server-side fallbacks при отказе модели, кэширование системного промпта.
-* Демо-режим (нет ANTHROPIC_API_KEY) — честный ответ без толкования: показывает найденные нормы
+* Gemini через Vertex AI (`LLM_PROVIDER=gemini`) — JSON по той же схеме, проверка и одна повторная попытка.
+* Демо-режим (нет ключа) — честный ответ без толкования: показывает найденные нормы
   дословно, ничего не придумывает. Нужен, чтобы интерфейс и проверка ссылок работали без ключа.
 """
 
@@ -204,9 +205,47 @@ async def generate_claude_code(user_content: str) -> AsyncIterator[Delta | Final
         return
 
 
+# --- Gemini (Vertex AI) -------------------------------------------------------------------
+
+async def generate_gemini(user_content: str) -> AsyncIterator[Delta | Final]:
+    """Ответ юриста через Gemini. JSON по LAWYER_SCHEMA, проверка pydantic, одна повторная попытка."""
+    from pydantic import ValidationError
+
+    from app.services.llm import gemini
+
+    system = _system_prompt() + JSON_INSTRUCTIONS.format(schema=gemini.schema_hint(LAWYER_SCHEMA))
+    prompt, schema = user_content, LAWYER_SCHEMA
+    for attempt in range(2):
+        try:
+            res = await gemini.ask_json(prompt, system=system, schema=schema)
+        except gemini.GeminiError as e:
+            # Vertex принимает не все конструкции JSON Schema — тогда просим JSON только инструкцией в промпте.
+            if attempt == 0 and schema is not None and "INVALID_ARGUMENT" in str(e):
+                log.warning("Gemini rejected response schema, retrying without it: %s", e)
+                schema = None
+                continue
+            raise LawyerError(str(e)) from e
+        try:
+            answer = LawyerAnswer.model_validate_json(_extract_json(res.text))
+        except (ValidationError, LawyerError, ValueError) as e:
+            if attempt == 1:
+                raise LawyerError(f"ответ Gemini не соответствует схеме: {str(e)[:300]}") from e
+            prompt = (user_content + "\n\n<previous_attempt_error>Предыдущий ответ не прошёл проверку схемы: "
+                      f"{str(e)[:500]}. Верни исправленный JSON целиком.</previous_attempt_error>")
+            continue
+        yield Delta(answer.summary)
+        yield Final(answer, "llm", res.model, {**res.usage, "via": "gemini"})
+        return
+    raise LawyerError("Gemini не вернул корректный ответ")
+
+
 def llm_provider() -> str:
-    """Какой LLM реально доступен: anthropic | claude_code | none."""
+    """Какой LLM реально доступен: anthropic | gemini | claude_code | none."""
     s = get_settings()
+    if s.llm_provider == "gemini":
+        from app.services.llm import gemini
+
+        return "gemini" if gemini.configured() else "none"
     if s.llm_provider == "claude_code":
         from app.services.llm.claude_code import find_claude
 
@@ -221,4 +260,7 @@ def llm_available() -> bool:
 
 
 def generate_answer(user_content: str) -> AsyncIterator[Delta | Final]:
-    return generate_claude_code(user_content) if llm_provider() == "claude_code" else generate_llm(user_content)
+    provider = llm_provider()
+    if provider == "gemini":
+        return generate_gemini(user_content)
+    return generate_claude_code(user_content) if provider == "claude_code" else generate_llm(user_content)

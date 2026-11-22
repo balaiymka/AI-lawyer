@@ -78,6 +78,8 @@ def check_llm() -> dict:
         from app.services.llm.claude_code import find_claude
         ready = find_claude() is not None
         return {"provider": "claude_code", "model": s.claude_model or "default", "ready": ready}
+    if s.llm_provider == "gemini":
+        return {"provider": "gemini", "model": s.gemini_model or "не задана", "ready": bool(s.gemini_api_key and s.gemini_model and s.gemini_project)}
     # Ключ не показываем — только факт, что он задан.
     return {"provider": s.llm_provider, "model": s.llm_model, "ready": bool(s.anthropic_api_key)}
 

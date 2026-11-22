@@ -25,6 +25,7 @@ dependencies = [
   "httpx>=0.28",
   "qdrant-client>=1.12",
   "anthropic>=2.8",
+  "google-genai>=3.6",  # Gemini через Vertex AI
   "python-docx>=1.2",
   "PyJWT>=2.10",
   "python-multipart>=0.0.20",

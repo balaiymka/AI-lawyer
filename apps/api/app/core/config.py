@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     s3_endpoint: str = "http://localhost:9000"
 
-    # anthropic — Claude API по ключу (продакшен); claude_code — локальный `claude -p` по подписке
+    # anthropic — Claude API по ключу; gemini — Vertex AI (ключ ментора); claude_code — локальный `claude -p` по подписке
     # (только разработка на своём компьютере); none — без LLM (демо-режим)
     llm_provider: str = "anthropic"
     claude_bin: str = ""  # путь к claude; пусто — поиск в PATH и стандартных местах
@@ -35,6 +35,14 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
     llm_model: str = "claude-opus-5-5"
     llm_fallbacks: str = "default"  # server-side fallback при отказе модели; "off" — выключить
+
+    # gemini — Vertex AI по ключу ментора (проект eknot-zhkh-lawyer-balaiym). Ключ только в .env сервера.
+    gemini_api_key: str = ""
+    gemini_model: str = ""  # ID модели из Model Garden; для разработки — Flash
+    gemini_project: str = ""  # ID проекта Google Cloud; без него Vertex отвечает 403 «project None»
+    gemini_location: str = "global"
+    gemini_max_output_tokens: int = 8192
+    gemini_thinking_budget: int = 2048  # ограничиваем мышление: лимит проекта $95 в месяц
 
     jwt_secret: str = "change-me-in-production"
     cors_origins: str = "http://localhost:3000"

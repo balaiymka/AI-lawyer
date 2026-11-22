@@ -121,6 +121,20 @@ async def normalize_llm(text: str) -> NormalizedQuery:
     return _with_event_date(nq, text)
 
 
+async def normalize_gemini(text: str) -> NormalizedQuery:
+    """Разбор вопроса через Gemini: короткий ответ, без мышления — дёшево и быстро."""
+    from app.services.llm import gemini
+
+    system = (_system_prompt() + "\n\nВерни ТОЛЬКО JSON-объект по схеме:\n" + gemini.schema_hint(NORMALIZER_SCHEMA))
+    try:
+        res = await gemini.ask_json(f"<user_message>\n{text}\n</user_message>", system=system,
+                                    schema=NORMALIZER_SCHEMA, max_output_tokens=2000, thinking_budget=0)
+    except gemini.GeminiError as e:
+        raise NormalizerError(str(e)) from e
+    nq = NormalizedQuery.model_validate({**json.loads(res.text), "source": "llm"})
+    return _with_event_date(nq, text)
+
+
 def _with_event_date(nq: NormalizedQuery, text: str) -> NormalizedQuery:
     """Дата события: из ответа модели, иначе — по шаблонам в тексте вопроса."""
     if nq.event_date:
@@ -192,6 +206,11 @@ async def normalize(text: str) -> NormalizedQuery:
             return await normalize_llm(text)
         except Exception as exc:  # noqa: BLE001 — любая ошибка LLM не должна ронять поиск
             log.warning("LLM normalizer failed, falling back to heuristic: %s", exc)
+    if s.llm_provider == "gemini" and s.gemini_api_key and s.gemini_model and s.gemini_project:
+        try:
+            return await normalize_gemini(text)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("Gemini normalizer failed, falling back to heuristic: %s", exc)
     return normalize_heuristic(text)
 
 

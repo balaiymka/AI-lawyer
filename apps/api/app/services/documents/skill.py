@@ -260,6 +260,11 @@ async def llm_values(case: dict | None, code: str, lang: Lang) -> dict[str, str]
             from app.services.llm.claude_code import ask_llm_async
 
             raw = (await ask_llm_async(prompt, system=PREFILL_SYSTEM, timeout=120)).text
+        elif provider == "gemini":
+            from app.services.llm import gemini
+
+            raw = (await gemini.ask_json(prompt, system=PREFILL_SYSTEM, max_output_tokens=2000,
+                                         thinking_budget=0)).text
         else:
             import anthropic
 
