@@ -13,6 +13,7 @@ import {
   Copy,
   Gavel,
   ListChecks,
+  Reply,
   Scale,
   ShieldAlert,
   Users,
@@ -78,6 +79,7 @@ export function AnswerCard({
   sources,
   t,
   onAsk,
+  onReply,
   onFocusSource,
   onStartDoc,
   eventDate,
@@ -97,6 +99,7 @@ export function AnswerCard({
   sources: Source[];
   t: T;
   onAsk: (q: string) => void;
+  onReply?: (q: string) => void;
   onFocusSource: (chunkId: string) => void;
 }) {
   const byId = new Map(sources.map((s) => [s.chunk_id, s]));
@@ -321,7 +324,9 @@ export function AnswerCard({
         <Section icon={<CircleHelp className="size-3.5" />} title={t.questions}>
           <div className="flex flex-wrap gap-2">
             {answer.clarifying_questions.map((q) => (
-              <button key={q} type="button" onClick={() => onAsk(q)} className="rounded-full border border-line px-3 py-1.5 text-left text-xs transition hover:border-warm/60">
+              <button key={q} type="button" onClick={() => (onReply ? onReply(q) : onAsk(q))}
+                className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-left text-xs transition hover:border-warm/60">
+                <Reply className="size-3.5 shrink-0 text-warm" aria-hidden />
                 {q}
               </button>
             ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { clsx } from "clsx";
-import { ArrowUp, BookOpen, Check, ChevronDown, FileText, Loader2, Plus, Square } from "lucide-react";
+import { ArrowUp, BookOpen, Check, ChevronDown, FileText, Loader2, Plus, Reply, Square, X } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -19,6 +19,7 @@ const STAGES: Stage[] = ["normalize", "search", "answer", "factcheck"];
 type Turn = {
   id: number;
   q: string;
+  replyTo?: string; // ответ на уточняющий вопрос юриста — показываем цитатой, как «ответить» в мессенджере
   stage: Stage | "done";
   raw: string;
   sources: Source[];
@@ -47,6 +48,15 @@ function Progress({ stage, t }: { stage: Turn["stage"]; t: Dictionary["chat"] })
   );
 }
 
+// Ответ на уточняющий вопрос уходит юристу одним сообщением вместе с вопросом, чтобы он понял контекст.
+const REPLY_PREFIX = { ru: ["Уточнение. Вопрос: «", "» Ответ: "], kk: ["Нақтылау. Сұрақ: «", "» Жауап: "] } as const;
+const REPLY_RE = /^(?:Уточнение\. Вопрос|Нақтылау\. Сұрақ): «([\s\S]+?)» (?:Ответ|Жауап): ([\s\S]*)$/;
+
+function splitReply(text: string): { q: string; replyTo?: string } {
+  const m = REPLY_RE.exec(text);
+  return m ? { q: m[2], replyTo: m[1] } : { q: text };
+}
+
 type DocTurn = { id: string; anchor: number | null; autofill: boolean };
 
 type SavedCase = {
@@ -61,6 +71,8 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
   const { locale } = useParams<{ locale: string }>();
   const [turns, setTurns] = useState<Turn[]>([]);
   const [text, setText] = useState("");
+  const [replyTo, setReplyTo] = useState<string | null>(null);
+  const input = useRef<HTMLTextAreaElement>(null);
   const [busy, setBusy] = useState(false);
   const [caseId, setCaseId] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
@@ -93,22 +105,25 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
   };
 
   const send = useCallback(
-    async (q: string) => {
+    async (q: string, reply?: string | null) => {
       q = q.trim();
       if (q.length < 2 || busy) return;
       const id = Date.now();
+      const [pre, mid] = REPLY_PREFIX[locale === "kk" ? "kk" : "ru"];
+      const message = reply ? `${pre}${reply}${mid}${q}` : q;
       const history = turns.flatMap((x) => [
-        { role: "user" as const, text: x.q },
+        { role: "user" as const, text: x.replyTo ? `${REPLY_PREFIX.ru[0]}${x.replyTo}${REPLY_PREFIX.ru[1]}${x.q}` : x.q },
         ...(x.answer ? [{ role: "assistant" as const, text: x.answer.summary }] : []),
       ]);
-      setTurns((ts) => [...ts, { id, q, stage: "normalize", raw: "", sources: [] }]);
+      setTurns((ts) => [...ts, { id, q, replyTo: reply ?? undefined, stage: "normalize", raw: "", sources: [] }]);
       setText("");
+      setReplyTo(null);
       setBusy(true);
       setFocused(null);
       abort.current = new AbortController();
       try {
         await streamChat(
-          { q, role, case_id: caseId, history },
+          { q: message, role, case_id: caseId, history },
           (e) => {
             switch (e.event) {
               case "status":
@@ -138,7 +153,7 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
         setBusy(false);
       }
     },
-    [busy, turns, role, caseId],
+    [busy, turns, role, caseId, locale],
   );
 
   useEffect(() => {
@@ -148,7 +163,7 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
       .then((c) => {
         const out: Turn[] = [];
         c.messages.forEach((m, i) => {
-          if (m.role === "user") out.push({ id: i, q: m.text ?? "", stage: "done", raw: "", sources: [] });
+          if (m.role === "user") out.push({ id: i, ...splitReply(m.text ?? ""), stage: "done", raw: "", sources: [] });
           else if (m.answer && out.length) {
             const { _meta, ...answer } = m.answer;
             Object.assign(out[out.length - 1], {
@@ -231,7 +246,14 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
             const streaming = partialSummary(turn.raw);
             return (
               <div key={turn.id} className="space-y-3">
-                <p className="rise ml-auto w-fit max-w-[85%] rounded-[20px] rounded-br-md bg-accent px-4 py-3 text-[15px] text-accent-fg">{turn.q}</p>
+                <div className="rise ml-auto w-fit max-w-[85%] rounded-[20px] rounded-br-md bg-accent px-4 py-3 text-[15px] text-accent-fg">
+                  {turn.replyTo && (
+                    <p className="mb-2 line-clamp-3 rounded-xl border-l-[3px] border-accent-fg/60 bg-accent-fg/10 px-3 py-1.5 text-xs opacity-90">
+                      {turn.replyTo}
+                    </p>
+                  )}
+                  <p className="whitespace-pre-line">{turn.q}</p>
+                </div>
                 <div className="rise flex gap-3">
                   <span className="ai-orb mt-1 size-8 shrink-0" aria-hidden />
                   <div className="glass min-w-0 flex-1 rounded-[24px] rounded-tl-md p-4 sm:p-5">
@@ -244,6 +266,10 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
                         sources={turn.sources}
                         t={c}
                         onAsk={send}
+                        onReply={(q) => {
+                          setReplyTo(q);
+                          setTimeout(() => input.current?.focus(), 0);
+                        }}
                         onFocusSource={(id) => {
                           setFocused(id);
                           // на телефоне правой панели нет: раскрываем источники прямо под этим ответом
@@ -295,10 +321,24 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            void send(text);
+            void send(text, replyTo);
           }}
-          className="glass glow-border sticky bottom-24 mt-6 flex items-end gap-2 rounded-[26px] p-2 shadow-[var(--shadow)] md:bottom-4"
+          className="glass glow-border sticky bottom-24 mt-6 rounded-[26px] p-2 shadow-[var(--shadow)] md:bottom-4"
         >
+          {replyTo && (
+            <div className="rise mx-1 mb-2 flex items-start gap-2 rounded-2xl border-l-[3px] border-warm bg-surface-2 px-3 py-2">
+              <Reply className="mt-0.5 size-4 shrink-0 text-warm" aria-hidden />
+              <div className="min-w-0 flex-1">
+                <p className="text-[11px] font-semibold text-warm">{c.replyingTo}</p>
+                <p className="line-clamp-2 text-sm text-fg/90">{replyTo}</p>
+              </div>
+              <button type="button" onClick={() => setReplyTo(null)} aria-label={c.cancelReply}
+                className="grid size-7 shrink-0 place-items-center rounded-full text-muted hover:bg-surface hover:text-fg">
+                <X className="size-4" />
+              </button>
+            </div>
+          )}
+          <div className="flex items-end gap-2">
           <div className="relative">
             <button type="button" onClick={() => setDocMenu((v) => !v)} aria-expanded={docMenu} aria-label={c.doc.newDoc}
               className="grid size-11 place-items-center rounded-full text-muted transition hover:bg-surface-2 hover:text-fg">
@@ -322,13 +362,16 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
             rows={1}
             value={text}
             onChange={(e) => setText(e.target.value)}
+            ref={input}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                void send(text);
+                void send(text, replyTo);
+              } else if (e.key === "Escape" && replyTo) {
+                setReplyTo(null);
               }
             }}
-            placeholder={c.placeholder}
+            placeholder={replyTo ? c.replyPlaceholder : c.placeholder}
             className="max-h-40 min-h-11 flex-1 resize-none bg-transparent px-3 py-2.5 text-[15px] outline-none [field-sizing:content] placeholder:text-muted"
           />
           {busy ? (
@@ -340,6 +383,7 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
               <ArrowUp className="size-5" />
             </button>
           )}
+          </div>
         </form>
       </div>
 
