@@ -7,6 +7,7 @@
   python -m ingest index ZHO                 # нарезать на чанки, посчитать эмбеддинги, записать в Qdrant
   python -m ingest history ZHO --at 2018-01-01 --at 2020-01-01   # исторические редакции на даты
   python -m ingest editions ZHO              # показать хронологию редакций с Adilet
+  python -m ingest graph ALL                 # граф ссылок между пунктами (legal_refs); после load — автоматически
 """
 
 from __future__ import annotations
@@ -56,7 +57,7 @@ def _print_stats(code: str, merged, warnings) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(prog="python -m ingest")
     sub = parser.add_subparsers(dest="cmd", required=True)
-    for name in ("fetch", "parse", "load", "index", "history", "editions", "dates"):
+    for name in ("fetch", "parse", "load", "index", "history", "editions", "dates", "graph"):
         p = sub.add_parser(name)
         p.add_argument("code")
         p.add_argument("--ru-file")
@@ -68,6 +69,9 @@ def main() -> None:
     sources = load_sources()
     if args.cmd == "dates":
         _fix_dates(sources, args.code.upper(), get_settings())
+        return
+    if args.cmd == "graph":
+        _graph(None if args.code.upper() == "ALL" else args.code.upper())
         return
     src = sources.get(args.code.upper())
     if src is None:
@@ -107,8 +111,26 @@ def main() -> None:
     async def run():
         async with SessionLocal() as session:
             result = await load_act(session, src, merged, content_hash)
+            from app.services.rag.graph import build_all
+
+            await build_all(session, src.code)
         await engine.dispose()
         print(f"{result.act_code}: {result.message} (version {result.version_id}, единиц {result.units})")
+
+    asyncio.run(run())
+
+
+def _graph(code: str | None) -> None:
+    from app.db.session import SessionLocal, engine
+    from app.services.rag.graph import build_all
+
+    async def run():
+        async with SessionLocal() as session:
+            stats = await build_all(session, code)
+        await engine.dispose()
+        for k, n in stats.items():
+            print(f"{k}: {n} ссылок")
+        print(f"всего: {sum(stats.values())}")
 
     asyncio.run(run())
 

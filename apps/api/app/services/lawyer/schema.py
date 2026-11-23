@@ -49,6 +49,20 @@ class ActionStep(BaseModel):
     citations: list[str] = Field(default_factory=list)
 
 
+class Calculation(BaseModel):
+    """Расчёт на числах пользователя: «100 квартир → кворум 51, решение — не меньше 26 голосов из 51»."""
+    item: str  # к какому вопросу относится (председатель, тариф…)
+    rule: str  # правило из нормы своими словами, с исключениями
+    result: str  # конкретные цифры и арифметика
+    citations: list[str] = Field(default_factory=list)
+
+
+class Draft(BaseModel):
+    """Готовый текст, который просил пользователь: формулировки вопросов бюллетеня, текст объявления…"""
+    title: str
+    text: str
+
+
 class LawyerAnswer(BaseModel):
     # Вердикт первым: «Вы правы / не правы / частично / зависит от обстоятельств» — на любой вопрос.
     verdict: Literal["yes", "no", "partly", "depends"] = "depends"
@@ -60,6 +74,8 @@ class LawyerAnswer(BaseModel):
     responsibility: list[Responsibility] = Field(default_factory=list)
     assessment: Assessment
     action_plan: list[ActionStep] = Field(default_factory=list)
+    calculations: list[Calculation] = Field(default_factory=list)
+    drafts: list[Draft] = Field(default_factory=list)
     documents: list[str] = Field(default_factory=list)
     clarifying_questions: list[str] = Field(default_factory=list)
     not_found: bool = False
@@ -91,6 +107,8 @@ LAWYER_SCHEMA = _obj({
         "reasoning": _S, "risks": _SL}),
     "action_plan": {"type": "array", "items": _obj({
         "step": _S, "who": _S, "where": _S, "evidence": _SL, "deadline": _S, "citations": _SL})},
+    "calculations": {"type": "array", "items": _obj({"item": _S, "rule": _S, "result": _S, "citations": _SL})},
+    "drafts": {"type": "array", "items": _obj({"title": _S, "text": _S})},
     "documents": {"type": "array", "items": {"type": "string", "enum": list(AVAILABLE_TEMPLATES)}},
     "clarifying_questions": _SL,
     "not_found": {"type": "boolean"},

@@ -125,3 +125,23 @@ class LegalGlossary(Base):
     term_norm_ru: Mapped[str] = mapped_column(Text)
     term_norm_kk: Mapped[str | None] = mapped_column(Text)
     variants: Mapped[list[str]] = mapped_column(ARRAY(Text))
+
+
+class LegalRef(Base):
+    """Ребро графа закона: пункт from_unit ссылается на пункт to_unit того же акта и той же редакции.
+
+    kind: exception — «за исключением / кроме случаев, указанных в …», reference — обычная отсылка.
+    Строится командой `python -m ingest graph` (app/services/rag/law_graph.py).
+    """
+
+    __tablename__ = "legal_refs"
+    __table_args__ = (UniqueConstraint("from_unit_id", "to_unit_id"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    version_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("act_versions.id", ondelete="CASCADE"), index=True)
+    from_unit_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("legal_units.id", ondelete="CASCADE"), index=True)
+    to_unit_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("legal_units.id", ondelete="CASCADE"), index=True)
+    kind: Mapped[str] = mapped_column(Text)

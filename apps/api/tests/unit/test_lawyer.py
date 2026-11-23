@@ -188,6 +188,11 @@ async def test_pipeline_events_demo_mode(monkeypatch, chunks):
     monkeypatch.setattr(pl, "normalize", fake_normalize)
     monkeypatch.setattr(pl, "search", lambda req: (rs, SimpleNamespace(candidates=1, timings_ms={})))
     monkeypatch.setattr(pl, "llm_available", lambda: False)
+
+    async def no_graph(*a):
+        return []
+
+    monkeypatch.setattr(pl, "expand_with_graph", no_graph)
     events = [e async for e in pl.run_chat("ОСИ не даёт копию протокола", persist=False)]
     names = [e.name for e in events]
     assert names[0] == "status" and names[-1] == "done"

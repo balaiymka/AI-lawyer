@@ -21,6 +21,7 @@ export type Source = {
   is_current?: boolean;
   hierarchy_level?: number | null;
   xref_from?: string | null;
+  relation?: string | null;
 };
 
 export type LegalBasis = {
@@ -43,6 +44,8 @@ export type Answer = {
   responsibility: { party: string; liability_type: "civil" | "administrative" | "none" | "unclear"; reason: string; citations: string[] }[];
   assessment: { position: "strong" | "moderate" | "weak" | "unclear"; reasoning: string; risks: string[] };
   action_plan: { step: string; who: string; where: string; evidence: string[]; deadline: string; citations: string[] }[];
+  calculations?: { item: string; rule: string; result: string; citations: string[] }[];
+  drafts?: { title: string; text: string }[];
   documents: string[];
   clarifying_questions: string[];
   not_found: boolean;
@@ -51,15 +54,20 @@ export type Answer = {
 
 export type Edition = { act_code: string; event_date: string; valid_from: string; valid_to: string | null; exact: boolean };
 
+export type Analysis = {
+  sub_questions: { question: string; kind: "legal" | "calculation" | "drafting" }[];
+  fact_check: { verdict: "ok" | "fix" | "error"; issues: { claim: string; problem: string; correction: string }[]; revised: boolean } | null;
+};
+
 export type Verification = { removed_citations: string[]; replaced_quotes: number; unverified_refs: string[]; needs_review: boolean };
 
 export type ChatEvent =
-  | { event: "status"; data: { stage: "normalize" | "search" | "answer" } }
+  | { event: "status"; data: { stage: "normalize" | "search" | "answer" | "factcheck" } }
   | { event: "normalized"; data: { reply_lang: "kk" | "ru"; category: string; source: string } }
   | { event: "sources"; data: { sources: Source[] } }
   | { event: "delta"; data: { text: string } }
   | { event: "notice"; data: { code: string } }
-  | { event: "answer"; data: { answer: Answer; verification: Verification; mode: "llm" | "demo"; reply_lang: string; event_date?: string; event_date_precision?: string; edition?: Edition | null } }
+  | { event: "answer"; data: { answer: Answer; verification: Verification; mode: "llm" | "demo"; reply_lang: string; event_date?: string; event_date_precision?: string; edition?: Edition | null; analysis?: Analysis } }
   | { event: "error"; data: { message: string } }
   | { event: "done"; data: { case_id: string | null } };
 

@@ -9,6 +9,8 @@ import {
   CircleHelp,
   ExternalLink,
   FileText,
+  Calculator,
+  Copy,
   Gavel,
   ListChecks,
   Scale,
@@ -20,7 +22,7 @@ import { useParams } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { fill, fmtDate } from "@/lib/api";
-import type { Answer, Edition, Source, Verification } from "@/lib/chat";
+import type { Analysis, Answer, Edition, Source, Verification } from "@/lib/chat";
 import type { Dictionary } from "@/lib/i18n";
 
 type T = Dictionary["chat"];
@@ -81,7 +83,9 @@ export function AnswerCard({
   eventDate,
   eventPrecision,
   edition,
+  analysis,
 }: {
+  analysis?: Analysis;
   onStartDoc?: (code: string) => void;
   eventDate?: string;
   eventPrecision?: string;
@@ -143,6 +147,16 @@ export function AnswerCard({
             {verification.needs_review ? <ShieldAlert className="size-3.5" aria-hidden /> : <BadgeCheck className="size-3.5" aria-hidden />}
             {verification.needs_review ? t.review : t.verified}
           </span>
+          {analysis?.fact_check && analysis.fact_check.verdict !== "error" && (
+            <span className="inline-flex items-center gap-1 text-[11px] text-success"
+              title={analysis.fact_check.issues.map((i) => `${i.problem} → ${i.correction}`).join("\n") || undefined}>
+              <BadgeCheck className="size-3.5" aria-hidden />
+              {analysis.fact_check.revised ? t.factFixed : t.factChecked}
+            </span>
+          )}
+          {analysis && analysis.sub_questions.length > 1 && (
+            <span className="text-[11px] text-muted">{t.subQuestions}: {analysis.sub_questions.length}</span>
+          )}
         </div>
       </div>
 
@@ -154,6 +168,42 @@ export function AnswerCard({
           </summary>
           <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-fg/90">{answer.legal_answer}</p>
         </details>
+      )}
+
+      {(answer.calculations ?? []).length > 0 && (
+        <Section icon={<Calculator className="size-3.5" />} title={t.calculations}>
+          <ul className="space-y-2">
+            {answer.calculations!.map((x, i) => (
+              <li key={i} className="rounded-2xl border border-line bg-surface p-4 text-sm">
+                <p className="font-medium">{x.item}</p>
+                <p className="mt-1 text-muted">{x.rule}</p>
+                <p className="mt-2 whitespace-pre-line font-medium text-fg">{x.result}</p>
+                {x.citations.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {x.citations.map((c) => <CitationChip key={c} source={byId.get(c)} onClick={() => onFocusSource(c)} />)}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      {(answer.drafts ?? []).length > 0 && (
+        <Section icon={<FileText className="size-3.5" />} title={t.drafts}>
+          {answer.drafts!.map((d, i) => (
+            <div key={i} className="rounded-2xl border border-line bg-surface p-4">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-sm font-medium">{d.title}</p>
+                <button type="button" onClick={() => void navigator.clipboard?.writeText(d.text)}
+                  className="inline-flex items-center gap-1 rounded-full border border-line px-2.5 py-1 text-[11px] text-muted hover:text-fg">
+                  <Copy className="size-3" aria-hidden />{t.copy}
+                </button>
+              </div>
+              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-fg/90">{d.text}</p>
+            </div>
+          ))}
+        </Section>
       )}
 
       {answer.legal_basis.length > 0 && (

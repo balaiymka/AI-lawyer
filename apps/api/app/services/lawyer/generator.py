@@ -53,7 +53,7 @@ ROLE_LABELS = {"owner": "собственник квартиры", "osi": "пр�
 
 
 def build_user_content(context_xml: str, normalized: dict, raw_text: str, role: str | None,
-                       history: list[dict] | None = None) -> str:
+                       history: list[dict] | None = None, extra_blocks: list[str] | None = None) -> str:
     event = normalized.get("event_date") or ""
     precision = normalized.get("event_date_precision") or ""
     templates = "\n".join(f'<template code="{k}">{v}</template>' for k, v in AVAILABLE_TEMPLATES.items())
@@ -71,6 +71,7 @@ def build_user_content(context_xml: str, normalized: dict, raw_text: str, role: 
     if history:
         prev = "\n".join(f"<{m['role']}>{m['text']}</{m['role']}>" for m in history[-6:])
         parts.append(f"<previous_turns>\n{prev}\n</previous_turns>")
+    parts.extend(extra_blocks or [])  # <branch_analyses>, <fact_check_review>
     parts.append(f"<user_message>\n{raw_text}\n</user_message>")
     return "\n\n".join(parts)
 

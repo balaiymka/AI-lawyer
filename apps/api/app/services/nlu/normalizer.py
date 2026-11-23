@@ -38,6 +38,13 @@ class SearchQuery(BaseModel):
     q: str
 
 
+class SubQuestion(BaseModel):
+    """Отдельный вопрос внутри сообщения: каждый ищется и разбирается своей веткой."""
+    question: str  # самодостаточная формулировка на русском, с фактами пользователя (число квартир, сумма)
+    kind: Literal["legal", "calculation", "drafting"] = "legal"
+    search_queries: list[str] = Field(default_factory=list)
+
+
 class NormalizedQuery(BaseModel):
     detected_lang: Literal["kk", "ru", "mixed"]
     reply_lang: Literal["kk", "ru"]
@@ -51,6 +58,7 @@ class NormalizedQuery(BaseModel):
     clarifying_questions: list[str] = Field(default_factory=list)
     event_date: str = ""  # ГГГГ-ММ-ДД — когда произошло событие (пусто: сейчас / неизвестно)
     event_date_precision: str = ""  # day | month | year
+    sub_questions: list[SubQuestion] = Field(default_factory=list)
     source: Literal["llm", "heuristic"] = "llm"
 
 
@@ -61,7 +69,8 @@ NORMALIZER_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
     "required": ["detected_lang", "reply_lang", "normalized_ru", "normalized_kk", "category", "parties",
-                 "facts", "mentioned_norms", "search_queries", "clarifying_questions", "event_date"],
+                 "facts", "mentioned_norms", "search_queries", "clarifying_questions", "event_date",
+                 "sub_questions"],
     "properties": {
         "detected_lang": {"type": "string", "enum": ["kk", "ru", "mixed"]},
         "reply_lang": {"type": "string", "enum": ["kk", "ru"]},
@@ -78,6 +87,10 @@ NORMALIZER_SCHEMA = {
             "properties": {"lang": {"type": "string", "enum": ["kk", "ru"]}, "q": _STR}}},
         "clarifying_questions": _STR_LIST,
         "event_date": _STR,
+        "sub_questions": {"type": "array", "items": {
+            "type": "object", "additionalProperties": False, "required": ["question", "kind", "search_queries"],
+            "properties": {"question": _STR, "kind": {"type": "string", "enum": ["legal", "calculation", "drafting"]},
+                           "search_queries": _STR_LIST}}},
     },
 }
 
@@ -98,7 +111,7 @@ async def normalize_llm(text: str) -> NormalizedQuery:
     client = anthropic.AsyncAnthropic(api_key=settings.anthropic_api_key or None)
     params = dict(
         model=settings.llm_model,
-        max_tokens=4000,
+        max_tokens=6000,
         system=_system_prompt(),
         messages=[{"role": "user", "content": f"<user_message>\n{text}\n</user_message>"}],
         output_config={"effort": "low", "format": {"type": "json_schema", "schema": NORMALIZER_SCHEMA}},
@@ -128,7 +141,7 @@ async def normalize_gemini(text: str) -> NormalizedQuery:
     system = (_system_prompt() + "\n\nВерни ТОЛЬКО JSON-объект по схеме:\n" + gemini.schema_hint(NORMALIZER_SCHEMA))
     try:
         res = await gemini.ask_json(f"<user_message>\n{text}\n</user_message>", system=system,
-                                    schema=NORMALIZER_SCHEMA, max_output_tokens=2000, thinking_budget=0)
+                                    schema=NORMALIZER_SCHEMA, max_output_tokens=3000, thinking_budget=0)
     except gemini.GeminiError as e:
         raise NormalizerError(str(e)) from e
     nq = NormalizedQuery.model_validate({**json.loads(res.text), "source": "llm"})

@@ -9,12 +9,12 @@ import { AnswerCard } from "@/components/chat/AnswerCard";
 import { DocumentBuilder } from "@/components/chat/DocumentBuilder";
 import { SourcesPanel } from "@/components/chat/SourcesPanel";
 import { apiGet } from "@/lib/api";
-import { partialSummary, streamChat, type Answer, type Edition, type Role, type Source, type Verification } from "@/lib/chat";
+import { partialSummary, streamChat, type Analysis, type Answer, type Edition, type Role, type Source, type Verification } from "@/lib/chat";
 import { createDraft, listDrafts } from "@/lib/docs";
 import type { Dictionary } from "@/lib/i18n";
 
-type Stage = "normalize" | "search" | "answer";
-const STAGES: Stage[] = ["normalize", "search", "answer"];
+type Stage = "normalize" | "search" | "answer" | "factcheck";
+const STAGES: Stage[] = ["normalize", "search", "answer", "factcheck"];
 
 type Turn = {
   id: number;
@@ -30,10 +30,11 @@ type Turn = {
   eventDate?: string;
   eventPrecision?: string;
   edition?: Edition | null;
+  analysis?: Analysis;
 };
 
 function Progress({ stage, t }: { stage: Turn["stage"]; t: Dictionary["chat"] }) {
-  const idx = stage === "done" ? 3 : STAGES.indexOf(stage);
+  const idx = stage === "done" ? STAGES.length : STAGES.indexOf(stage);
   return (
     <ol className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
       {STAGES.map((s, i) => (
@@ -50,7 +51,7 @@ type DocTurn = { id: string; anchor: number | null; autofill: boolean };
 
 type SavedCase = {
   id: string;
-  messages: { role: "user" | "assistant"; text: string | null; answer: (Answer & { _meta?: { mode?: "llm" | "demo"; verification?: Verification; sources?: Source[] } }) | null }[];
+  messages: { role: "user" | "assistant"; text: string | null; answer: (Answer & { _meta?: { mode?: "llm" | "demo"; verification?: Verification; sources?: Source[]; analysis?: Analysis } }) | null }[];
 };
 
 const NO_ISSUES: Verification = { removed_citations: [], replaced_quotes: 0, unverified_refs: [], needs_review: false };
@@ -121,7 +122,7 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
               case "answer":
                 return patch(id, { answer: e.data.answer, verification: e.data.verification, mode: e.data.mode, stage: "done",
                   eventDate: e.data.event_date || undefined, eventPrecision: e.data.event_date_precision || undefined,
-                  edition: e.data.edition ?? null });
+                  edition: e.data.edition ?? null, analysis: e.data.analysis });
               case "error":
                 return patch(id, { error: true, stage: "done" });
               case "done":
@@ -152,6 +153,7 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
             const { _meta, ...answer } = m.answer;
             Object.assign(out[out.length - 1], {
               answer, mode: _meta?.mode ?? "demo", verification: _meta?.verification ?? NO_ISSUES, sources: _meta?.sources ?? [],
+              analysis: _meta?.analysis,
             });
           }
         });
@@ -251,6 +253,7 @@ export function ChatView({ t, initialQ, role, initialCase }: { t: Dictionary; in
                         eventDate={turn.eventDate}
                         eventPrecision={turn.eventPrecision}
                         edition={turn.edition}
+                        analysis={turn.analysis}
                       />
                     ) : turn.error ? (
                       <p className="text-sm text-danger">{c.error}</p>
