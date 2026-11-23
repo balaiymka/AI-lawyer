@@ -33,12 +33,15 @@ def configured() -> bool:
 @lru_cache
 def _client():
     from google import genai
+    from google.genai import types
 
     s = get_settings()
     # Ключ ментора работает только с адресом вида projects/<проект>/locations/global/…: без project Vertex
     # отвечает 403 «Permission denied on resource project None».
+    # Таймаут на запрос: зависший ответ Vertex не должен держать чат минутами (ветки и фактчек идут подряд).
     return genai.Client(vertexai=True, api_key=s.gemini_api_key, project=s.gemini_project or None,
-                        location=s.gemini_location)
+                        location=s.gemini_location,
+                        http_options=types.HttpOptions(timeout=s.gemini_timeout_sec * 1000))
 
 
 def _usage(meta) -> dict:

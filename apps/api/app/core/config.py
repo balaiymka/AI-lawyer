@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     gemini_project: str = ""  # ID проекта Google Cloud; без него Vertex отвечает 403 «project None»
     gemini_location: str = "global"
     gemini_max_output_tokens: int = 8192
+    gemini_timeout_sec: int = 120  # один запрос к Vertex AI
     gemini_thinking_budget: int = 2048  # ограничиваем мышление: лимит проекта $95 в месяц
 
     # Многошаговая консультация (app/services/lawyer/analysis.py)
@@ -49,8 +50,10 @@ class Settings(BaseSettings):
     max_sub_questions: int = 4
     branch_top_k: int = 6  # норм на подвопрос (плюс связанные по графу)
     branch_max_output_tokens: int = 3000
+    branch_followup_rounds: int = 1  # сколько раз ветка может дозапросить нормы (итеративный поиск)
     factcheck_enabled: bool = True  # второй проход: проверка ответа по нормам и одна переработка
     factcheck_max_output_tokens: int = 3000
+    factcheck_rounds: int = 2  # сколько раз можно исправить ответ по замечаниям (после каждого — новая проверка)
     graph_limit: int = 5  # сколько связанных по графу закона пунктов добавлять к выдаче
 
     jwt_secret: str = "change-me-in-production"

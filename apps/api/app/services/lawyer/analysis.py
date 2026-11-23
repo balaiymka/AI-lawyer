@@ -41,9 +41,13 @@ class BranchAnalysis(BaseModel):
     draft: str = ""  # текст, если просили составить
     citations: list[str] = Field(default_factory=list)
     missing: str = ""  # чего не хватает в найденных нормах
+    follow_up_queries: list[str] = Field(default_factory=list)  # что ещё поискать, чтобы закрыть пробел
+    sources: list[str] = Field(default_factory=list)  # пути норм, найденных для этой ветки (проставляет конвейер)
+    rounds: int = 1  # сколько раз ветка искала нормы
 
 
-BRANCH_SCHEMA = _obj({"answer": _S, "rule": _S, "calculation": _S, "draft": _S, "citations": _SL, "missing": _S})
+BRANCH_SCHEMA = _obj({"answer": _S, "rule": _S, "calculation": _S, "draft": _S, "citations": _SL, "missing": _S,
+                      "follow_up_queries": _SL})
 
 
 class FactIssue(BaseModel):
@@ -133,7 +137,7 @@ async def fact_check(context_xml: str, raw_text: str, answer_json: str) -> FactC
 
 def branches_block(branches: list[BranchAnalysis]) -> str:
     items = [f'<branch n="{i}" kind="{b.kind}">\n'
-             f"{json.dumps(b.model_dump(exclude={'kind'}), ensure_ascii=False)}\n</branch>"
+             f"{json.dumps(b.model_dump(exclude={'kind', 'follow_up_queries', 'rounds'}), ensure_ascii=False)}\n</branch>"
              for i, b in enumerate(branches, start=1)]
     return "<branch_analyses>\n" + "\n".join(items) + "\n</branch_analyses>"
 

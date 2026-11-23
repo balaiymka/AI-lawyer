@@ -8,6 +8,14 @@
 отсылки и храним рёбра в таблице legal_refs (from_unit → to_unit, kind = exception | reference), а при поиске
 к найденному пункту подтягиваем связанные в обе стороны.
 
+Тип связи (kind) — по формулировке перед отсылкой:
+  exception — «за исключением», «кроме», «если иное не предусмотрено»: правило меняется для части случаев;
+  condition — «в случаях, установленных…», «при условии», «с учётом требований»: условие применения;
+  procedure — «в порядке, установленном…»: процедура в другой норме;
+  reference — прочие отсылки («в соответствии со статьёй…»).
+Связь заносится, только если в тексте есть явная отсылка на номер пункта/статьи — так у каждой связи есть
+подтверждение в тексте закона.
+
 Разбираем русский текст (пути пунктов у kk и ru одинаковые). Распознаём только однозначные отсылки внутри акта:
   «подпункт(ах) 6) –16) и 21) пункта 5 настоящей статьи», «пунктом 3 настоящей статьи»,
   «подпунктами 1) и 2) настоящего пункта», «частью третьей настоящей статьи» (часть = пункт),
@@ -41,14 +49,22 @@ REF = re.compile(
     rf"|настоящ(?:их|его|ей)\s+(?:правил|положения|методики|приказа))",
     re.I,
 )
-EXCEPTION = re.compile(r"за\s+исключением|кроме|не\s+распространя|не\s+применя", re.I)
+# Тип связи — по формулировке в той же фразе перед отсылкой (порядок проверки важен: исключение сильнее).
+KINDS: list[tuple[str, re.Pattern[str]]] = [
+    ("exception", re.compile(r"за\s+исключением|кроме|если\s+иное\s+не\s+предусмотрено|не\s+распространя|"
+                             r"не\s+применя", re.I)),
+    ("condition", re.compile(r"в\s+случаях?,?\s+(?:установленн|предусмотренн|указанн)|при\s+условии|"
+                             r"с\s+учетом\s+требовани|с\s+учётом\s+требовани|при\s+наличии", re.I)),
+    ("procedure", re.compile(r"в\s+порядке,?\s+(?:установленн|предусмотренн|определенн|определённ)|"
+                             r"согласно\s+порядк|по\s+правилам", re.I)),
+]
 MAX_TARGETS = 40
 
 
 @dataclass(frozen=True)
 class GraphRef:
     target: str  # путь единицы в том же акте: art42/p5/sp7
-    kind: str  # exception | reference
+    kind: str  # exception | condition | procedure | reference
 
 
 def _numbers(s: str) -> list[int]:
@@ -84,7 +100,8 @@ def _prefix(path: str, kind: str) -> str | None:
 
 def _kind(text: str, start: int, end: int) -> str:
     left = re.split(r"[.;\n]", text[:start])[-1]
-    return "exception" if EXCEPTION.search(left + text[start:end]) else "reference"
+    window = left + text[start:end]
+    return next((k for k, rx in KINDS if rx.search(window)), "reference")
 
 
 def extract_graph_refs(text: str, own_path: str) -> list[GraphRef]:

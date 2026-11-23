@@ -23,6 +23,9 @@ log = logging.getLogger(__name__)
 
 # Если пункт ссылается больше чем на COLLAPSE подпунктов одного пункта — подтягиваем пункт целиком (перечень).
 COLLAPSE = 2
+# Что подтягивать первым: исключения и условия меняют вывод, процедура и простая отсылка — дополняют.
+OUT_PRIO = {"exception": 0.0, "condition": 0.5, "procedure": 2.0, "reference": 2.5}
+IN_PRIO = {"exception_for": 1.0, "condition_for": 1.2, "rule_for_list": 1.5, "procedure_for": 2.8}
 
 
 async def build_graph(session: AsyncSession, version_id: uuid.UUID) -> int:
@@ -43,7 +46,8 @@ async def build_graph(session: AsyncSession, version_id: uuid.UUID) -> int:
             if target is None or target == r.id:
                 continue
             key = (r.id, target)
-            if edges.get(key) != "exception":
+            order = ("exception", "condition", "procedure", "reference")
+            if key not in edges or order.index(ref.kind) < order.index(edges[key]):
                 edges[key] = ref.kind
     await session.execute(delete(LegalRef).where(LegalRef.version_id == version_id))
     if edges:
@@ -68,7 +72,7 @@ class Link:
     unit_id: str  # какой пункт добавить
     source_unit: str  # из-за какого найденного пункта
     source_path: str
-    relation: str  # exception | reference | exception_for | rule_for_list | referenced_by
+    relation: str  # exception | condition | procedure | reference | <kind>_for | rule_for_list | referenced_by
 
 
 async def find_links(session: AsyncSession, unit_ids: list[str], limit: int = 5) -> list[Link]:
@@ -101,22 +105,23 @@ async def find_links(session: AsyncSession, unit_ids: list[str], limit: int = 5)
     for src, src_path, to, parent, kind in out_rows:
         groups[(src, parent)].append((to, kind, src_path))
     for (src, parent), items in groups.items():
-        kind = "exception" if any(k == "exception" for _, k, _ in items) else "reference"
+        kinds = {k for _, k, _ in items}
+        kind = next((k for k in ("exception", "condition", "procedure") if k in kinds), "reference")
         targets = [parent] if parent and len(items) > COLLAPSE else [t for t, _, _ in items]
         for t in targets:
             if t in have or (parent in have and t != parent):
                 continue
-            cands.append((0 if kind == "exception" else 2, rank[src], Link(str(t), str(src), items[0][2], kind)))
+            cands.append((OUT_PRIO[kind], rank[src], Link(str(t), str(src), items[0][2], kind)))
 
     for src, to, parent, kind, to_path, sibling in in_rows:
         if src in have:
             continue
         if to in have or parent in have:
             found = to if to in have else parent
-            relation = "exception_for" if kind == "exception" else "referenced_by"
+            relation = f"{kind}_for" if kind in ("exception", "condition", "procedure") else "referenced_by"
         else:
             found, relation = sibling, "rule_for_list"
-        prio = {"exception_for": 1.0, "rule_for_list": 1.5}.get(relation, 3.0)
+        prio = IN_PRIO.get(relation, 3.0)
         cands.append((prio, rank.get(found, 99), Link(str(src), str(found), to_path, relation)))
 
     links: list[Link] = []

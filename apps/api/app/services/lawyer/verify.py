@@ -88,6 +88,8 @@ def verify_answer(answer: LawyerAnswer, chunks: list[ContextChunk]) -> tuple[Law
         s.citations = keep(s.citations)
     for c in answer.calculations:
         c.citations = keep(c.citations)
+    for a in answer.attention:
+        a.citations = keep(a.citations)
 
     # Статьи, названные в тексте ответа, должны быть среди найденных.
     known = {c.article for c in chunks}
@@ -95,7 +97,8 @@ def verify_answer(answer: LawyerAnswer, chunks: list[ContextChunk]) -> tuple[Law
                           *(f"{s.step} {s.deadline}" for s in answer.action_plan),
                           *(f"{r.reason}" for r in answer.responsibility),
                           *(b.explanation for b in answer.legal_basis),
-                          *(f"{c.rule} {c.result}" for c in answer.calculations)])
+                          *(f"{c.rule} {c.result}" for c in answer.calculations),
+                          *(f"{a.point} {a.why}" for a in answer.attention)])
     for ref in extract_refs(free_text):
         if ref.article not in known and ref.article not in v.unverified_refs:
             v.unverified_refs.append(ref.article)

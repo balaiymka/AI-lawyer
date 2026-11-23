@@ -63,6 +63,13 @@ class Draft(BaseModel):
     text: str
 
 
+class Attention(BaseModel):
+    """«На что ещё важно обратить внимание»: существенное, о чём пользователь не спросил (процедура, риск, срок)."""
+    point: str  # что проверить / чего опасаться — конкретно
+    why: str  # почему это важно в его ситуации, со ссылкой на норму
+    citations: list[str] = Field(default_factory=list)
+
+
 class LawyerAnswer(BaseModel):
     # Вердикт первым: «Вы правы / не правы / частично / зависит от обстоятельств» — на любой вопрос.
     verdict: Literal["yes", "no", "partly", "depends"] = "depends"
@@ -76,6 +83,7 @@ class LawyerAnswer(BaseModel):
     action_plan: list[ActionStep] = Field(default_factory=list)
     calculations: list[Calculation] = Field(default_factory=list)
     drafts: list[Draft] = Field(default_factory=list)
+    attention: list[Attention] = Field(default_factory=list)
     documents: list[str] = Field(default_factory=list)
     clarifying_questions: list[str] = Field(default_factory=list)
     not_found: bool = False
@@ -109,6 +117,7 @@ LAWYER_SCHEMA = _obj({
         "step": _S, "who": _S, "where": _S, "evidence": _SL, "deadline": _S, "citations": _SL})},
     "calculations": {"type": "array", "items": _obj({"item": _S, "rule": _S, "result": _S, "citations": _SL})},
     "drafts": {"type": "array", "items": _obj({"title": _S, "text": _S})},
+    "attention": {"type": "array", "items": _obj({"point": _S, "why": _S, "citations": _SL})},
     "documents": {"type": "array", "items": {"type": "string", "enum": list(AVAILABLE_TEMPLATES)}},
     "clarifying_questions": _SL,
     "not_found": {"type": "boolean"},

@@ -18,7 +18,7 @@ from dataclasses import dataclass, replace
 from fastapi.concurrency import run_in_threadpool
 
 from app.core.config import get_settings
-from app.services.lawyer.analysis import analyze_branch, branches_block, fact_check, review_block
+from app.services.lawyer.analysis import BranchAnalysis, analyze_branch, branches_block, fact_check, review_block
 from app.services.lawyer.context import ContextChunk, build_context
 from app.services.lawyer.generator import (Delta, Final, LawyerError, build_user_content, generate_demo,
                                            generate_answer, llm_available)
@@ -76,6 +76,36 @@ def _branch_request(base: SearchRequest, sq: SubQuestion, top_k: int) -> SearchR
     return replace(base, queries=[q for q in queries if q], rerank_query=sq.question, refs=refs, top_k=top_k)
 
 
+async def _analyze_branches(subs: list[SubQuestion], branch_results: list[list[Result]], req: SearchRequest,
+                            lang: str, text: str, rounds: int) -> list[BranchAnalysis | None]:
+    """Разбор каждой ветки; если ветке не хватает норм — дополнительный поиск и повторный разбор.
+
+    branch_results дополняется на месте: у каждой ветки остаётся свой набор источников."""
+
+    async def one(i: int, sq: SubQuestion) -> BranchAnalysis | None:
+        b = None
+        for rnd in range(rounds + 1):
+            try:
+                b = await analyze_branch(sq.question, sq.kind, build_context(branch_results[i], lang)[0], text)
+            except Exception as e:  # noqa: BLE001
+                log.warning("branch analysis failed (%s): %s", sq.question[:60], e)
+                return b
+            b.rounds = rnd + 1
+            b.sources = [r.path for r in branch_results[i]]
+            if rnd == rounds or not b.follow_up_queries:
+                return b
+            fq = b.follow_up_queries[:3]
+            extra, _ = await _search(replace(_branch_request(req, sq, 4), queries=fq, rerank_query=fq[0]))
+            have = {r.unit_id for r in branch_results[i]}
+            new = [r for r in extra if r.unit_id not in have]
+            if not new:
+                return b
+            branch_results[i] = branch_results[i] + new
+        return b
+
+    return list(await asyncio.gather(*[one(i, sq) for i, sq in enumerate(subs)]))
+
+
 async def _collect(gen) -> Final | None:
     final = None
     async for item in gen:
@@ -93,13 +123,12 @@ async def run_chat(text: str, role: str | None = None, history: list[dict] | Non
     nq = await normalize(text)
     timings["normalize"] = (time.perf_counter() - t0) * 1000
     use_llm = llm_available()
+    # Один подвопрос — одна ветка: поиск общий, но разбор с дозапросом норм (итеративный поиск) тот же.
     subs = nq.sub_questions[: settings.max_sub_questions] if settings.decompose_enabled and use_llm else []
-    if len(subs) < 2:
-        subs = []
     yield Event("normalized", {"reply_lang": nq.reply_lang, "category": nq.category, "source": nq.source,
                                "normalized_ru": nq.normalized_ru, "event_date": nq.event_date,
                                "event_date_precision": nq.event_date_precision,
-                               "sub_questions": [q.model_dump() for q in subs]})
+                               "sub_questions": [q.model_dump() for q in subs if len(subs) > 1]})
 
     t0 = time.perf_counter()
     yield Event("status", {"stage": "search"})
@@ -115,7 +144,7 @@ async def run_chat(text: str, role: str | None = None, history: list[dict] | Non
         except Exception:  # без БД — ищем по дате как есть
             log.exception("edition resolution failed")
     branch_results: list[list[Result]] = []
-    if subs:
+    if len(subs) > 1:
         # Каждый подвопрос ищется отдельно: иначе реранкер отдаёт все места одной теме (голосованию),
         # а нормы про взносы или общее имущество в контекст не попадают.
         trace = SearchTrace()
@@ -128,6 +157,8 @@ async def run_chat(text: str, role: str | None = None, history: list[dict] | Non
         results = _merge(branch_results)
     else:
         results, trace = await _search(req)
+        if subs:
+            branch_results = [list(results)]
     timings["search"] = (time.perf_counter() - t0) * 1000
     context_xml, chunks = build_context(results, nq.reply_lang)
     yield Event("sources", {"sources": [c.public() for c in chunks]})
@@ -141,14 +172,14 @@ async def run_chat(text: str, role: str | None = None, history: list[dict] | Non
     branches = []
     if subs:
         tb = time.perf_counter()
-        got = await asyncio.gather(*[
-            analyze_branch(sq.question, sq.kind, build_context(res, nq.reply_lang)[0], text)
-            for sq, res in zip(subs, branch_results)], return_exceptions=True)
-        for sq, b in zip(subs, got):
-            if isinstance(b, BaseException):
-                log.warning("branch analysis failed (%s): %s", sq.question[:60], b)
-            else:
-                branches.append(b)
+        got = await _analyze_branches(subs, branch_results, req, nq.reply_lang, text, settings.branch_followup_rounds)
+        branches = [b for b in got if b is not None]
+        # Ветки могли дозапросить нормы — общий контекст собираем заново, сохраняя порядок веток.
+        merged = _merge(branch_results)
+        if len(merged) != len(results):
+            results = merged
+            context_xml, chunks = build_context(results, nq.reply_lang)
+            yield Event("sources", {"sources": [c.public() for c in chunks]})
         if branches:
             blocks.append(branches_block(branches))
         timings["branches"] = (time.perf_counter() - tb) * 1000
@@ -182,10 +213,17 @@ async def run_chat(text: str, role: str | None = None, history: list[dict] | Non
     if final.mode == "llm" and settings.factcheck_enabled:
         t0 = time.perf_counter()
         yield Event("status", {"stage": "factcheck"})
+        # Проверка → (дополнительный поиск, если не хватает нормы) → исправление → повторная проверка.
+        # Не больше factcheck_rounds исправлений, чтобы не зациклиться.
+        fc_info = {"verdict": "ok", "issues": [], "extra_queries": [], "revised": False, "rounds": []}
         try:
-            fc = await fact_check(context_xml, text, final.answer.model_dump_json())
-            fc_info = {**fc.public(), "revised": False}
-            if fc.verdict == "fix":
+            for rnd in range(settings.factcheck_rounds + 1):
+                fc = await fact_check(context_xml, text, final.answer.model_dump_json())
+                fc_info["rounds"].append({"verdict": fc.verdict, "issues": len(fc.issues)})
+                fc_info.update(verdict=fc.verdict, issues=[i.model_dump() for i in fc.issues],
+                               extra_queries=fc.extra_queries)
+                if fc.verdict != "fix" or rnd == settings.factcheck_rounds:
+                    break
                 if fc.extra_queries:
                     extra_req = replace(req, queries=fc.extra_queries[:3], rerank_query=fc.extra_queries[0],
                                         refs=[], top_k=4)
@@ -198,12 +236,13 @@ async def run_chat(text: str, role: str | None = None, history: list[dict] | Non
                         yield Event("sources", {"sources": [c.public() for c in chunks]})
                 revised = await _collect(generate_answer(build_user_content(
                     context_xml, normalized, text, role, history, blocks + [review_block(fc)])))
-                if revised is not None:
-                    final = revised
-                    fc_info["revised"] = True
+                if revised is None:
+                    break
+                final = revised
+                fc_info["revised"] = True
         except Exception:  # noqa: BLE001 — фактчек улучшает ответ, но не должен его ронять
             log.exception("fact check failed")
-            fc_info = {"verdict": "error", "issues": [], "extra_queries": [], "revised": False}
+            fc_info = {**fc_info, "verdict": "error"}
         timings["factcheck"] = (time.perf_counter() - t0) * 1000
 
     answer, verification = verify_answer(final.answer, chunks)

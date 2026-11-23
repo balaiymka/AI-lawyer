@@ -46,6 +46,7 @@ export type Answer = {
   action_plan: { step: string; who: string; where: string; evidence: string[]; deadline: string; citations: string[] }[];
   calculations?: { item: string; rule: string; result: string; citations: string[] }[];
   drafts?: { title: string; text: string }[];
+  attention?: { point: string; why: string; citations: string[] }[];
   documents: string[];
   clarifying_questions: string[];
   not_found: boolean;
@@ -56,7 +57,8 @@ export type Edition = { act_code: string; event_date: string; valid_from: string
 
 export type Analysis = {
   sub_questions: { question: string; kind: "legal" | "calculation" | "drafting" }[];
-  fact_check: { verdict: "ok" | "fix" | "error"; issues: { claim: string; problem: string; correction: string }[]; revised: boolean } | null;
+  fact_check: { verdict: "ok" | "fix" | "error"; issues: { claim: string; problem: string; correction: string }[]; revised: boolean;
+    rounds?: { verdict: string; issues: number }[] } | null;
 };
 
 export type Verification = { removed_citations: string[]; replaced_quotes: number; unverified_refs: string[]; needs_review: boolean };

@@ -173,6 +173,24 @@ export function AnswerCard({
         </details>
       )}
 
+      {(answer.attention ?? []).length > 0 && (
+        <Section icon={<AlertTriangle className="size-3.5" />} title={t.attention}>
+          <ul className="space-y-2">
+            {answer.attention!.map((a, i) => (
+              <li key={i} className="rounded-2xl border border-warning/40 bg-warning/10 p-4 text-sm">
+                <p className="font-medium">{a.point}</p>
+                <p className="mt-1 text-fg/80">{a.why}</p>
+                {a.citations.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {a.citations.map((c) => <CitationChip key={c} source={byId.get(c)} onClick={() => onFocusSource(c)} />)}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
       {(answer.calculations ?? []).length > 0 && (
         <Section icon={<Calculator className="size-3.5" />} title={t.calculations}>
           <ul className="space-y-2">

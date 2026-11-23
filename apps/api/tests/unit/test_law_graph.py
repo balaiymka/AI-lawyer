@@ -157,7 +157,9 @@ async def test_pipeline_branches_factcheck_and_revision(multi):
 
     ans = next(e for e in events if e.name == "answer").data
     fc = ans["analysis"]["fact_check"]
-    assert fc["verdict"] == "fix" and fc["revised"] is True
+    # первая проверка нашла ошибку → ответ исправлен → повторная проверка прошла
+    assert fc["revised"] is True and fc["verdict"] == "ok"
+    assert fc["rounds"] == [{"verdict": "fix", "issues": 1}, {"verdict": "ok", "issues": 0}]
     assert len(ans["analysis"]["branches"]) == 2 and len(ans["analysis"]["sub_questions"]) == 2
     assert ans["answer"]["calculations"][0]["citations"] == ["u8-ru"]  # выдуманный chunk_id убран
     assert ans["answer"]["drafts"][0]["title"] == "Вопросы бюллетеня"
@@ -172,7 +174,9 @@ async def test_single_question_skips_branches(multi, monkeypatch):
     monkeypatch.setattr(pl, "normalize", one)
     events = [e async for e in pl.run_chat("какой кворум собрания", persist=False)]
     ans = next(e for e in events if e.name == "answer").data
-    assert ans["analysis"]["branches"] == [] and "<branch_analyses>" not in multi.generations[0]
+    # одна ветка: общий поиск (без отдельной формулировки реранкера), но разбор и дозапрос норм есть
+    assert len(ans["analysis"]["branches"]) == 1 and "<branch_analyses>" in multi.generations[0]
+    assert multi.searched[0].rerank_query != "кворум"
 
 
 async def test_factcheck_failure_keeps_answer(multi, monkeypatch):
@@ -190,3 +194,25 @@ def test_branches_block_is_json():
     block = analysis.branches_block([b])
     payload = block.split("\n")[2]
     assert json.loads(payload)["citations"] == ["c1"] and 'kind="calculation"' in block
+
+
+async def test_branch_follow_up_search_adds_sources(multi, monkeypatch):
+    """Ветке не хватило нормы → она просит дополнительный поиск, нормы добавляются только в её набор."""
+    asked = []
+
+    async def ask(prompt, *, system, schema, **kw):
+        if schema is analysis.BRANCH_SCHEMA:
+            asked.append(prompt)
+            chair = "избирают председателя" in prompt
+            first = chair and sum(1 for a in asked if "избирают председателя" in a) == 1
+            return {"answer": "a", "rule": "r", "calculation": "", "draft": "", "citations": [], "missing": "нет п. 8",
+                    "follow_up_queries": ["утверждение размера текущих взносов"] if first else []}, {}
+        return {"verdict": "ok", "issues": [], "extra_queries": []}, {}
+
+    monkeypatch.setattr(analysis, "ask_json", ask)
+    events = [e async for e in pl.run_chat("100 квартир: председатель и тариф", persist=False)]
+    ans = next(e for e in events if e.name == "answer").data
+    b_chair, b_fee = ans["analysis"]["branches"]
+    assert b_chair["rounds"] == 2 and "art42/p5/sp7" in b_chair["sources"]
+    assert b_fee["rounds"] == 1
+    assert sum(1 for p in asked if "избирают председателя" in p) == 2
