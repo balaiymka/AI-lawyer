@@ -216,3 +216,63 @@ async def test_branch_follow_up_search_adds_sources(multi, monkeypatch):
     assert b_chair["rounds"] == 2 and "art42/p5/sp7" in b_chair["sources"]
     assert b_fee["rounds"] == 1
     assert sum(1 for p in asked if "избирают председателя" in p) == 2
+
+
+async def test_article_outside_context_forces_revision(multi, monkeypatch):
+    """Модель-проверяющий сказала «ok», но ответ ссылается на статью, которой нет в найденных нормах —
+    детерминированная проверка всё равно отправляет ответ на исправление."""
+    async def ok(prompt, *, system, schema, **kw):
+        if schema is analysis.BRANCH_SCHEMA:
+            return {"answer": "a", "rule": "r", "calculation": "", "draft": "", "citations": [], "missing": ""}, {}
+        return {"verdict": "ok", "issues": [], "extra_queries": []}, {}
+
+    gens = []
+
+    def gen_answer(content):
+        gens.append(content)
+        summary = "Угроза наказуема по ст. 115 УК." if len(gens) == 1 else "Нужен кворум 51 из 100 (ст. 42)."
+
+        async def g():
+            yield Final(answer(summary=summary), "llm", "fake", {})
+        return g()
+
+    monkeypatch.setattr(analysis, "ask_json", ok)
+    monkeypatch.setattr(pl, "generate_answer", gen_answer)
+    events = [e async for e in pl.run_chat("100 квартир: председатель и тариф", persist=False)]
+    ans = next(e for e in events if e.name == "answer").data
+    fc = ans["analysis"]["fact_check"]
+    assert fc["rounds"][0] == {"verdict": "fix", "issues": 1} and fc["revised"] is True
+    assert "статьи с таким номером нет" in gens[1] and "115" not in ans["answer"]["summary"]
+
+
+def test_scope_mismatch_flags_special_regime_norm():
+    from app.services.lawyer.schema import LegalBasis
+    from app.services.lawyer.verify import scope_mismatches
+
+    zsk = res("u66", "art66/p4", "4. Право требования по устранению недостатков строительства возникает у ЖСК…")
+    zsk.contents["ru"] = ("ЗЖО › Глава 7. Жилищно-строительные кооперативы › Статья 66. Прекращение деятельности "
+                          "жилищно-строительного кооператива › п. 4\n4. Право требования…")
+    zsk.meta["breadcrumb_ru"] = zsk.contents["ru"].split("\n")[0]
+    _, chunks = build_context([zsk, P8], "ru")
+    a = answer()
+    a.legal_basis = [LegalBasis(chunk_id=chunks[0].chunk_id, act="ЗЖО", article="66", point="4", quote="…",
+                                explanation="…")]
+    assert scope_mismatches(a, chunks, "Новый дом, застройщик не устраняет дефекты") == [
+        ("ст. 66 п. 4", "жилищно-строительный кооператив")]
+    assert scope_mismatches(a, chunks, "Наш ЖСК не может добиться ремонта от подрядчика") == []
+
+
+def test_verify_drops_out_of_scope_basis():
+    from app.services.lawyer.schema import LegalBasis
+    from app.services.lawyer.verify import verify_answer
+
+    zsk = res("u66", "art66/p4", "4. Право требования по устранению недостатков строительства возникает у ЖСК…")
+    zsk.meta["breadcrumb_ru"] = "ЗЖО › Статья 66. Прекращение деятельности жилищно-строительного кооператива › п. 4"
+    _, chunks = build_context([zsk, P8], "ru")
+    a = answer()
+    a.legal_basis = [LegalBasis(chunk_id=c.chunk_id, act="ЗЖО", article=c.article, point=c.point, quote="…",
+                                explanation="…") for c in chunks]
+    out, v = verify_answer(a, chunks, "Застройщик не устраняет дефекты в новом доме")
+    assert [b.article for b in out.legal_basis] == ["42"] and v.out_of_scope == ["ст. 66 п. 4"]
+    out, v = verify_answer(answer(), chunks, "Наш ЖСК судится с подрядчиком")
+    assert v.out_of_scope == []

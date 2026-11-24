@@ -18,11 +18,12 @@ from dataclasses import dataclass, replace
 from fastapi.concurrency import run_in_threadpool
 
 from app.core.config import get_settings
-from app.services.lawyer.analysis import BranchAnalysis, analyze_branch, branches_block, fact_check, review_block
+from app.services.lawyer.analysis import (BranchAnalysis, FactIssue, analyze_branch, branches_block, fact_check,
+                                          review_block)
 from app.services.lawyer.context import ContextChunk, build_context
 from app.services.lawyer.generator import (Delta, Final, LawyerError, build_user_content, generate_demo,
                                            generate_answer, llm_available)
-from app.services.lawyer.verify import verify_answer
+from app.services.lawyer.verify import scope_mismatches, unverified_refs, verify_answer
 from app.services.nlu.normalizer import SubQuestion, normalize, to_search_request
 from app.services.rag.graph import expand_with_graph
 from app.services.rag.refs import extract_refs
@@ -219,6 +220,23 @@ async def run_chat(text: str, role: str | None = None, history: list[dict] | Non
         try:
             for rnd in range(settings.factcheck_rounds + 1):
                 fc = await fact_check(context_xml, text, final.answer.model_dump_json())
+                # Детерминированная проверка поверх мнения модели: номер статьи без нормы в контексте — ошибка.
+                for art in unverified_refs(final.answer, chunks):
+                    fc.issues.append(FactIssue(
+                        claim=f"ссылка на статью {art}",
+                        problem="статьи с таким номером нет среди найденных норм (<context>) — номер не подтверждён текстом",
+                        correction="убери номер или сошлись на норму из <context>; если нужной нормы нет — прямо скажи, "
+                                   "что в базе портала она не найдена"))
+                    fc.verdict = "fix"
+                # Сфера действия: норма особого режима (ЖСК, госжилфонд, служебное жильё) без признаков его в вопросе.
+                for ref, regime in scope_mismatches(final.answer, chunks, text):
+                    fc.issues.append(FactIssue(
+                        claim=f"применена {ref}",
+                        problem=f"норма относится к особому режиму «{regime}» (см. заголовок главы/статьи), а в вопросе "
+                                "пользователя таких признаков нет",
+                        correction="опирайся на нормы, которые относятся к ситуации пользователя; норму особого режима "
+                                   "упоминай только с оговоркой, если ситуация может под него подпадать"))
+                    fc.verdict = "fix"
                 fc_info["rounds"].append({"verdict": fc.verdict, "issues": len(fc.issues)})
                 fc_info.update(verdict=fc.verdict, issues=[i.model_dump() for i in fc.issues],
                                extra_queries=fc.extra_queries)
@@ -245,7 +263,7 @@ async def run_chat(text: str, role: str | None = None, history: list[dict] | Non
             fc_info = {**fc_info, "verdict": "error"}
         timings["factcheck"] = (time.perf_counter() - t0) * 1000
 
-    answer, verification = verify_answer(final.answer, chunks)
+    answer, verification = verify_answer(final.answer, chunks, text)
     analysis = {"sub_questions": [q.model_dump() for q in subs], "branches": [b.model_dump() for b in branches],
                 "fact_check": fc_info}
     yield Event("answer", {"answer": answer.model_dump(), "verification": verification.dict(),

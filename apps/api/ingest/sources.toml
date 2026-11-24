@@ -162,3 +162,60 @@ adopted_at = "2026-01-09"
 adilet_id = "K2600000253"
 hierarchy_level = 2
 enabled = true
+
+# --- Пробелы базы, найденные на 100 жизненных ситуациях (docs/06-life-scenarios.md) ---
+
+[[acts]]
+code = "ANIMALS"
+act_type = "law"
+title_ru = "Закон Республики Казахстан «Об ответственном обращении с животными»"
+title_kk = "«Жануарларға жауапкершілікпен қарау туралы» Қазақстан Республикасының Заңы"
+number = "97-VII"
+adopted_at = "2021-12-30"
+adilet_id = "Z2100000097"
+hierarchy_level = 3
+enabled = true
+
+[[acts]]
+code = "SHARED_CONSTR"
+act_type = "law"
+title_ru = "Закон Республики Казахстан «О долевом участии в жилищном строительстве»"
+title_kk = "«Тұрғын үй құрылысына үлестік қатысу туралы» Қазақстан Республикасының Заңы"
+number = "486-V"
+adopted_at = "2016-04-07"
+adilet_id = "Z1600000486"
+hierarchy_level = 3
+enabled = true
+
+[[acts]]
+code = "PERSONAL_DATA"
+act_type = "law"
+title_ru = "Закон Республики Казахстан «О персональных данных и их защите»"
+title_kk = "«Дербес деректер және оларды қорғау туралы» Қазақстан Республикасының Заңы"
+number = "94-V"
+adopted_at = "2013-05-21"
+adilet_id = "Z1300000094"
+hierarchy_level = 3
+enabled = true
+
+[[acts]]
+code = "CIVIL_PROTECTION"
+act_type = "law"
+title_ru = "Закон Республики Казахстан «О гражданской защите»"
+title_kk = "«Азаматтық қорғау туралы» Қазақстан Республикасының Заңы"
+number = "188-V"
+adopted_at = "2014-04-11"
+adilet_id = "Z1400000188"
+hierarchy_level = 3
+enabled = true
+
+[[acts]]
+code = "GAS"
+act_type = "law"
+title_ru = "Закон Республики Казахстан «О газе и газоснабжении»"
+title_kk = "«Газ және газбен жабдықтау туралы» Қазақстан Республикасының Заңы"
+number = "532-IV"
+adopted_at = "2012-01-09"
+adilet_id = "Z1200000532"
+hierarchy_level = 3
+enabled = true

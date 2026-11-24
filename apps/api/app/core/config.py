@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     rerank_enabled: bool = True
     rerank_pool: int = 20  # сколько лучших кандидатов RRF переоценивает реранкер
     rerank_max_length: int = 384  # токенов на пару (запрос, фрагмент); пункты закона обычно короче
+    # акты специального жилищного законодательства: их лучшие кандидаты всегда попадают в реранкинг
+    core_acts: str = "ZHO,RULES_MGMT,RULES_DECISIONS,METHOD_BUDGET,COMM_SERVICES"
+    core_rerank_extra: int = 4
     redis_url: str = "redis://localhost:6379/0"
     s3_endpoint: str = "http://localhost:9000"
 

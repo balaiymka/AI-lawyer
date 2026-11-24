@@ -68,7 +68,7 @@ def main() -> None:
 
     sources = load_sources()
     if args.cmd == "dates":
-        _fix_dates(sources, args.code.upper(), get_settings())
+        _fix_dates(sources, args.code.upper(), get_settings(), at=args.at)
         return
     if args.cmd == "graph":
         _graph(None if args.code.upper() == "ALL" else args.code.upper())
@@ -135,7 +135,7 @@ def _graph(code: str | None) -> None:
     asyncio.run(run())
 
 
-def _fix_dates(sources, code: str, settings) -> None:
+def _fix_dates(sources, code: str, settings, at: list[str] | None = None) -> None:
     """Дата начала действующей редакции = дата из хронологии Adilet (а не день загрузки).
 
     Обновляет PostgreSQL и поля valid_from в Qdrant без пересчёта векторов. code=ALL — все акты.
@@ -149,6 +149,12 @@ def _fix_dates(sources, code: str, settings) -> None:
 
     codes = [c for c in sources if sources[c].enabled] if code == "ALL" else [code]
     found = {}
+    if at:  # дата уже известна (сверена на Adilet) — без браузера, например внутри контейнера на сервере
+        from datetime import date
+
+        found = {code: date.fromisoformat(at[0])}
+        print(f"{code}: действующая редакция с {found[code]} (дата задана вручную)")
+        codes = []
     for c in codes:
         eds = fetch_versions(sources[c].adilet_id)
         cur = next((e for e in eds if e.is_current), eds[-1])

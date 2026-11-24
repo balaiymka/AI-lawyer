@@ -177,6 +177,12 @@ def search(req: SearchRequest) -> tuple[list[Result], SearchTrace]:
         head = pool[:rerank_pool]
         # Закреплённые точные ссылки всегда участвуют в реранкинге, даже если RRF их не поднял.
         head += [r for r in pool[rerank_pool:] if r.pinned][:10]
+        # Специальное жилищное законодательство (ЗЖО и правила к нему) всегда получает несколько мест в реранкинге:
+        # большие кодексы (КоАП — 1000+ статей) по числу совпадений вытесняют его из головы RRF, и ответ про шум
+        # или подъезд опирался только на штраф, без обязанности собственника из ЗЖО. Порядок решает реранкер.
+        core = set(settings.core_acts.split(",")) if settings.core_acts else set()
+        if core and settings.core_rerank_extra and (req.act_codes is None or core & set(req.act_codes)):
+            head += [r for r in pool[rerank_pool:] if r.act_code in core and not r.pinned][:settings.core_rerank_extra]
         scores = get_reranker().score(req.rerank_query, [r.content for r in head],
                                       max_length=settings.rerank_max_length, batch_size=10)
         for r, s in zip(head, scores):

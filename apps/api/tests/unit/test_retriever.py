@@ -108,3 +108,31 @@ def test_missing_point_falls_back_to_whole_article(store):
     results, _ = rt.search(req)
     pinned = {r.path for r in results if r.pinned}
     assert pinned == {"art42/p7", "art42/p8", "art42/p17"}
+
+
+def test_core_housing_act_gets_rerank_slot(store, monkeypatch):
+    """Большой кодекс заполняет голову RRF, но пункт ЗЖО всё равно доходит до реранкера и выигрывает."""
+    from app.core.config import get_settings
+
+    points = []
+    for i in range(4):
+        enc = fake_encode("ущерб")
+        points.append(models.PointStruct(
+            id=str(uuid.uuid4()),
+            vector={vs.DENSE: enc.dense, vs.SPARSE: models.SparseVector(indices=list(enc.sparse), values=list(enc.sparse.values()))},
+            payload={"unit_id": str(uuid.uuid4()), "path": f"art{500 + i}/p1", "act_code": "KOAP", "article": str(500 + i),
+                     "point": "1", "lang": "ru", "content": "ущерб", "is_current": True}))
+    store.upsert(vs.COLLECTION, points)
+    # «ущерб взнос копия протокол» дальше от поискового запроса «ущерб», но точнее отвечает на вопрос
+    enc = fake_encode("ущерб взнос копия протокол")
+    store.upsert(vs.COLLECTION, [models.PointStruct(
+        id=str(uuid.uuid4()),
+        vector={vs.DENSE: enc.dense, vs.SPARSE: models.SparseVector(indices=list(enc.sparse), values=list(enc.sparse.values()))},
+        payload={"unit_id": str(uuid.uuid4()), "path": "art34/p7", "act_code": "ZHO", "article": "34", "point": "7",
+                 "lang": "ru", "content": "ущерб взнос копия протокол", "is_current": True})])
+    req = rt.SearchRequest(queries=["ущерб"], rerank_query="ущерб взнос", top_k=2, rerank_pool=2, xref_limit=0)
+
+    monkeypatch.setattr(get_settings(), "core_rerank_extra", 0)
+    assert "art34/p7" not in [r.path for r in rt.search(req)[0]]
+    monkeypatch.setattr(get_settings(), "core_rerank_extra", 4)
+    assert rt.search(req)[0][0].path == "art34/p7"

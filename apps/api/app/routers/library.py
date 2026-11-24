@@ -84,6 +84,9 @@ async def get_article(code: str, number: str, session: AsyncSession = Depends(ge
         "notes_kk": article.notes_kk,
         "is_repealed": article.is_repealed,
         "valid_from": version.valid_from.isoformat(),
+        # статья без пунктов (например, ст. 38 ЗЖО) хранит текст в самой статье — без него справочник показывал пустоту
+        "text_ru": article.text_ru,
+        "text_kk": article.text_kk,
         "units": [
             {"path": u.path, "type": u.unit_type, "number": u.number, "text_ru": u.text_ru, "text_kk": u.text_kk}
             for u in children

@@ -13,7 +13,7 @@ type TocItem = { type: "section" | "chapter" | "paragraph" | "article"; number: 
 type Toc = { act: string; title_ru: string; title_kk: string | null; url_ru: string | null; url_kk: string | null; valid_from: string; items: TocItem[] };
 type Unit = { path: string; type: string; number: string | null; text_ru: string | null; text_kk: string | null };
 type ActRow = { code: string; title_ru: string; title_kk: string | null; hierarchy_level: number };
-type Article = { kind?: "chapter"; number: string; heading_ru: string | null; heading_kk: string | null; notes_ru: string | null; notes_kk: string | null; is_repealed: boolean; valid_from: string; units: Unit[] };
+type Article = { kind?: "chapter"; number: string; heading_ru: string | null; heading_kk: string | null; notes_ru: string | null; notes_kk: string | null; is_repealed: boolean; valid_from: string; text_ru?: string | null; text_kk?: string | null; units: Unit[] };
 
 export function LawReader({ t, locale }: { t: Dictionary; locale: Locale }) {
   const l = t.lib;
@@ -118,6 +118,10 @@ export function LawReader({ t, locale }: { t: Dictionary; locale: Locale }) {
             </h2>
             {article.is_repealed && <p className="mt-2 inline-flex rounded-full bg-danger/10 px-2.5 py-1 text-xs text-danger">{l.repealed}</p>}
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed">
+              {/* статья без пунктов хранит текст в самой статье (например, ст. 38 ЗЖО) */}
+              {article.units.length === 0 && (kk ? article.text_kk || article.text_ru : article.text_ru || article.text_kk) && (
+                <p className="whitespace-pre-line">{kk ? article.text_kk || article.text_ru : article.text_ru || article.text_kk}</p>
+              )}
               {article.units.map((u) => {
                 const text = (kk ? u.text_kk || u.text_ru : u.text_ru || u.text_kk) ?? "";
                 return <p key={u.path} id={u.path} className="whitespace-pre-line">{text}</p>;
